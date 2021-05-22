@@ -2,10 +2,10 @@
   "name": "scene-transitions",
   "title": "Scene Transitions",
   "description": "Create transition between scenes.",
-  "authors": "WillS, DM_miX",
+  "authors": "DM_miX",
   "version": "0.1.1",
   "minimumCoreVersion": "0.7.9",
-  "compatibleCoreVersion":"0.8.8",
+  "compatibleCoreVersion":"0.8.6",
   "scripts": [
   	"scene-transitions.js"
   ],
@@ -13,8 +13,8 @@
     "transition.css"
   ],
   "socket": true,
-  "changelog":"https://raw.githubusercontent.com/wsaunders1014/scene-transitions/master/README.md",
-  "url":"https://github.com/wsaunders1014/scene-transitions",
-  "manifest":"https://raw.githubusercontent.com/wsaunders1014/scene-transitions/master/module.json",
-  "download":"https://github.com/wsaunders1014/scene-transitions/releases/download/0.0.9/scene-transitions.zip"
+  "changelog":"https://raw.githubusercontent.com/DM-miX/scene-transitions/master/README.md",
+  "url":"https://github.com/DM-miX/scene-transitions",
+  "manifest":"https://raw.githubusercontent.com/DM-miX/scene-transitions/master/module.json",
+  "download":"https://github.com/DM-miX/scene-transitions/releases/download/0.1.1/scene-transitions.zip"
 }

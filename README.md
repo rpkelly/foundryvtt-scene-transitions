@@ -19,8 +19,8 @@ Transition.macro({
 	bgOpacity:0.7,
 	fadeIn: 400, //how long to fade in
 	delay:5000, //how long for transition to stay up
-	fadeOut: 400 //how long to fade out
-	audio: "" //path to audio file
+	fadeOut: 400, //how long to fade out
+	audio: "", //path to audio file
 	skippable:true, //Allows players to skip transition with a click before delay runs out.
 	gmHide: true, // hide the transistion on other windows logged in as a GM
 	gmEndAll: true, // whwn the fm clicks to end the transition - end for everyone
@@ -47,7 +47,9 @@ Set initial volume of the audio file
 
 # 0.0.7
 0.7.5 Fix. Pull Request merge to fade out audio.
-
+  
+  
+Full credit to @WillS for the orgianl idea and developent of Scene Transitions:  
 # 0.0.6
 You can now create and send a transition to all players using a macro. There is now a 'Play as Transition' option on the context menu for Journal Entries and it's sheet header. This takes the content and image from the journal and makes a transition out of it with the default settings.
 

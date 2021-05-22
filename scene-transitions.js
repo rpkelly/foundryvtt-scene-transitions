@@ -1,31 +1,23 @@
 /************************
  * Scene Transitions
- * Origianl Author: @WillS
- * Maintained by @WillS and @DM_miX
+ * Author @DM_miX since 0.0.8
+ * Origianl author credit and big shout out to @WillS
 *************************/
-
-
-
-/**
- * The magic happens here
- * @param preview: 
- * @param sceneID: The scene to transition to
- * @param options: See default options below for a list of all available
- */
 
  class Transition {
 
     /**
      * 
-     * @param {*} preview 
-     * @param {*} options: v0.1.1 options go here. Previously sceneID
-     * @param {*} optionsBackCompat: Previously used for options. Deprecated as of 0.1.1
+     * @param {boolean} preview 
+     * @param {object} options: v0.1.1 options go here. Previously sceneID
+     * @param {object} optionsBackCompat: Previously used for options. Deprecated as of 0.1.1
      */
 	constructor(preview, options, optionsBackCompat){
         //Allow for older versions
         if(optionsBackCompat) {
             optionsBackCompat.sceneID = options;
             options = optionsBackCompat;
+            console.warn("Scene-Transitions | sceneID and options have been combined into paramater 2 'new Transition(preview, options)' - update your macro asap");
         }
 
 		this.preview = preview;
@@ -183,7 +175,7 @@
     static macro(options, showMe) {
         game.socket.emit('module.scene-transitions', options);
 
-        if(showMe) {
+        if(showMe || options.gmEndAll) { //force show on triggering window if gmEndAll is active
             let activeTransition = new Transition(false, options)
             activeTransition.render()
         }
@@ -191,15 +183,13 @@
 
 
 
-    createFromJournal(journalID){
-        //todo
-    }
 
 
 
-
-
-
+    /**
+     * The Mahic happens here
+     * @returns 
+     */
 	render(){
         Transition.activeTransition = this;
         if(this.options.gmHide && this.options.fromSocket && game.user.isGM) {
@@ -397,13 +387,8 @@
                     new Transition(false, options).render();
                 }
             }
-
         })
-
     }
-
-
-
 }
 
 
@@ -655,7 +640,6 @@ Hooks.on('init',() => {;
     Transition.registerSettings();
     Transition.registerSockets();   
 });
-
 
 Hooks.on('closeTransitionForm', (form)=>{
     let activeTransition = form.object;
