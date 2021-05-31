@@ -28,9 +28,8 @@ Transition.macro({
 }, true ) //show to the triggering user
 ```
 To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
-
 # 0.1.2  
-Fix z-index so transition sits on top of everything
+Fix z-index so transitions are on top
 
 # 0.1.1
 New helper for macros - Transition.macro(options, showMe)  
