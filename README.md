@@ -29,6 +29,9 @@ Transition.macro({
 ```
 To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
 
+# 0.1.3  
+Fix z-index on the editor form! ugh  
+
 # 0.1.2  
 Fix z-index so transition sits on top of everything
 
