@@ -23,11 +23,16 @@ Transition.macro({
 	audio: "", //path to audio file
 	skippable:true, //Allows players to skip transition with a click before delay runs out.
 	gmHide: true, // hide the transistion on other windows logged in as a GM
-	gmEndAll: true, // whwn the fm clicks to end the transition - end for everyone
+	gmEndAll: true, // when the GM clicks to end the transition - end for everyone
+	showUI: false, // Show the User Interface elements to all players allowing them to interact with character sheets etc
 
 }, true ) //show to the triggering user
 ```
 To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
+# 0.2.1  
+Added Show User Interface (showUI) option to show the user interface to players during the transition
+UI always shows for the GM
+
 
 # 0.1.3  
 Fix z-index on the editor form! ugh  

@@ -4,7 +4,7 @@
  * Origianl author credit and big shout out to @WillS
 *************************/
 
- class Transition {
+class Transition {
 
     /**
      * 
@@ -56,6 +56,7 @@
 			volume: 1.0,
 			skippable:true,
             gmEndAll:true,
+            showUI:false,
 			content:""
 		}
 	}
@@ -195,16 +196,18 @@
         if(this.options.gmHide && this.options.fromSocket && game.user.isGM) {
             return;
         }
+        
 
         if(Transition.hasNewAudioAPI) {
             $('body').append('<div id="transition" class="transition"><div class="transition-bg"></div><div class="transition-content"></div></div>');
         } else {
             $('body').append('<div id="transition" class="transition"><div class="transition-bg"></div><div class="transition-content"></div><audio><source src=""></audio></div>');
-
         }
 
+        let zIndex = game.user.isGM || this.options.showUI ? 1 : 5000;
 		this.modal = $('#transition');
-		this.modal.css({backgroundColor:this.options.bgColor})
+
+		this.modal.css({backgroundColor:this.options.bgColor, zIndex:zIndex})
 		this.modal.find('.transition-bg').css({backgroundImage:'url('+this.options.bgImg+')',opacity:this.options.bgOpacity,backgroundSize:this.options.bgSize,backgroundPosition:this.options.bgPos})
 		this.modal.find('.transition-content').css({color:this.options.fontColor,fontSize:this.options.fontSize}).html(this.options.content);
         
@@ -244,6 +247,8 @@
 			if(game.user.isGM && !this.preview && this.sceneID !==false) {   
 				game.scenes.get(this.sceneID).activate();
             }
+            
+            
 			this.modal.find('.transition-content').fadeIn();
 			if(!this.preview)
 				this.setDelay();
@@ -323,8 +328,10 @@
                     clearInterval(audioFadeTimer);
                 };
             }
-            fade();
             let audioFadeTimer = setInterval(fade,50);
+            fade();
+            
+            
 
         } else {
             // 0.7.9
