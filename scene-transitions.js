@@ -689,14 +689,14 @@ Hooks.on("getSceneNavigationContext", (html, contextOptions) => {
 });
 
 Hooks.on("getSceneDirectoryEntryContext", (html, contextOptions) => {
-    contextOptions.push(Transition.addPlayTransitionBtn('entityId'));
-    contextOptions.push(Transition.addCreateTransitionBtn('entityId'));
-    contextOptions.push(Transition.addEditTransitionBtn('entityId'));
-    contextOptions.push(Transition.addDeleteTransitionBtn('entityId'));
+    contextOptions.push(Transition.addPlayTransitionBtn('documentId'));
+    contextOptions.push(Transition.addCreateTransitionBtn('documentId'));
+    contextOptions.push(Transition.addEditTransitionBtn('documentId'));
+    contextOptions.push(Transition.addDeleteTransitionBtn('documentId'));
 });
 
 Hooks.on('getJournalDirectoryEntryContext', (html,contextOptions)=>{
-    contextOptions.push(Transition.addPlayTransitionBtnJE('entityId'));
+    contextOptions.push(Transition.addPlayTransitionBtnJE('documentId'));
 });
 
 Hooks.on('renderJournalSheet', (journal)=>{
