@@ -36,10 +36,12 @@ To play a transition without a scene activation, simple pass `false` as the scen
 
 
 # Changelog
+## 0.3.0
+Support Foundry V9 - thanks pchouzenoux!
+
 ## 0.2.1  
 Added Show User Interface (showUI) option to show the user interface to players during the transition
 UI always shows for the GM
-
 
 ## 0.1.3  
 Fix z-index on the editor form! ugh  
