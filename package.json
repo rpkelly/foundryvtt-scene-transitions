@@ -3,7 +3,7 @@
 	"title": "Scene Transitions",
 	"description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
 	"version": "0.4.0",
-  "main": "scene-transitions.js",
+  "main": "main.js",
   "scripts": {
     "publish": "gulp publish --update",
     "package": "gulp package",

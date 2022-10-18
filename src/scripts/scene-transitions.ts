@@ -4,7 +4,7 @@
  * Origianl author credit and big shout out to @WillS
 *************************/
 
-class Transition {
+export class Transition {
 
     /**
      * 
