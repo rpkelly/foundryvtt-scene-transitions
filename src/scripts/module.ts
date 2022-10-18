@@ -1,4 +1,4 @@
-import { setApi } from "src/main";
+import { setApi } from "../main";
 import API from "./api";
 import CONSTANTS from "./constants";
 import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";

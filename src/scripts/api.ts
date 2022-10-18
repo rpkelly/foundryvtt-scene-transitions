@@ -25,13 +25,14 @@ const API = {
 		} else {
 			// Run a transition
 			let options = data;
-			if (!options.users || options.users.includes(<string>game.user?.id)) {
+			// TODO did i need this ??
+			// if (!options.users || options.users.includes(<string>game.user?.id)) {
 				options = {
 					...options,
 					fromSocket: true,
 				};
 				new SceneTransition(false, options, undefined).render();
-			}
+			// }
 		}
 	},
 };

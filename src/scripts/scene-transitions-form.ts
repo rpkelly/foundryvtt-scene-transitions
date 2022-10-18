@@ -23,10 +23,10 @@ export class TransitionForm extends FormApplication {
 	 */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			id: "transition-form",
+			id: "scene-transitions-form",
 			title: "Edit Transition",
 			template: `modules/${CONSTANTS.MODULE_NAME}/templates/transition-form.html`,
-			classes: ["sheet", "transition-form"],
+			classes: ["sheet", "scene-transitions-form"],
 			height: 500,
 			width: 436,
 		});
@@ -58,6 +58,7 @@ export class TransitionForm extends FormApplication {
 		if (!editor) throw new Error(`${name} is not a registered editor name!`);
 		options = mergeObject(editor.options, options);
 		options.height = options.target.offsetHeight;
+		options.async = false;
 		await TextEditor.create(options, initialContent || editor.initial).then((mce) => {
 			editor.mce = mce;
 			editor.changed = false;

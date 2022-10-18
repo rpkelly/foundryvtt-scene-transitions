@@ -5,7 +5,7 @@
  *************************/
 
 import CONSTANTS from "./constants";
-import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
+import { info, retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
 import { TransitionForm } from "./scene-transitions-form";
 import { SceneTransitionOptions } from "./scene-transitions-model";
 import { sceneTransitionsSocket } from "./socket";
@@ -235,11 +235,11 @@ export class SceneTransition {
 
 		// if (SceneTransition.hasNewAudioAPI) {
 		$("body").append(
-			'<div id="transition" class="transition"><div class="transition-bg"></div><div class="transition-content"></div></div>'
+			'<div id="scene-transitions" class="scene-transitions"><div class="scene-transitions-bg"></div><div class="scene-transitions-content"></div></div>'
 		);
 		// } else {
 		// 	$("body").append(
-		// 		'<div id="transition" class="transition"><div class="transition-bg"></div><div class="transition-content"></div><audio><source src=""></audio></div>'
+		// 		'<div id="scene-transitions" class="scene-transitions"><div class="scene-transitions-bg"></div><div class="scene-transitions-content"></div><audio><source src=""></audio></div>'
 		// 	);
 		// }
 
@@ -262,7 +262,7 @@ export class SceneTransition {
 			// if (SceneTransition.hasNewAudioAPI) {
 			// 0.8.1+
 			if (game.audio.locked) {
-				console.log("Scene Transitions | Audio playback locked, cannot play " + this.options.audio);
+				info("Audio playback locked, cannot play " + this.options.audio);
 			} else {
 				let thisTransition = this;
 				AudioHelper.play({ src: this.options.audio, volume: this.options.volume, loop: false }, false).then(

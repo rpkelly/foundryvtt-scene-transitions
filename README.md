@@ -33,6 +33,10 @@ To install this module manually:
 4.  Click 'Install' and wait for installation to complete
 5.  Don't forget to enable the module in game using the "Manage Module" button
 
+### libwrapper
+
+This module uses the [libwrapper](https://github.com/ruipin/fvtt-lib-wrapper) library like a dependency. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
+
 ### socketLib
 
 This module uses the [socketLib](https://github.com/manuelVo/foundryvtt-socketlib) library like a dependency. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
@@ -49,7 +53,7 @@ This module uses the [socketLib](https://github.com/manuelVo/foundryvtt-socketli
 /**
  * Transition.macro(options, showMe)
  */
-game.modules.get('scene-transitions').api.macro({
+game.modules.get('scene-transitions').api.executeAction({
 	sceneID: false,
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
