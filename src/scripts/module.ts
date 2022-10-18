@@ -3,7 +3,8 @@ import API from "./api";
 import CONSTANTS from "./constants";
 import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
 import { SceneTransition } from "./scene-transitions";
-import { registerSocket } from "./socket";
+import { SceneTransitionOptions } from "./scene-transitions-model";
+import { registerSocket, sceneTransitionsSocket } from "./socket";
 
 export const initHooks = () => {
 	// warn("Init Hooks processing");
@@ -24,7 +25,8 @@ export const setupHooks = () => {
 export const readyHooks = async () => {
 	// warn("Ready Hooks processing");
 	$("body").on("click", ".play-transition", (e) => {
-		let id = <string>$(e.target).parents(".journal-sheet").attr("id").split("-")[1];
+		let elements = <string[]>$(e.target).parents(".journal-sheet").attr("id")?.split("-");
+		let id = <string>elements[1];
 		let journal = game.journal?.get(id)?.data;
 		if (!journal) {
 			warn(`No journal is found`);
@@ -32,12 +34,13 @@ export const readyHooks = async () => {
 		}
 		const content = retrieveFirstTextFromJournalId(id);
 		const img = retrieveFirstImageFromJournalId(id);
-		let options = {
+		let options = new SceneTransitionOptions({
 			content: content,
 			bgImg: img,
-		};
+		});
 		new SceneTransition(false, options, undefined).render();
-		game.socket.emit("module.scene-transitions", options);
+		// game.socket.emit("module.scene-transitions", options);
+		sceneTransitionsSocket.executeForEveryone("executeAction", options);
 	});
 
 	Hooks.on("closeTransitionForm", (form) => {

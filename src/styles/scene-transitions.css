@@ -1,4 +1,4 @@
-.transition {
+.scene-transitions {
 	position: fixed;
 	z-index: 5000;
 	padding: 10%;
@@ -9,7 +9,7 @@
 	line-height: 1.4em;
 	text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
 }
-.transition .transition-bg {
+.scene-transitions .scene-transitions-bg {
 	opacity: 0.7;
 	width: 100%;
 	height: 100%;
@@ -21,7 +21,7 @@
 	background-size: cover;
 	background-position: center;
 }
-.transition .transition-content {
+.scene-transitions .scene-transitions-content {
 	display: none;
 	position: absolute;
 	color: #fff;
@@ -35,7 +35,7 @@
 	line-height: 2em;
 	text-align: center;
 }
-.transition.preview {
+.scene-transitions.preview {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -46,35 +46,35 @@
 	line-height: 1.7em;
 	padding: 4%;
 }
-.transition.preview .transition-content {
+.scene-transitions.preview .scene-transitions-content {
 	display: block;
 	font-size: 11px;
 }
-#transition-form {
+#scene-transitions-form {
 }
-#transition-form .scroll {
+#scene-transitions-form .scroll {
 	height: 100%;
 	max-height: calc(500px - 72px);
 	margin-bottom: 5px;
 	overflow-y: scroll;
 	padding: 8px;
 }
-#transition-form .window-content {
+#scene-transitions-form .window-content {
 	padding: 0;
 }
-#transition-form .editor-box {
+#scene-transitions-form .editor-box {
 	height: calc(100% - 131px);
 	margin-top: 10px;
 }
-#transition-form .editor {
+#scene-transitions-form .editor {
 	height: 100%;
 	outline: 1px solid rgba(0, 0, 0, 0.8);
 }
-#transition-form .tox.tox-tinymce {
+#scene-transitions-form .tox.tox-tinymce {
 	height: 100% !important;
 	min-height: 220px;
 }
-#transition-preview {
+#scene-transitions-preview {
 	position: relative;
 	width: 100%;
 	max-width: 400px;

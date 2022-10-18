@@ -7,6 +7,8 @@ export class TransitionForm extends FormApplication {
 	transition: any;
 	data: any;
 	interval: any;
+	playingAudio: any;
+	_submitting: boolean;
 
 	constructor(object, options) {
 		super(object, options);
@@ -42,13 +44,13 @@ export class TransitionForm extends FormApplication {
 		const w = window.innerWidth;
 		const h = window.innerHeight;
 
-		const preview = $("#transition");
-		preview.find(".transition-bg").css({
+		const preview = $("#scene-transitions");
+		preview.find(".scene-transitions-bg").css({
 			backgroundImage: "url(" + this.transition.options.bgImg + ")",
 			opacity: this.transition.options.bgOpacity,
 			backgroundColor: this.transition.options.bgColor,
 		});
-		preview.find(".transition-content").css({ color: this.transition.options.fontColor });
+		preview.find(".scene-transitions-content").css({ color: this.transition.options.fontColor });
 	}
 
 	async activateEditor(name, options = <any>{}, initialContent = "") {
@@ -125,30 +127,31 @@ export class TransitionForm extends FormApplication {
 		const textEditor = html.find(".mce-content-body");
 		const volumeSlider = html.find('input[name="volume"]');
 
-		const preview = $("#transition");
+		const preview = $("#scene-transitions");
 		bgSizeInput.on("change", (e) => {
 			this.data.bgSize = e.target.value;
-			preview.find(".transition-bg").css("background-size", this.data.bgSize);
+			preview.find(".scene-transitions-bg").css("background-size", this.data.bgSize);
 		});
 		bgPosInput.on("change", (e) => {
 			this.data.bgPos = e.target.value;
-			preview.find(".transition-bg").css("background-position", this.data.bgPos);
+			preview.find(".scene-transitions-bg").css("background-position", this.data.bgPos);
 		});
 		bgImageInput.on("change", (e) => {
 			this.data.bgImg = e.target.value;
-			preview.find(".transition-bg").css("background-image", `url(${this.data.bgImg})`);
+			preview.find(".scene-transitions-bg").css("background-image", `url(${this.data.bgImg})`);
 		});
 		bgOpacityInput.on("change", (e) => {
 			this.data.bgOpacity = e.target.value;
-			preview.find(".transition-bg").css("opacity", e.target.value);
+			preview.find(".scene-transitions-bg").css("opacity", e.target.value);
 		});
 		fontSizeInput.on("change", (e) => {
-			preview.find(".transition-content").css("font-size", e.target.value);
+			preview.find(".scene-transitions-content").css("font-size", e.target.value);
 		});
 		html.find('button[name="cancel"]').on("click", () => {
 			this.close();
 		});
 		html.find('button[name="save"]').on("click", () => {
+			//@ts-ignore
 			this._onSubmit();
 		});
 		volumeSlider.on("change", (e) => {
@@ -159,34 +162,40 @@ export class TransitionForm extends FormApplication {
 		});
 
 		this._activateEditor(html.find(".editor-content")[0]).then(async () => {
+			//@ts-ignore
 			await this.activateEditor("content", this.editors.content.options, this.editors.content.initial);
-
+			//@ts-ignore
 			this.editors.content.mce.on("focus", (e) => {
 				this.interval = setInterval(() => {
-					preview.find(".transition-content").html(this.editors.content.mce.getBody().innerHTML);
+					//@ts-ignore
+					preview.find(".scene-transitions-content").html(this.editors.content.mce.getBody().innerHTML);
 				}, 500);
 			});
+			//@ts-ignore
 			this.editors.content.mce.on("blur", (e) => {
 				clearInterval(this.interval);
 			});
 		});
 	}
 
+	//@ts-ignore
 	close() {
-		if (Transition.hasNewAudioAPI) {
-			this.transition.playingAudio.stop();
-		}
+		// if (SceneTransition.hasNewAudioAPI) {
+		this.transition.playingAudio.stop();
+		// }
 		super.close();
 	}
 
+	//@ts-ignore
 	async _onSubmit(event, { updateData = null, preventClose = false, preventRender = false } = {}) {
+		//@ts-ignore
 		const states = this.constructor.RENDER_STATES;
 		if (this._state === states.NONE || !this.options.editable || this._submitting) return false;
 		this._submitting = true;
 
-		if (Transition.hasNewAudioAPI) {
-			this.transition.playingAudio.stop();
-		}
+		// if (SceneTransition.hasNewAudioAPI) {
+		this.transition.playingAudio.stop();
+		// }
 
 		// Acquire and validate Form Data
 		const form = this.element.find("form").first()[0];
@@ -200,12 +209,17 @@ export class TransitionForm extends FormApplication {
 		const formData = this._getSubmitData(updateData);
 
 		this.transition.updateData(formData);
-		if (this.transition.sceneID != false)
-			game.scenes.get(this.transition.sceneID).setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
+		const scene = <Scene>game.scenes?.get(this.transition.sceneID);
+		if (this.transition.sceneID != false) {
+			scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
+		}
 
 		this._submitting = false;
 		this._state = priorState;
-		if (this.options.closeOnSubmit && !preventClose) this.close({ submit: false });
+		if (this.options.closeOnSubmit && !preventClose) {
+			//@ts-ignore
+			this.close({ submit: false });
+		}
 		return formData;
 	}
 
@@ -216,9 +230,9 @@ export class TransitionForm extends FormApplication {
 		form[input.dataset.edit].value = input.value;
 		if ($(input).attr("data-edit") == "bgColor") {
 			this.data.bgColor = event.target.value;
-			$("#transition").css("background-color", event.target.value);
+			$("#scene-transitions").css("background-color", event.target.value);
 		} else if ($(input).attr("data-edit") == "fontColor") {
-			$("#transition").find(".transition-content").css("color", event.target.value);
+			$("#scene-transitions").find(".scene-transitions-content").css("color", event.target.value);
 		}
 	}
 

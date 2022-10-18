@@ -65,7 +65,7 @@
 	"packs": [],
 	"systems": [],
 	"scripts": [],
-	"esmodules": ["scene-transitions.js"],
+	"esmodules": ["main.js"],
 	"styles": ["styles/scene-transitions.css"],
 	"compatibility": {
 		"minimum": 10,
