@@ -43,13 +43,11 @@ export class TransitionForm extends FormApplication {
 		const h = window.innerHeight;
 
 		const preview = $("#transition");
-		preview
-			.find(".transition-bg")
-			.css({
-				backgroundImage: "url(" + this.transition.options.bgImg + ")",
-				opacity: this.transition.options.bgOpacity,
-				backgroundColor: this.transition.options.bgColor,
-			});
+		preview.find(".transition-bg").css({
+			backgroundImage: "url(" + this.transition.options.bgImg + ")",
+			opacity: this.transition.options.bgOpacity,
+			backgroundColor: this.transition.options.bgColor,
+		});
 		preview.find(".transition-content").css({ color: this.transition.options.fontColor });
 	}
 

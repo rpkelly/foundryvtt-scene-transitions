@@ -11,7 +11,14 @@ export const registerSettings = function (): void {
 	});
 
 	// =====================================================================
-
+	game.settings.register(CONSTANTS.MODULE_NAME, "show-journal-header-transition", {
+		name: `${CONSTANTS.MODULE_NAME}.setting.show-journal-header-transition.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.show-journal-header-transition.hint`,
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: true,
+	});
 	// ========================================================================
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
@@ -87,6 +94,14 @@ function defaultSettings(apply = false) {
 
 function otherSettings(apply = false) {
 	return {
+		"show-journal-header-transition": {
+			name: `${CONSTANTS.MODULE_NAME}.setting.show-journal-header-transition.name`,
+			hint: `${CONSTANTS.MODULE_NAME}.setting.show-journal-header-transition.hint`,
+			scope: "world",
+			config: true,
+			type: Boolean,
+			default: true,
+		},
 		debug: {
 			name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,
 			hint: `${CONSTANTS.MODULE_NAME}.setting.debug.hint`,

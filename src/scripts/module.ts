@@ -1,7 +1,7 @@
 import { setApi } from "src/main";
 import API from "./api";
 import CONSTANTS from "./constants";
-import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId } from "./lib/lib";
+import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
 import { SceneTransition } from "./scene-transitions";
 import { registerSocket } from "./socket";
 
@@ -12,8 +12,8 @@ export const initHooks = () => {
 
 	registerSocket();
 
-	// Transition.registerSettings();
-	// Transition.registerSockets();
+	// SceneTransition.registerSettings();
+	// SceneTransition.registerSockets();
 };
 
 export const setupHooks = () => {
@@ -26,19 +26,23 @@ export const readyHooks = async () => {
 	$("body").on("click", ".play-transition", (e) => {
 		let id = <string>$(e.target).parents(".journal-sheet").attr("id").split("-")[1];
 		let journal = game.journal?.get(id)?.data;
+		if (!journal) {
+			warn(`No journal is found`);
+			return;
+		}
 		const content = retrieveFirstTextFromJournalId(id);
 		const img = retrieveFirstImageFromJournalId(id);
 		let options = {
 			content: content,
 			bgImg: img,
 		};
-		new SceneTransition(false, options).render();
+		new SceneTransition(false, options, undefined).render();
 		game.socket.emit("module.scene-transitions", options);
 	});
 
 	Hooks.on("closeTransitionForm", (form) => {
-		let activeTransition = form.object;
-		activeTransition.destroy(true);
+		let activeSceneTransition = form.object;
+		activeSceneTransition.destroy(true);
 		clearInterval(form.interval);
 	});
 
@@ -48,26 +52,26 @@ export const readyHooks = async () => {
 
 	//Credit to Winks' Everybody Look Here for the code to add menu option to Scene Nav
 	Hooks.on("getSceneNavigationContext", (html, contextOptions) => {
-		contextOptions.push(Transition.addPlayTransitionBtn("sceneId"));
-		contextOptions.push(Transition.addCreateTransitionBtn("sceneId"));
-		contextOptions.push(Transition.addEditTransitionBtn("sceneId"));
-		contextOptions.push(Transition.addDeleteTransitionBtn("sceneId"));
+		contextOptions.push(<any>SceneTransition.addPlayTransitionBtn("sceneId"));
+		contextOptions.push(<any>SceneTransition.addCreateTransitionBtn("sceneId"));
+		contextOptions.push(<any>SceneTransition.addEditTransitionBtn("sceneId"));
+		contextOptions.push(<any>SceneTransition.addDeleteTransitionBtn("sceneId"));
 	});
 
 	Hooks.on("getSceneDirectoryEntryContext", (html, contextOptions) => {
-		contextOptions.push(Transition.addPlayTransitionBtn("documentId"));
-		contextOptions.push(Transition.addCreateTransitionBtn("documentId"));
-		contextOptions.push(Transition.addEditTransitionBtn("documentId"));
-		contextOptions.push(Transition.addDeleteTransitionBtn("documentId"));
+		contextOptions.push(SceneTransition.addPlayTransitionBtn("documentId"));
+		contextOptions.push(SceneTransition.addCreateTransitionBtn("documentId"));
+		contextOptions.push(SceneTransition.addEditTransitionBtn("documentId"));
+		contextOptions.push(SceneTransition.addDeleteTransitionBtn("documentId"));
 	});
 
 	Hooks.on("getJournalDirectoryEntryContext", (html, contextOptions) => {
-		contextOptions.push(Transition.addPlayTransitionBtnJE("documentId"));
+		contextOptions.push(SceneTransition.addPlayTransitionBtnJE("documentId"));
 	});
 
 	Hooks.on("renderJournalSheet", (journal) => {
 		if (
-			game.user.isGM &&
+			game.user?.isGM &&
 			$("#" + journal.id + " > header").find(".play-transition").length == 0 &&
 			game.settings.get("scene-transitions", "show-journal-header-transition") == true
 		) {
