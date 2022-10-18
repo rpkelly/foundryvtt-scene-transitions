@@ -1,17 +1,55 @@
 # Scene Transitions
+
+![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-scene-transitions/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge) 
+
+[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fscene-transitions&colorB=006400&style=for-the-badge)](https://forge-vtt.com/bazaar#package=scene-transitions) 
+
+![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fp4535992%2Ffoundryvtt-scene-transitions%2Fmaster%2Fsrc%2Fmodule.json&label=Foundry%20Version&query=$.compatibility.verified&colorB=orange&style=for-the-badge)
+
+![Latest Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fp4535992%2Ffoundryvtt-scene-transitions%2Fmaster%2Fsrc%2Fmodule.json&label=Latest%20Release&prefix=v&query=$.version&colorB=red&style=for-the-badge)
+
+[![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fscene-transitions%2Fshield%2Fendorsements&style=for-the-badge)](https://www.foundryvtt-hub.com/package/scene-transitions/)
+
+![GitHub all releases](https://img.shields.io/github/downloads/p4535992/foundryvtt-scene-transitions/total?style=for-the-badge)
+
+[![Translation status](https://weblate.foundryvtt-hub.com/widgets/scene-transitions/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/scene-transitions/)
+
+### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
+
 Allows GM to make simple transitions to show players before navigating to new screen. Can be used for narrative effect. Can now be used with macros to create transitionless Transitions. And journal entries can now be used to generate a Transition.
 
-# Credit
-Originally idea and development by Will Saunders
+## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 
-# Macro sample code:
+## Installation
+
+It's always easiest to install modules from the in game add-on browser.
+
+To install this module manually:
+1.  Inside the Foundry "Configuration and Setup" screen, click "Add-on Modules"
+2.  Click "Install Module"
+3.  In the "Manifest URL" field, paste the following url:
+`https://raw.githubusercontent.com/p4535992/foundryvtt-scene-transitions/master/src/module.json`
+4.  Click 'Install' and wait for installation to complete
+5.  Don't forget to enable the module in game using the "Manage Module" button
+
+### socketLib
+
+This module uses the [socketLib](https://github.com/manuelVo/foundryvtt-socketlib) library like a dependency. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
+
+
+## Known Issue\Limitation
+
+## Feature
+
+
+## Api
 
 ```javascript
 /**
  * Transition.macro(options, showMe)
  */
-Transition.macro({
+game.modules.get('scene-transitions').api.macro({
 	sceneID: false,
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
@@ -35,56 +73,21 @@ Transition.macro({
 To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
 
 
-# Changelog
-## 0.3.0
-Support Foundry V9 - thanks pchouzenoux!
+## [Changelog](./CHANGELOG.md)
 
-## 0.2.1  
-Added Show User Interface (showUI) option to show the user interface to players during the transition
-UI always shows for the GM
+## Issues
 
-## 0.1.3  
-Fix z-index on the editor form! ugh  
+Any issues, bugs, or feature requests are always welcome to be reported directly to the [Issue Tracker](https://github.com/p4535992/foundryvtt-scene-transitions/issues ), or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
 
-## 0.1.2  
-Fix z-index so transition sits on top of everything
+## License
 
-## 0.1.1
-New helper for macros - Transition.macro(options, showMe)  
-Use new WebAudio API for sound (0.8.2+)  
-Added option to hide transition on other GM broswer windows (default true)
-Added option to end the transition when the GM ends iy (deafult true)
-Refactor to clean up global namespace  
-Refactor sceneID to be part of options object for simplictity
-FVTT 0.8.2+ compatability  
+This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
-## 0.0.9
-Play as Transition from Journal top bar can be hidden in the module settings  
-Set initial volume of the audio file
+## Acknowledgements
 
-## 0.0.8
-0.8 Compatability. Minor fixes and clean up
+Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
-## 0.0.7
-0.7.5 Fix. Pull Request merge to fade out audio.
-  
-  
-Full credit to @WillS for the orgianl idea and developent of Scene Transitions:  
-## 0.0.6
-You can now create and send a transition to all players using a macro. There is now a 'Play as Transition' option on the context menu for Journal Entries and it's sheet header. This takes the content and image from the journal and makes a transition out of it with the default settings.
+## Credit
 
-## 0.0.5
-Background size and positioning is now configurable.
+Thanks to anyone who helps me with this code! I appreciate the user community's feedback on this project!
 
-## 0.0.4
-Fixed some bugs.
-
-## 0.0.3
-Hotfix: Socket emit transition did not have preview mode set.
-
-## 0.0.2
-Removed preview from form window and instead create live preview transition in the background.
-
-## 0.0.1
-Alpha Release
-Click Create Transition on scene context menu. Add text, audio, and background image. Set length to show players and whether you want players to be able to close it.

@@ -1,9 +1,9 @@
 {
-  "name": "final-blow",
-  "title": "Final Blow",
-  "description": "",
-  "version": "1.0.11",
-  "main": "final-blow.js",
+	"name": "scene-transitions",
+	"title": "Scene Transitions",
+	"description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
+	"version": "0.4.0",
+  "main": "scene-transitions.js",
   "scripts": {
     "publish": "gulp publish --update",
     "package": "gulp package",
