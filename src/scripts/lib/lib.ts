@@ -196,3 +196,67 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
 // =============================
 // Module specific function
 // =============================
+
+export function stripQueryStringAndHashFromPath(url) {
+	let myUrl = url;
+	if (!myUrl) {
+		return myUrl;
+	}
+	if (myUrl.includes("?")) {
+		myUrl = myUrl.split("?")[0];
+	}
+	if (myUrl.includes("#")) {
+		myUrl = myUrl.split("#")[0];
+	}
+	return myUrl;
+}
+
+export function retrieveFirstImageFromJournalId(id) {
+	const journalEntry = game.journal?.get(id);
+	let firstImage = undefined;
+	if (!journalEntry) {
+		return firstImage;
+	}
+	// Support old data image
+	// if (journalEntry?.data?.img) {
+	// 	return stripQueryStringAndHashFromPath(journalEntry?.data?.img);
+	// }
+	// Support new image type journal
+	//@ts-ignore
+	if (journalEntry?.pages.size > 0) {
+		//@ts-ignore
+		const sortedArray = journalEntry.pages.contents.sort((a, b) => a.sort - b.sort);
+		for (const journalEntry of sortedArray) {
+			if (journalEntry.type === "image" && journalEntry.src) {
+				firstImage = stripQueryStringAndHashFromPath(journalEntry.src);
+				break;
+			}
+		}
+	}
+	return firstImage;
+}
+
+export function retrieveFirstTextFromJournalId(id) {
+	const journalEntry = game.journal?.get(id);
+	let firstText = undefined;
+	if (!journalEntry) {
+		return firstText;
+	}
+	// Support old data image
+	// if (journalEntry?.data?.img) {
+	// 	return stripQueryStringAndHashFromPath(journalEntry?.data?.img);
+	// }
+	// Support new image type journal
+	//@ts-ignore
+	if (journalEntry?.pages.size > 0) {
+		//@ts-ignore
+		const sortedArray = journalEntry.pages.contents.sort((a, b) => a.sort - b.sort);
+		for (const journalEntry of sortedArray) {
+			if (journalEntry.type === "text" && journalEntry.text?.content) {
+				firstText = journalEntry.text?.content;
+				break;
+			}
+		}
+	}
+	return firstText;
+}

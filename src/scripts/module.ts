@@ -1,58 +1,79 @@
+import { setApi } from "src/main";
 import API from "./api";
 import CONSTANTS from "./constants";
-import type { ActiveEffectManagerLibApi } from "./effects/effect-api";
-import { warn, error, debug, i18nFormat, renderDialogFinalBlow } from "./lib/lib";
-
-export let aemlApi: ActiveEffectManagerLibApi;
+import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId } from "./lib/lib";
+import { SceneTransition } from "./scene-transitions";
+import { registerSocket } from "./socket";
 
 export const initHooks = () => {
 	// warn("Init Hooks processing");
 	// setup all the hooks
+	Hooks.once("socketlib.ready", registerSocket);
+
+	registerSocket();
+
+	// Transition.registerSettings();
+	// Transition.registerSockets();
 };
 
 export const setupHooks = () => {
 	// warn("Setup Hooks processing");
-	//@ts-ignore
-	aemlApi = <ActiveEffectManagerLibApi>game.modules.get("active-effect-manager-lib").api;
-	aemlApi.effectInterface.initialize(CONSTANTS.MODULE_NAME);
+	setApi(API);
 };
 
 export const readyHooks = async () => {
 	// warn("Ready Hooks processing");
-
-	//@ts-ignore
-	// libWrapper.register(CONSTANTS.MODULE_NAME, "CONFIG.Actor.documentClass.prototype._preUpdate", _preUpdateActor, "WRAPPER");
-
-	Hooks.on("preUpdateActor", async (actor, update, options, user) => {
-		const hpUpdate = <number>getProperty(update, "system.attributes.hp.value");
-		if (hpUpdate === undefined) {
-			return;
-		}
-		if (hpUpdate > 0) {
-			return;
-		}
-		if (hpUpdate <= 0) {
-			// await checkAndApply(this, update, options, user);
-			// await zeroHPExpiry(actor, hpUpdate, user);
-			await renderDialogFinalBlow(actor, hpUpdate, user);
-		}
-		return;
+	$("body").on("click", ".play-transition", (e) => {
+		let id = <string>$(e.target).parents(".journal-sheet").attr("id").split("-")[1];
+		let journal = game.journal?.get(id)?.data;
+		const content = retrieveFirstTextFromJournalId(id);
+		const img = retrieveFirstImageFromJournalId(id);
+		let options = {
+			content: content,
+			bgImg: img,
+		};
+		new SceneTransition(false, options).render();
+		game.socket.emit("module.scene-transitions", options);
 	});
 
-	// Hooks.on('renderChatMessage', chatMessageEvent);
+	Hooks.on("closeTransitionForm", (form) => {
+		let activeTransition = form.object;
+		activeTransition.destroy(true);
+		clearInterval(form.interval);
+	});
+
+	/********************
+	 * Adds menu option to Scene Nav and Directory
+	 *******************/
+
+	//Credit to Winks' Everybody Look Here for the code to add menu option to Scene Nav
+	Hooks.on("getSceneNavigationContext", (html, contextOptions) => {
+		contextOptions.push(Transition.addPlayTransitionBtn("sceneId"));
+		contextOptions.push(Transition.addCreateTransitionBtn("sceneId"));
+		contextOptions.push(Transition.addEditTransitionBtn("sceneId"));
+		contextOptions.push(Transition.addDeleteTransitionBtn("sceneId"));
+	});
+
+	Hooks.on("getSceneDirectoryEntryContext", (html, contextOptions) => {
+		contextOptions.push(Transition.addPlayTransitionBtn("documentId"));
+		contextOptions.push(Transition.addCreateTransitionBtn("documentId"));
+		contextOptions.push(Transition.addEditTransitionBtn("documentId"));
+		contextOptions.push(Transition.addDeleteTransitionBtn("documentId"));
+	});
+
+	Hooks.on("getJournalDirectoryEntryContext", (html, contextOptions) => {
+		contextOptions.push(Transition.addPlayTransitionBtnJE("documentId"));
+	});
+
+	Hooks.on("renderJournalSheet", (journal) => {
+		if (
+			game.user.isGM &&
+			$("#" + journal.id + " > header").find(".play-transition").length == 0 &&
+			game.settings.get("scene-transitions", "show-journal-header-transition") == true
+		) {
+			$('<a class="play-transition"><i class="fas fa-play-circle"></i> Play as Transition</a>').insertAfter(
+				"#" + journal.id + " > header > h4"
+			);
+		}
+	});
 };
-
-// ==========================================
-
-// async function _preUpdateActor(wrapped, update, options, user) {
-//   try {
-//     const hpUpdate = <number>getProperty(update, "system.attributes.hp.value");
-//     // await checkAndApply(this, update, options, user);
-//     await zeroHPExpiry(this,  hpUpdate, user);
-//   } catch (err) {
-//     warn("preUpdateActor failed ", err)
-//   }
-//   finally {
-//     return wrapped(update, options, user);
-//   }
-// }

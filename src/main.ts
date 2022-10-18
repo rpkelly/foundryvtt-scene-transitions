@@ -45,20 +45,15 @@ Hooks.once("setup", function () {
 /* ------------------------------------ */
 Hooks.once("ready", async () => {
 	// Do anything once the module is ready
-	// if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
-	//   let word = 'install and activate';
-	//   if (game.modules.get('lib-wrapper')) word = 'activate';
-	//   throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
-	// }
-	// if (!game.modules.get('socketLib')?.active && game.user?.isGM) {
-	//   let word = 'install and activate';
-	//   if (game.modules.get('socketLib')) word = 'activate';
-	//   throw error(`Requires the 'socketLib' module. Please ${word} it.`);
-	// }
-	if (!game.modules.get("active-effect-manager-lib")?.active && game.user?.isGM) {
+	if (!game.modules.get("lib-wrapper")?.active && game.user?.isGM) {
 		let word = "install and activate";
-		if (game.modules.get("active-effect-manager-lib")) word = "activate";
-		throw error(`Requires the 'active-effect-manager-lib' module. Please ${word} it.`);
+		if (game.modules.get("lib-wrapper")) word = "activate";
+		throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
+	}
+	if (!game.modules.get("socketLib")?.active && game.user?.isGM) {
+		let word = "install and activate";
+		if (game.modules.get("socketLib")) word = "activate";
+		throw error(`Requires the 'socketLib' module. Please ${word} it.`);
 	}
 	readyHooks();
 });
@@ -71,7 +66,7 @@ Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
 	registerPackageDebugFlag(CONSTANTS.MODULE_NAME);
 });
 
-export interface FinalBlowModuleData {
+export interface SceneTransitionsModuleData {
 	api: typeof API;
 	socket: any;
 }
@@ -81,7 +76,7 @@ export interface FinalBlowModuleData {
  * @param api to set to game module.
  */
 export function setApi(api: typeof API): void {
-	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as FinalBlowModuleData;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as SceneTransitionsModuleData;
 	data.api = api;
 }
 
@@ -90,7 +85,7 @@ export function setApi(api: typeof API): void {
  * @returns Api from games module.
  */
 export function getApi(): typeof API {
-	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as FinalBlowModuleData;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as SceneTransitionsModuleData;
 	return data.api;
 }
 
@@ -99,7 +94,7 @@ export function getApi(): typeof API {
  * @param socket to set to game module.
  */
 export function setSocket(socket: any): void {
-	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as FinalBlowModuleData;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as SceneTransitionsModuleData;
 	data.socket = socket;
 }
 
@@ -108,6 +103,6 @@ export function setSocket(socket: any): void {
  * @returns Socket from games module.
  */
 export function getSocket() {
-	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as FinalBlowModuleData;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as SceneTransitionsModuleData;
 	return data.socket;
 }

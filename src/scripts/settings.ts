@@ -12,7 +12,6 @@ export const registerSettings = function (): void {
 
 	// =====================================================================
 
-
 	// ========================================================================
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
