@@ -1,7 +1,11 @@
 # Changelog
 
+### 0.4.0-1
+
+- Upgrade for fvtt 10
 
 ### 0.3.0
+
 Support Foundry V9 - thanks pchouzenoux!
 
 ### 0.2.1  

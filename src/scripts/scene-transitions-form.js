@@ -1,15 +1,9 @@
-import CONSTANTS from "./constants";
+import CONSTANTS from "./constants.js";
 
 /**
  * Form controller for editing transitions
  */
 export class TransitionForm extends FormApplication {
-	transition: any;
-	data: any;
-	interval: any;
-	playingAudio: any;
-	_submitting: boolean;
-
 	constructor(object, options) {
 		super(object, options);
 		this.transition = object || {};
@@ -17,21 +11,19 @@ export class TransitionForm extends FormApplication {
 		this.interval = null;
 		// this.editors['content']={options:{}}
 	}
-
 	/**
 	 *
 	 */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			id: "scene-transitions-form",
-			title: "Edit Transition",
+			title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.editTransition`),
 			template: `modules/${CONSTANTS.MODULE_NAME}/templates/transition-form.html`,
 			classes: ["sheet", "scene-transitions-form"],
 			height: 500,
 			width: 436,
 		});
 	}
-
 	/**
 	 * Get data for the triggler form
 	 */
@@ -39,11 +31,9 @@ export class TransitionForm extends FormApplication {
 		let transition = this.transition.options;
 		return transition;
 	}
-
 	updatePreview() {
 		const w = window.innerWidth;
 		const h = window.innerHeight;
-
 		const preview = $("#scene-transitions");
 		preview.find(".scene-transitions-bg").css({
 			backgroundImage: "url(" + this.transition.options.bgImg + ")",
@@ -52,9 +42,7 @@ export class TransitionForm extends FormApplication {
 		});
 		preview.find(".scene-transitions-content").css({ color: this.transition.options.fontColor });
 	}
-
 	// async activateEditor(name, options = <any>{}, initialContent = "") {
-	// 	/*
 	// 	const editor = this.editors[name];
 	// 	if (!editor) throw new Error(`${name} is not a registered editor name!`);
 	// 	options = mergeObject(editor.options, options);
@@ -68,61 +56,23 @@ export class TransitionForm extends FormApplication {
 	// 		mce.on("change", (ev) => (editor.changed = true));
 	// 	});
 	// 	return true;
-	// 	*/
-	// 	const editor = this.editors[name];
-	// 	if (!editor) throw new Error(`${name} is not a registered editor name!`);
-	// 	options = foundry.utils.mergeObject(editor.options, options);
-	// 	// MOD 4535992
-	// 	if(!options.document){
-	// 		options.document = {};
-	// 	}
-	// 	// END MOD 4535992
-	// 	if (!options.fitToSize) options.height = options.target.offsetHeight;
-	// 	if (editor.hasButton) editor.button.style.display = "none";
-	// 	//@ts-ignore
-	// 	const instance =
-	// 		//@ts-ignore
-	// 		(editor.instance =
-	// 		editor.mce =
-	// 			await TextEditor.create(
-	// 				{
-	// 					//@ts-ignore
-	// 					engine: "prosemirror",
-	// 					options
-	// 				}, 
-	// 				//@ts-ignore
-	// 				initialContent || editor.initial)
-	// 			);
-	// 	options.target.closest(".editor")?.classList.add(options.engine ?? "tinymce");
-	// 	editor.changed = false;
-	// 	editor.active = true;
-	// 	/** @deprecated since v10 */
-	// 	if (options.engine !== "prosemirror") {
-	// 		instance.focus();
-	// 		instance.on("change", () => (editor.changed = true));
-	// 	}
-	// 	return instance;
 	// }
-
 	// /**
 	//  * Activate an editor instance present within the form
 	//  * @param {HTMLElement} div  The element which contains the editor
 	//  * @protected
 	//  */
 	// async _activateEditor(div) {
-	// 	/*
 	// 	// Get the editor content div
 	// 	const name = div.getAttribute("data-edit");
 	// 	const button = div.nextElementSibling;
 	// 	const hasButton = button && button.classList.contains("editor-edit");
 	// 	const wrap = div.parentElement.parentElement;
 	// 	const wc = $(div).parents(".window-content")[0];
-
 	// 	// Determine the preferred editor height
 	// 	const heights = [wrap.offsetHeight, wc ? wc.offsetHeight : null];
 	// 	if (div.offsetHeight > 0) heights.push(div.offsetHeight);
 	// 	let height = Math.min(...heights.filter((h) => Number.isFinite(h)));
-
 	// 	// Get initial content
 	// 	//const data = this.object instanceof Entity ? this.object.data : this.object;
 	// 	const data = this.object;
@@ -132,7 +82,6 @@ export class TransitionForm extends FormApplication {
 	// 		height: height,
 	// 		save_onsavecallback: (mce) => this.saveEditor(name),
 	// 	};
-
 	// 	// Add record to editors registry
 	// 	this.editors[name] = {
 	// 		target: name,
@@ -144,75 +93,15 @@ export class TransitionForm extends FormApplication {
 	// 		options: editorOptions,
 	// 		initial: initialContent,
 	// 	};
-
 	// 	// If we are using a toggle button, delay activation until it is clicked
 	// 	// if (hasButton) button.onclick = event => {
 	// 	//   button.style.display = "none";
 	// 	//   await this.activateEditor(name, editorOptions, initialContent);
 	// 	// };
-
 	// 	// Otherwise activate immediately
 	// 	// else await this.activateEditor(name, editorOptions, initialContent);
-
 	// 	return true;
-	// 	*/
-	// 	// Get the editor content div
-	// 	const name = div.dataset.edit;
-	// 	const engine = div.dataset.engine || "tinymce";
-	// 	const collaborate = div.dataset.collaborate === "true";
-	// 	const button = div.previousElementSibling;
-	// 	const hasButton = button && button.classList.contains("editor-edit");
-	// 	const wrap = div.parentElement.parentElement;
-	// 	const wc = div.closest(".window-content");
-
-	// 	// Determine the preferred editor height
-	// 	const heights = [wrap.offsetHeight, wc ? wc.offsetHeight : null];
-	// 	if (div.offsetHeight > 0) heights.push(div.offsetHeight);
-	// 	const height = Math.min(...heights.filter((h) => Number.isFinite(h)));
-
-	// 	// Get initial content
-	// 	const options = {
-	// 		target: div,
-	// 		fieldName: name,
-	// 		save_onsavecallback: () => this.saveEditor(name),
-	// 		height,
-	// 		engine,
-	// 		collaborate,
-	// 	};
-	// 	//@ts-ignore
-	// 	if (engine === "prosemirror") options.plugins = this._configureProseMirrorPlugins(name, { remove: hasButton });
-
-	// 	/**
-	// 	 * Handle legacy data references.
-	// 	 * @deprecated since v10
-	// 	 */
-	// 	const isDocument = this.object instanceof foundry.abstract.Document;
-	// 	//@ts-ignore
-	// 	const data = name?.startsWith("data.") && isDocument ? this.object.data : this.object;
-
-	// 	// Define the editor configuration
-	// 	const editor = (this.editors[name] = {
-	// 		options,
-	// 		target: name,
-	// 		button: button,
-	// 		hasButton: hasButton,
-	// 		mce: null,
-	// 		//@ts-ignore
-	// 		instance: null,
-	// 		active: !hasButton,
-	// 		changed: false,
-	// 		initial: foundry.utils.getProperty(data, name),
-	// 	});
-
-	// 	// Activate the editor immediately, or upon button click
-	// 	const activate = () => {
-	// 		editor.initial = foundry.utils.getProperty(data, name);
-	// 		this.activateEditor(name, {}, editor.initial);
-	// 	};
-	// 	if (hasButton) button.onclick = activate;
-	// 	else activate();
 	// }
-
 	activateListeners(html) {
 		super.activateListeners(html);
 		//this.updatePreview();
@@ -224,7 +113,6 @@ export class TransitionForm extends FormApplication {
 		const fontSizeInput = html.find('input[name="fontSize"]');
 		const textEditor = html.find(".mce-content-body");
 		const volumeSlider = html.find('input[name="volume"]');
-
 		const preview = $("#scene-transitions");
 		bgSizeInput.on("change", (e) => {
 			this.data.bgSize = e.target.value;
@@ -258,7 +146,6 @@ export class TransitionForm extends FormApplication {
 				this.playingAudio.gain.value = e.target.value;
 			}
 		});
-
 		// this._activateEditor(html.find(".editor-content")[0]).then(async () => {
 		// 	//@ts-ignore
 		// 	await this.activateEditor("content", this.editors.content.options, this.editors.content.initial);
@@ -275,7 +162,6 @@ export class TransitionForm extends FormApplication {
 		// 	});
 		// });
 	}
-
 	//@ts-ignore
 	close() {
 		// if (SceneTransition.hasNewAudioAPI) {
@@ -283,35 +169,28 @@ export class TransitionForm extends FormApplication {
 		// }
 		super.close();
 	}
-
 	//@ts-ignore
 	async _onSubmit(event, { updateData = null, preventClose = false, preventRender = false } = {}) {
 		//@ts-ignore
 		const states = this.constructor.RENDER_STATES;
 		if (this._state === states.NONE || !this.options.editable || this._submitting) return false;
 		this._submitting = true;
-
 		// if (SceneTransition.hasNewAudioAPI) {
 		this.transition.playingAudio.stop();
 		// }
-
 		// Acquire and validate Form Data
 		const form = this.element.find("form").first()[0];
-
 		// Flag if the application is staged to close to prevent callback renders
 		const priorState = this._state;
 		if (this.options.closeOnSubmit) this._state = states.CLOSING;
 		if (preventRender && this._state !== states.CLOSING) this._state = states.RENDERING;
-
 		// Trigger the object update
 		const formData = this._getSubmitData(updateData);
-
 		this.transition.updateData(formData);
-		const scene = <Scene>game.scenes?.get(this.transition.sceneID);
+		const scene = game.scenes?.get(this.transition.sceneID);
 		if (this.transition.sceneID != false) {
 			scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
 		}
-
 		this._submitting = false;
 		this._state = priorState;
 		if (this.options.closeOnSubmit && !preventClose) {
@@ -320,11 +199,9 @@ export class TransitionForm extends FormApplication {
 		}
 		return formData;
 	}
-
 	_onChangeColorPicker(event) {
 		const input = event.target;
 		const form = input.form;
-
 		form[input.dataset.edit].value = input.value;
 		if ($(input).attr("data-edit") == "bgColor") {
 			this.data.bgColor = event.target.value;
@@ -333,7 +210,6 @@ export class TransitionForm extends FormApplication {
 			$("#scene-transitions").find(".scene-transitions-content").css("color", event.target.value);
 		}
 	}
-
 	async _updateObject(event, formData) {
 		return true;
 	}

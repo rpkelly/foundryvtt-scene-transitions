@@ -1,7 +1,6 @@
-import CONSTANTS from "./constants";
-import { dialogWarning, i18n, warn } from "./lib/lib";
-
-export const registerSettings = function (): void {
+import CONSTANTS from "./constants.js";
+import "./lib/lib.js";
+export const registerSettings = function () {
 	game.settings.registerMenu(CONSTANTS.MODULE_NAME, "resetAllSettings", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.reset.hint`,
@@ -9,7 +8,6 @@ export const registerSettings = function (): void {
 		type: ResetSettingsDialog,
 		restricted: true,
 	});
-
 	// =====================================================================
 	game.settings.register(CONSTANTS.MODULE_NAME, "show-journal-header-transition", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.show-journal-header-transition.name`,
@@ -20,7 +18,6 @@ export const registerSettings = function (): void {
 		default: true,
 	});
 	// ========================================================================
-
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.debug.hint`,
@@ -29,18 +26,15 @@ export const registerSettings = function (): void {
 		default: false,
 		type: Boolean,
 	});
-
 	const settings = defaultSettings();
 	for (const [name, data] of Object.entries(settings)) {
-		game.settings.register(CONSTANTS.MODULE_NAME, name, <any>data);
+		game.settings.register(CONSTANTS.MODULE_NAME, name, data);
 	}
-
 	// for (const [name, data] of Object.entries(otherSettings)) {
 	//     game.settings.register(CONSTANTS.MODULE_NAME, name, data);
 	// }
 };
-
-class ResetSettingsDialog extends FormApplication<FormApplicationOptions, object, any> {
+class ResetSettingsDialog extends FormApplication {
 	constructor(...args) {
 		//@ts-ignore
 		super(...args);
@@ -68,12 +62,10 @@ class ResetSettingsDialog extends FormApplication<FormApplicationOptions, object
 			default: "cancel",
 		});
 	}
-
-	async _updateObject(event: Event, formData?: object): Promise<any> {
+	async _updateObject(event, formData) {
 		// do nothing
 	}
 }
-
 async function applyDefaultSettings() {
 	const settings = defaultSettings(true);
 	// for (const [settingName, settingValue] of Object.entries(settings)) {
@@ -85,13 +77,11 @@ async function applyDefaultSettings() {
 		await game.settings.set(CONSTANTS.MODULE_NAME, settingName, settingValue.default);
 	}
 }
-
 function defaultSettings(apply = false) {
 	return {
 		//
 	};
 }
-
 function otherSettings(apply = false) {
 	return {
 		"show-journal-header-transition": {

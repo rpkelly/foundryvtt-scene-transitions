@@ -1,7 +1,5 @@
-import type { ActorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs";
-import { error, SceneTransitionOptions } from "./lib/lib";
-import { SceneTransition } from "./scene-transitions";
-
+import { error } from "./lib/lib.js";
+import { SceneTransition } from "./scene-transitions.js";
 const API = {
 	executeActionArr(...inAttributes) {
 		if (!Array.isArray(inAttributes)) {
@@ -10,14 +8,12 @@ const API = {
 		const [options] = inAttributes;
 		this.executeAction(options);
 	},
-
-	executeAction(data: SceneTransitionOptions) {
+	executeAction(data) {
 		if (data.action) {
 			switch (data.action) {
 				case "end":
 					SceneTransition.activeTransition.destroy();
 					break;
-
 				default:
 					break;
 			}
@@ -34,7 +30,6 @@ const API = {
 			// }
 		}
 	},
-
 	macro(...inAttributes) {
 		if (!Array.isArray(inAttributes)) {
 			throw error("executeActionArr | inAttributes must be of type array");
@@ -43,5 +38,4 @@ const API = {
 		SceneTransition.macro(options, showMe);
 	},
 };
-
 export default API;

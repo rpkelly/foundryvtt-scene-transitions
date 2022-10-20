@@ -6,5 +6,10 @@
 	"scene-transitions.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
 	"scene-transitions.setting.debug.name": "Enable debugging",
 	"scene-transitions.setting.debug.label": "Prints debug messages to the console",
-	"scene-transitions.setting.debug.hint": " "
+	"scene-transitions.setting.debug.hint": " ",
+
+	"scene-transitions.label.editTransition": "Edit Transition",
+	"scene-transitions.label.deleteTransition": "Delete Transition",
+	"scene-transitions.label.playTransition": "Play Transition",
+	"scene-transitions.label.playTransitionFromJournal": "Play Transition From Journal"
 }
