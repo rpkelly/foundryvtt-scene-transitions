@@ -1,9 +1,13 @@
 import { setApi } from "../main";
 import API from "./api";
 import CONSTANTS from "./constants";
-import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
+import {
+	retrieveFirstImageFromJournalId,
+	retrieveFirstTextFromJournalId,
+	SceneTransitionOptions,
+	warn,
+} from "./lib/lib";
 import { SceneTransition } from "./scene-transitions";
-import { SceneTransitionOptions } from "./scene-transitions-model";
 import { registerSocket, sceneTransitionsSocket } from "./socket";
 
 export const initHooks = () => {
@@ -76,7 +80,7 @@ export const readyHooks = async () => {
 		if (
 			game.user?.isGM &&
 			$("#" + journal.id + " > header").find(".play-transition").length == 0 &&
-			game.settings.get("scene-transitions", "show-journal-header-transition") == true
+			game.settings.get(CONSTANTS.MODULE_NAME, "show-journal-header-transition") == true
 		) {
 			$('<a class="play-transition"><i class="fas fa-play-circle"></i> Play as Transition</a>').insertAfter(
 				"#" + journal.id + " > header > h4"

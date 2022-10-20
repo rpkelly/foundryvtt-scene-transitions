@@ -1,7 +1,6 @@
 import type { ActorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs";
-import { error } from "./lib/lib";
+import { error, SceneTransitionOptions } from "./lib/lib";
 import { SceneTransition } from "./scene-transitions";
-import type { SceneTransitionOptions } from "./scene-transitions-model";
 
 const API = {
 	executeActionArr(...inAttributes) {
@@ -27,13 +26,21 @@ const API = {
 			let options = data;
 			// TODO did i need this ??
 			// if (!options.users || options.users.includes(<string>game.user?.id)) {
-				options = {
-					...options,
-					fromSocket: true,
-				};
-				new SceneTransition(false, options, undefined).render();
+			options = {
+				...options,
+				fromSocket: true,
+			};
+			new SceneTransition(false, options, undefined).render();
 			// }
 		}
+	},
+
+	macro(...inAttributes) {
+		if (!Array.isArray(inAttributes)) {
+			throw error("executeActionArr | inAttributes must be of type array");
+		}
+		const [options, showMe] = inAttributes;
+		SceneTransition.macro(options, showMe);
 	},
 };
 

@@ -53,7 +53,7 @@ This module uses the [socketLib](https://github.com/manuelVo/foundryvtt-socketli
 /**
  * Transition.macro(options, showMe)
  */
-game.modules.get('scene-transitions').api.executeAction({
+game.modules.get('scene-transitions').api.macro({
 	sceneID: false,
 	content:"TEST MACRO",
 	fontColor:'#ffffff',

@@ -5,9 +5,14 @@
  *************************/
 
 import CONSTANTS from "./constants";
-import { info, retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, warn } from "./lib/lib";
+import {
+	info,
+	retrieveFirstImageFromJournalId,
+	retrieveFirstTextFromJournalId,
+	SceneTransitionOptions,
+	warn,
+} from "./lib/lib";
 import { TransitionForm } from "./scene-transitions-form";
-import { SceneTransitionOptions } from "./scene-transitions-model";
 import { sceneTransitionsSocket } from "./socket";
 
 export class SceneTransition {

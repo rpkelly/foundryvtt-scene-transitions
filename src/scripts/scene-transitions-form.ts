@@ -53,68 +53,165 @@ export class TransitionForm extends FormApplication {
 		preview.find(".scene-transitions-content").css({ color: this.transition.options.fontColor });
 	}
 
-	async activateEditor(name, options = <any>{}, initialContent = "") {
-		const editor = this.editors[name];
-		if (!editor) throw new Error(`${name} is not a registered editor name!`);
-		options = mergeObject(editor.options, options);
-		options.height = options.target.offsetHeight;
-		options.async = false;
-		await TextEditor.create(options, initialContent || editor.initial).then((mce) => {
-			editor.mce = mce;
-			editor.changed = false;
-			editor.active = true;
-			//mce.focus();
-			mce.on("change", (ev) => (editor.changed = true));
-		});
-		return true;
-	}
+	// async activateEditor(name, options = <any>{}, initialContent = "") {
+	// 	/*
+	// 	const editor = this.editors[name];
+	// 	if (!editor) throw new Error(`${name} is not a registered editor name!`);
+	// 	options = mergeObject(editor.options, options);
+	// 	options.height = options.target.offsetHeight;
+	// 	options.async = false;
+	// 	await TextEditor.create(options, initialContent || editor.initial).then((mce) => {
+	// 		editor.mce = mce;
+	// 		editor.changed = false;
+	// 		editor.active = true;
+	// 		//mce.focus();
+	// 		mce.on("change", (ev) => (editor.changed = true));
+	// 	});
+	// 	return true;
+	// 	*/
+	// 	const editor = this.editors[name];
+	// 	if (!editor) throw new Error(`${name} is not a registered editor name!`);
+	// 	options = foundry.utils.mergeObject(editor.options, options);
+	// 	// MOD 4535992
+	// 	if(!options.document){
+	// 		options.document = {};
+	// 	}
+	// 	// END MOD 4535992
+	// 	if (!options.fitToSize) options.height = options.target.offsetHeight;
+	// 	if (editor.hasButton) editor.button.style.display = "none";
+	// 	//@ts-ignore
+	// 	const instance =
+	// 		//@ts-ignore
+	// 		(editor.instance =
+	// 		editor.mce =
+	// 			await TextEditor.create(
+	// 				{
+	// 					//@ts-ignore
+	// 					engine: "prosemirror",
+	// 					options
+	// 				}, 
+	// 				//@ts-ignore
+	// 				initialContent || editor.initial)
+	// 			);
+	// 	options.target.closest(".editor")?.classList.add(options.engine ?? "tinymce");
+	// 	editor.changed = false;
+	// 	editor.active = true;
+	// 	/** @deprecated since v10 */
+	// 	if (options.engine !== "prosemirror") {
+	// 		instance.focus();
+	// 		instance.on("change", () => (editor.changed = true));
+	// 	}
+	// 	return instance;
+	// }
 
-	async _activateEditor(div) {
-		// Get the editor content div
-		const name = div.getAttribute("data-edit");
-		const button = div.nextElementSibling;
-		const hasButton = button && button.classList.contains("editor-edit");
-		const wrap = div.parentElement.parentElement;
-		const wc = $(div).parents(".window-content")[0];
+	// /**
+	//  * Activate an editor instance present within the form
+	//  * @param {HTMLElement} div  The element which contains the editor
+	//  * @protected
+	//  */
+	// async _activateEditor(div) {
+	// 	/*
+	// 	// Get the editor content div
+	// 	const name = div.getAttribute("data-edit");
+	// 	const button = div.nextElementSibling;
+	// 	const hasButton = button && button.classList.contains("editor-edit");
+	// 	const wrap = div.parentElement.parentElement;
+	// 	const wc = $(div).parents(".window-content")[0];
 
-		// Determine the preferred editor height
-		const heights = [wrap.offsetHeight, wc ? wc.offsetHeight : null];
-		if (div.offsetHeight > 0) heights.push(div.offsetHeight);
-		let height = Math.min(...heights.filter((h) => Number.isFinite(h)));
+	// 	// Determine the preferred editor height
+	// 	const heights = [wrap.offsetHeight, wc ? wc.offsetHeight : null];
+	// 	if (div.offsetHeight > 0) heights.push(div.offsetHeight);
+	// 	let height = Math.min(...heights.filter((h) => Number.isFinite(h)));
 
-		// Get initial content
-		//const data = this.object instanceof Entity ? this.object.data : this.object;
-		const data = this.object;
-		const initialContent = getProperty(data, name);
-		const editorOptions = {
-			target: div,
-			height: height,
-			save_onsavecallback: (mce) => this.saveEditor(name),
-		};
+	// 	// Get initial content
+	// 	//const data = this.object instanceof Entity ? this.object.data : this.object;
+	// 	const data = this.object;
+	// 	const initialContent = getProperty(data, name);
+	// 	const editorOptions = {
+	// 		target: div,
+	// 		height: height,
+	// 		save_onsavecallback: (mce) => this.saveEditor(name),
+	// 	};
 
-		// Add record to editors registry
-		this.editors[name] = {
-			target: name,
-			button: button,
-			hasButton: hasButton,
-			mce: null,
-			active: !hasButton,
-			changed: false,
-			options: editorOptions,
-			initial: initialContent,
-		};
+	// 	// Add record to editors registry
+	// 	this.editors[name] = {
+	// 		target: name,
+	// 		button: button,
+	// 		hasButton: hasButton,
+	// 		mce: null,
+	// 		active: !hasButton,
+	// 		changed: false,
+	// 		options: editorOptions,
+	// 		initial: initialContent,
+	// 	};
 
-		// If we are using a toggle button, delay activation until it is clicked
-		// if (hasButton) button.onclick = event => {
-		//   button.style.display = "none";
-		//   await this.activateEditor(name, editorOptions, initialContent);
-		// };
+	// 	// If we are using a toggle button, delay activation until it is clicked
+	// 	// if (hasButton) button.onclick = event => {
+	// 	//   button.style.display = "none";
+	// 	//   await this.activateEditor(name, editorOptions, initialContent);
+	// 	// };
 
-		// Otherwise activate immediately
-		// else await this.activateEditor(name, editorOptions, initialContent);
+	// 	// Otherwise activate immediately
+	// 	// else await this.activateEditor(name, editorOptions, initialContent);
 
-		return true;
-	}
+	// 	return true;
+	// 	*/
+	// 	// Get the editor content div
+	// 	const name = div.dataset.edit;
+	// 	const engine = div.dataset.engine || "tinymce";
+	// 	const collaborate = div.dataset.collaborate === "true";
+	// 	const button = div.previousElementSibling;
+	// 	const hasButton = button && button.classList.contains("editor-edit");
+	// 	const wrap = div.parentElement.parentElement;
+	// 	const wc = div.closest(".window-content");
+
+	// 	// Determine the preferred editor height
+	// 	const heights = [wrap.offsetHeight, wc ? wc.offsetHeight : null];
+	// 	if (div.offsetHeight > 0) heights.push(div.offsetHeight);
+	// 	const height = Math.min(...heights.filter((h) => Number.isFinite(h)));
+
+	// 	// Get initial content
+	// 	const options = {
+	// 		target: div,
+	// 		fieldName: name,
+	// 		save_onsavecallback: () => this.saveEditor(name),
+	// 		height,
+	// 		engine,
+	// 		collaborate,
+	// 	};
+	// 	//@ts-ignore
+	// 	if (engine === "prosemirror") options.plugins = this._configureProseMirrorPlugins(name, { remove: hasButton });
+
+	// 	/**
+	// 	 * Handle legacy data references.
+	// 	 * @deprecated since v10
+	// 	 */
+	// 	const isDocument = this.object instanceof foundry.abstract.Document;
+	// 	//@ts-ignore
+	// 	const data = name?.startsWith("data.") && isDocument ? this.object.data : this.object;
+
+	// 	// Define the editor configuration
+	// 	const editor = (this.editors[name] = {
+	// 		options,
+	// 		target: name,
+	// 		button: button,
+	// 		hasButton: hasButton,
+	// 		mce: null,
+	// 		//@ts-ignore
+	// 		instance: null,
+	// 		active: !hasButton,
+	// 		changed: false,
+	// 		initial: foundry.utils.getProperty(data, name),
+	// 	});
+
+	// 	// Activate the editor immediately, or upon button click
+	// 	const activate = () => {
+	// 		editor.initial = foundry.utils.getProperty(data, name);
+	// 		this.activateEditor(name, {}, editor.initial);
+	// 	};
+	// 	if (hasButton) button.onclick = activate;
+	// 	else activate();
+	// }
 
 	activateListeners(html) {
 		super.activateListeners(html);
@@ -162,21 +259,21 @@ export class TransitionForm extends FormApplication {
 			}
 		});
 
-		this._activateEditor(html.find(".editor-content")[0]).then(async () => {
-			//@ts-ignore
-			await this.activateEditor("content", this.editors.content.options, this.editors.content.initial);
-			//@ts-ignore
-			this.editors.content.mce.on("focus", (e) => {
-				this.interval = setInterval(() => {
-					//@ts-ignore
-					preview.find(".scene-transitions-content").html(this.editors.content.mce.getBody().innerHTML);
-				}, 500);
-			});
-			//@ts-ignore
-			this.editors.content.mce.on("blur", (e) => {
-				clearInterval(this.interval);
-			});
-		});
+		// this._activateEditor(html.find(".editor-content")[0]).then(async () => {
+		// 	//@ts-ignore
+		// 	await this.activateEditor("content", this.editors.content.options, this.editors.content.initial);
+		// 	//@ts-ignore
+		// 	this.editors.content.mce.on("focus", (e) => {
+		// 		this.interval = setInterval(() => {
+		// 			//@ts-ignore
+		// 			preview.find(".scene-transitions-content").html(this.editors.content.mce.getBody().innerHTML);
+		// 		}, 500);
+		// 	});
+		// 	//@ts-ignore
+		// 	this.editors.content.mce.on("blur", (e) => {
+		// 		clearInterval(this.interval);
+		// 	});
+		// });
 	}
 
 	//@ts-ignore
