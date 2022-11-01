@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.4.0-1
+### 0.4.0-1-2
 
 - Upgrade for fvtt 10
 
