@@ -58,7 +58,7 @@ game.modules.get('scene-transitions').api.macro({
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
 	fontSize:'28px',
-	bgImg:'', // pass any relative or absolute image url here.
+	bgImg:'', // pass any relative or absolute image or video url here.
 	bgPos:'center center',
 	bgSize:'cover',
 	bgColor:'#333333',
