@@ -5,6 +5,7 @@
  *************************/
 import CONSTANTS from "./constants.js";
 import {
+	getVideoType,
 	info,
 	isVideo,
 	retrieveFirstImageFromJournalId,
@@ -214,11 +215,11 @@ export class SceneTransition {
 			return;
 		}
 
-        // https://www.youtube.com/watch?v=05ZHUuQVvJM
-        // https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
-        if(isVideo(this.options.bgImg)) {
-            $("body").append(
-                `<div id="scene-transitions" class="scene-transitions">
+		// https://www.youtube.com/watch?v=05ZHUuQVvJM
+		// https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
+		if (isVideo(this.options.bgImg)) {
+			$("body").append(
+				`<div id="scene-transitions" class="scene-transitions">
                     <div class="color-overlay"></div>
                     <video class="scene-transitions-bg" autoplay loop muted>
                         <source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
@@ -226,49 +227,49 @@ export class SceneTransition {
                     <div class="scene-transitions-content">
                     </div>
                 </div>`
-            );
+			);
 
-            let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-            this.modal = $("#scene-transitions");
-            this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+			this.modal = $("#scene-transitions");
+			this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
 
-            this.modal.find(".scene-transitions-bg").css({
-                position: absolute,
-                top: 0,
-                left: 0,
-                width: "100%"
-            });
+			this.modal.find(".scene-transitions-bg").css({
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+			});
 
-            this.modal.find(".color-overlay").css({
-                opacity: this.options.bgOpacity,
-                backgroundColor: this.options.bgColor,
-                zIndex: zIndex,
-                position: absolute,
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100vh",
-            });
-        } else {
-            $("body").append(
-                `<div id="scene-transitions" class="scene-transitions">
+			this.modal.find(".color-overlay").css({
+				opacity: this.options.bgOpacity,
+				backgroundColor: this.options.bgColor,
+				zIndex: zIndex,
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100vh",
+			});
+		} else {
+			$("body").append(
+				`<div id="scene-transitions" class="scene-transitions">
                     <div class="scene-transitions-bg">
                     </div>
                     <div class="scene-transitions-content">
                     </div>
                 </div>`
-            );
+			);
 
-            let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-            this.modal = $("#scene-transitions");
-            this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
-            this.modal.find(".scene-transitions-bg").css({
-                backgroundImage: "url(" + this.options.bgImg + ")",
-                opacity: this.options.bgOpacity,
-                backgroundSize: this.options.bgSize,
-                backgroundPosition: this.options.bgPos,
-            });
-        }
+			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+			this.modal = $("#scene-transitions");
+			this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+			this.modal.find(".scene-transitions-bg").css({
+				backgroundImage: "url(" + this.options.bgImg + ")",
+				opacity: this.options.bgOpacity,
+				backgroundSize: this.options.bgSize,
+				backgroundPosition: this.options.bgPos,
+			});
+		}
 
 		this.modal
 			.find(".scene-transitions-content")

@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.3
+
+- Added video support
+
 ### 0.4.0-1-2
 
 - Upgrade for fvtt 10
