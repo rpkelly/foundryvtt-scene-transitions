@@ -6,6 +6,7 @@
 import CONSTANTS from "./constants.js";
 import {
 	info,
+	isVideo,
 	retrieveFirstImageFromJournalId,
 	retrieveFirstTextFromJournalId,
 	SceneTransitionOptions,
@@ -212,24 +213,63 @@ export class SceneTransition {
 		if (this.options.gmHide && this.options.fromSocket && game.user?.isGM) {
 			return;
 		}
-		// if (SceneTransition.hasNewAudioAPI) {
-		$("body").append(
-			'<div id="scene-transitions" class="scene-transitions"><div class="scene-transitions-bg"></div><div class="scene-transitions-content"></div></div>'
-		);
-		// } else {
-		// 	$("body").append(
-		// 		'<div id="scene-transitions" class="scene-transitions"><div class="scene-transitions-bg"></div><div class="scene-transitions-content"></div><audio><source src=""></audio></div>'
-		// 	);
-		// }
-		let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-		this.modal = $("#scene-transitions");
-		this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
-		this.modal.find(".scene-transitions-bg").css({
-			backgroundImage: "url(" + this.options.bgImg + ")",
-			opacity: this.options.bgOpacity,
-			backgroundSize: this.options.bgSize,
-			backgroundPosition: this.options.bgPos,
-		});
+
+        // https://www.youtube.com/watch?v=05ZHUuQVvJM
+        // https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
+        if(isVideo(this.options.bgImg)) {
+            $("body").append(
+                `<div id="scene-transitions" class="scene-transitions">
+                    <div class="color-overlay"></div>
+                    <video class="scene-transitions-bg" autoplay loop muted>
+                        <source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
+                    </video>
+                    <div class="scene-transitions-content">
+                    </div>
+                </div>`
+            );
+
+            let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+            this.modal = $("#scene-transitions");
+            this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+
+            this.modal.find(".scene-transitions-bg").css({
+                position: absolute,
+                top: 0,
+                left: 0,
+                width: "100%"
+            });
+
+            this.modal.find(".color-overlay").css({
+                opacity: this.options.bgOpacity,
+                backgroundColor: this.options.bgColor,
+                zIndex: zIndex,
+                position: absolute,
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100vh",
+            });
+        } else {
+            $("body").append(
+                `<div id="scene-transitions" class="scene-transitions">
+                    <div class="scene-transitions-bg">
+                    </div>
+                    <div class="scene-transitions-content">
+                    </div>
+                </div>`
+            );
+
+            let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+            this.modal = $("#scene-transitions");
+            this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+            this.modal.find(".scene-transitions-bg").css({
+                backgroundImage: "url(" + this.options.bgImg + ")",
+                opacity: this.options.bgOpacity,
+                backgroundSize: this.options.bgSize,
+                backgroundPosition: this.options.bgPos,
+            });
+        }
+
 		this.modal
 			.find(".scene-transitions-content")
 			.css({ color: this.options.fontColor, fontSize: this.options.fontSize })
@@ -241,7 +281,7 @@ export class SceneTransition {
 				info("Audio playback locked, cannot play " + this.options.audio);
 			} else {
 				let thisTransition = this;
-				AudioHelper.play({ src: this.options.audio, volume: this.options.volume, loop: false }, false).then(
+				AudioHelper.play({ src: this.options.audio, volume: this.options.volume, loop: true }, false).then(
 					function (audio) {
 						audio.on("start", (a) => {});
 						audio.on("stop", (a) => {});

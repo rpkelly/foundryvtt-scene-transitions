@@ -265,3 +265,19 @@ export class SceneTransitionOptions {
 		this.users = options.users || [];
 	}
 }
+
+export function isVideo(imgSrc) {
+    const re = /(?:\.([^.]+))?$/;
+    const ext = re.exec(imgSrc)?.[1];
+    return ext === "webm" || ext === "mp4";
+}
+
+export function getVideoType(imgSrc) {
+   if(ext.endsWith("webm")) {
+    return "video/webm";
+   }
+   else if(ext.endsWith("mp4")) {
+    return "video/mp4";
+   }
+   return "video/mp4";
+}
