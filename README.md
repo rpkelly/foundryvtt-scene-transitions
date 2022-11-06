@@ -18,6 +18,12 @@
 
 Allows GM to make simple transitions to show players before navigating to new screen. Can be used for narrative effect. Can now be used with macros to create transitionless Transitions. And journal entries can now be used to generate a Transition.
 
+![img1](/wiki/img/scene_transations_video.gif)
+
+![img2](/wiki/img/preview.png)
+
+![img3](/wiki/img/preview2.png)
+
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 
@@ -45,6 +51,14 @@ This module uses the [socketLib](https://github.com/manuelVo/foundryvtt-socketli
 ## Known Issue\Limitation
 
 ## Feature
+
+Use the context menu on the navigator or directory to 'Create Transition'
+
+Add background image, text, and configure to your liking and save. When you want to play it, bring up context menu and press 'Play Transition' 
+
+Transition will play and begin preloading scene. Scene will activate underneath transition. 
+
+Use the textbox sourcecode editor to add custom html and override default css.
 
 
 ## Api
