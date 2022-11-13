@@ -55,6 +55,8 @@ export class SceneTransition {
 			fontSize: "28px",
 			bgImg: "",
 			bgPos: "center center",
+			bgLoop: true,
+			bgMuted: true,
 			bgSize: "cover",
 			bgColor: "#000000",
 			bgOpacity: 0.7,
@@ -62,6 +64,7 @@ export class SceneTransition {
 			delay: 4000,
 			fadeOut: 1000,
 			volume: 1.0,
+			audioLoop: true,
 			skippable: true,
 			gmEndAll: true,
 			showUI: false,
@@ -221,7 +224,10 @@ export class SceneTransition {
 			$("body").append(
 				`<div id="scene-transitions" class="scene-transitions">
                     <div class="color-overlay"></div>
-                    <video class="scene-transitions-bg" autoplay loop muted>
+                    <video class="scene-transitions-bg" 
+						autoplay 
+						${this.options.bgLoop ? "loop" : ""} 
+						${this.options.bgMuted ? "muted" : ""}>
                         <source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
                     </video>
                     <div class="scene-transitions-content">
@@ -276,29 +282,24 @@ export class SceneTransition {
 			.css({ color: this.options.fontColor, fontSize: this.options.fontSize })
 			.html(this.options.content);
 		if (this.options.audio) {
-			// if (SceneTransition.hasNewAudioAPI) {
-			// 0.8.1+
 			if (game.audio.locked) {
 				info("Audio playback locked, cannot play " + this.options.audio);
 			} else {
 				let thisTransition = this;
-				AudioHelper.play({ src: this.options.audio, volume: this.options.volume, loop: true }, false).then(
-					function (audio) {
-						audio.on("start", (a) => {});
-						audio.on("stop", (a) => {});
-						audio.on("end", (a) => {});
-						thisTransition.playingAudio = audio; // a ref for fading later
-					}
-				);
+				AudioHelper.play(
+					{
+						src: this.options.audio,
+						volume: this.options.volume,
+						loop: String(this.options.audioLoop) === "true" ? true : false,
+					},
+					false
+				).then(function (audio) {
+					audio.on("start", (a) => {});
+					audio.on("stop", (a) => {});
+					audio.on("end", (a) => {});
+					thisTransition.playingAudio = audio; // a ref for fading later
+				});
 			}
-			// } else {
-			// 	// 0.7.9
-			// 	this.audio = <any>this.modal.find("audio")[0];
-			// 	this.modal.find("audio").attr("src", this.options.audio);
-			// 	this.audio.load();
-			// 	this.audio.volume = this.options.volume.toFixed(1);
-			// 	this.audio.play();
-			// }
 		}
 		this.modal.fadeIn(this.options.fadeIn, () => {
 			if (game.user?.isGM && !this.preview && this.sceneID) {
@@ -331,19 +332,11 @@ export class SceneTransition {
 		this.destroying = true;
 		let time = instant ? 0 : this.options.fadeOut;
 		clearTimeout(this.timeout);
-		// if (SceneTransition.hasNewAudioAPI) {
+
 		if (this.playingAudio?.playing) {
 			this.fadeAudio(this.playingAudio, time);
 		}
-		// } else {
-		// 	if (this.audio !== null) {
-		// 		this.fadeAudio(this.audio, time);
-		// 	}
-		// 	this.modal?.fadeOut(time, () => {
-		// 		this.modal?.remove();
-		// 		this.modal = null;
-		// 	});
-		// }
+
 		this.modal?.fadeOut(time, () => {
 			this.modal?.remove();
 			this.modal = null;
@@ -364,8 +357,6 @@ export class SceneTransition {
 		return retrieveFirstImageFromJournalId(this.journal?.id);
 	}
 	fadeAudio(audio, time) {
-		// if (SceneTransition.hasNewAudioAPI) {
-		// 0.8.1+
 		if (!audio.playing) {
 			return;
 		}
@@ -387,25 +378,6 @@ export class SceneTransition {
 		};
 		let audioFadeTimer = setInterval(fade, 50);
 		fade();
-		// } else {
-		// 	// 0.7.9
-		// 	if (time == 0) return;
-		// 	if (audio.volume) {
-		// 		let volume = audio.volume;
-		// 		let targetVolume = 0;
-		// 		let speed = (volume / time) * 100;
-		// 		audio.volume = volume;
-		// 		let fade = function () {
-		// 			volume -= speed;
-		// 			audio.volume = volume.toFixed(1);
-		// 			if (volume.toFixed(1) <= targetVolume) {
-		// 				clearInterval(audioFadeTimer);
-		// 			}
-		// 		};
-		// 		fade();
-		// 		let audioFadeTimer = setInterval(fade, 100);
-		// 	}
-		// }
 	}
 }
 SceneTransition.activeTransition = new SceneTransition(undefined, undefined, undefined);

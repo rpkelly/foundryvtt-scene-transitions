@@ -110,9 +110,12 @@ export class TransitionForm extends FormApplication {
 		const bgOpacityInput = html.find('input[name="bgOpacity"]');
 		const bgSizeInput = html.find('input[name="bgSize"]');
 		const bgPosInput = html.find('input[name="bgPos"]');
+		const bgLoopInput = html.find('input[name="bgLoop"]');
+		const bgMutedInput = html.find('input[name="bgMuted"]');
 		const fontSizeInput = html.find('input[name="fontSize"]');
 		const textEditor = html.find(".mce-content-body");
 		const volumeSlider = html.find('input[name="volume"]');
+		const audioLoopInput = html.find('input[name="audioLoop"]');
 		const preview = $("#scene-transitions");
 		bgSizeInput.on("change", (e) => {
 			this.data.bgSize = e.target.value;

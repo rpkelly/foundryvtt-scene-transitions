@@ -222,33 +222,38 @@ export function retrieveFirstTextFromJournalId(id) {
 }
 export class SceneTransitionOptions {
 	constructor(options) {
-		this.action = "";
-		this.sceneID = "";
-		this.gmHide = true;
-		this.fontColor = "#777777";
-		this.fontSize = "28px";
-		this.bgImg = "";
-		this.bgPos = "center center";
-		this.bgSize = "cover";
-		this.bgColor = "#000000";
-		this.bgOpacity = 0.7;
-		this.fadeIn = 400;
-		this.delay = 4000;
-		this.fadeOut = 1000;
-		this.volume = 1.0;
-		this.skippable = true;
-		this.gmEndAll = true;
-		this.showUI = false;
-		this.content = "";
-		this.fromSocket = false;
+		// this.action = "";
+		// this.sceneID = "";
+		// this.gmHide = true;
+		// this.fontColor = "#777777";
+		// this.fontSize = "28px";
+		// this.bgImg = "";
+		// this.bgPos = "center center";
+		// this.bgLoop = true;
+		// this.bgMuted = true;
+		// this.bgSize = "cover";
+		// this.bgColor = "#000000";
+		// this.bgOpacity = 0.7;
+		// this.fadeIn = 400;
+		// this.delay = 4000;
+		// this.fadeOut = 1000;
+		// this.volume = 1.0;
+		// this.audioLoop = true;
+		// this.skippable = true;
+		// this.gmEndAll = true;
+		// this.showUI = false;
+		// this.content = "";
+		// this.fromSocket = false;
 		this.users = [];
 		this.action = options.action || "";
 		this.sceneID = options.sceneID || "";
-		this.gmHide = options.gmHide || true;
+		this.gmHide = isBoolean(options.gmHide) ? options.gmHide : true;
 		this.fontColor = options.fontColor || "#777777";
 		this.fontSize = options.fontSize || "28px";
 		this.bgImg = options.bgImg || "";
 		this.bgPos = options.bgPos || "center center";
+		this.bgLoop = isBoolean(options.bgLoop) ? options.bgLoop : true;
+		this.bgMuted = isBoolean(options.bgMuted) ? options.bgMuted : true;
 		this.bgSize = options.bgSize || "cover";
 		this.bgColor = options.bgColor || "#000000";
 		this.bgOpacity = options.bgOpacity || 0.7;
@@ -256,13 +261,22 @@ export class SceneTransitionOptions {
 		this.delay = options.delay || 4000;
 		this.fadeOut = options.fadeOut || 1000;
 		this.volume = options.volume || 1.0;
-		this.skippable = options.skippable || true;
-		this.gmEndAll = options.gmEndAll || true;
-		this.showUI = options.showUI || false;
+		this.audioLoop = isBoolean(options.audioLoop) ? options.audioLoop : true;
+		this.skippable = isBoolean(options.skippable) ? options.skippable : true;
+		this.gmEndAll = isBoolean(options.gmEndAll) ? options.gmEndAll : true;
+		this.showUI = isBoolean(options.showUI) ? options.showUI : false;
 		this.content = options.content || "";
 		this.audio = options.audio || "";
-		this.fromSocket = options.fromSocket || false;
+		this.fromSocket = isBoolean(options.fromSocket) ? options.fromSocket : false;
 		this.users = options.users || [];
+	}
+}
+
+export function isBoolean(value) {
+	if (String(value) === "true" || String(value) === "false") {
+		return true;
+	} else {
+		return false;
 	}
 }
 

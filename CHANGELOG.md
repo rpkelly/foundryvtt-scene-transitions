@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.4.4
+
+- Add audio loop setting
+- Add video muted setting
+- Add video loop setting
+- Clean up of the code
+
 ### 0.4.3
 
 - Added video support

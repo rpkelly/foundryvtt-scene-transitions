@@ -14,7 +14,8 @@
         </div> -->
 		<!--- Background Image Upload -->
 		<div class="form-group">
-			<label>{{localize "SCENES.BackgroundImage"}}</label>
+			<!--<label>{{localize "SCENES.BackgroundImage"}}</label>-->
+			<label>Image or video source</label>
 			<div class="form-fields">
 				{{filePicker target="bgImg" type="imagevideo"}}
 				<input
@@ -26,18 +27,18 @@
 				/>
 			</div>
 		</div>
+
 		<div class="form-group">
 			<label>Background Image Opacity</label>
 			<div class="form-fields">
 				<input type="text" name="bgOpacity" placeholder="0.7" value="{{bgOpacity}}" />
 			</div>
 		</div>
-
 		<div class="form-group">
-			<label>{{localize "SCENES.BackgroundColor"}}</label>
+			<!--<label>{{localize "SCENES.BackgroundColor"}}</label>-->
+			<label>Background Color Overlay</label>
 			<div class="form-fields">{{ colorPicker name="bgColor" value=bgColor }}</div>
 		</div>
-
 		<div class="form-group">
 			<label>Background Size</label>
 			<input type="text" name="bgSize" placeholder="cover" value="{{bgSize}}" />
@@ -46,6 +47,21 @@
 			<label>Background Position</label>
 			<input type="text" name="bgPos" placeholder="center center" value="{{bgPos}}" />
 		</div>
+
+		<div class="form-group">
+			<label>Loop Background (only if the source is a Video)</label>
+			<div class="form-fields">
+				<input type="checkbox" name="bgLoop" data-dtype="Boolean" {{checked bgLoop}} />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label>Muted Background (only if the source is a Video)</label>
+			<div class="form-fields">
+				<input type="checkbox" name="bgMuted" data-dtype="Boolean" {{checked bgMuted}} />
+			</div>
+		</div>
+
 		<div class="form-group">
 			<label>Font Size</label>
 			<input type="text" name="fontSize" placeholder="28px" value="{{fontSize}}" />
@@ -76,7 +92,13 @@
 		<div class="form-group">
 			<label>Volume</label>
 			<div class="form-fields">
-				<input name="volume" type="range" value="{{volume}}" min="0" max="1" step="0.1" data-dtype="Number" />
+				<input type="range" name="volume" value="{{volume}}" min="0" max="1" step="0.1" data-dtype="Number" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Loop (Audio)</label>
+			<div class="form-fields">
+				<input type="checkbox" name="audioLoop" data-dtype="Boolean" {{checked audioLoop}} />
 			</div>
 		</div>
 
@@ -125,7 +147,7 @@
 		<div class="form-group">
 			<label>Show User Interface</label>
 			<input type="checkbox" name="showUI" data-dtype="Boolean" {{checked showUI}} />
-			<p class="notes">Allow players to interact woth character sheets etc</p>
+			<p class="notes">Allow players to interact with character sheets etc</p>
 		</div>
 	</div>
 
