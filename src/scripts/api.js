@@ -1,5 +1,6 @@
 import { error } from "./lib/lib.js";
 import { SceneTransition } from "./scene-transitions.js";
+import { sceneTransitionsSocket } from "./socket.js";
 const API = {
 	async executeActionArr(...inAttributes) {
 		if (!Array.isArray(inAttributes)) {
@@ -48,7 +49,7 @@ const API = {
 		//     let activeTransition = new SceneTransition(false, options, undefined);
 		//     activeTransition.render();
 		// }
-		if (option.fromSocket) {
+		if (options.fromSocket) {
 			API.executeAction(options);
 		} else {
 			if (options.users?.length > 0) {

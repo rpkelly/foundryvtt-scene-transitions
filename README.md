@@ -88,7 +88,7 @@ game.modules.get('scene-transitions').api.macro({
 	gmEndAll: true, // when the GM clicks to end the transition - end for everyone
 	showUI: false, // Show the User Interface elements to all players allowing them to interact with character sheets etc
 	fromSocket: false, // This is usually a application variable for manage socket calls YOU DIDN'T NEED TO TOUCH THIS, MUST BE ALWAYS FALSE.
-	users: string[], // show the transaction to this list of users ids, NOTE: if 'showMe' is true the current user id is add to the list
+	users: [], // show the transaction to this list of users ids, NOTE: if 'showMe' is true the current user id is add to the list
 }, true ); // show to the triggering user (the one who click to the macro usually the GM)
 ```
 

@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.5
+
+- Many bug fixes
+
 ### 0.4.4
 
 - Add audio loop setting

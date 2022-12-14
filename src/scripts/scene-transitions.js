@@ -216,7 +216,8 @@ export class SceneTransition {
 	 */
 	render() {
 		SceneTransition.activeTransition = this;
-		if (this.options.gmHide && game.user?.isGM) { // && this.options.fromSocket 
+		if (this.options.gmHide && game.user?.isGM) {
+			// && this.options.fromSocket
 			warn(`Cannot play the transaction check out the options : ` + this.options);
 			return;
 		}
@@ -272,6 +273,7 @@ export class SceneTransition {
 			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
 			this.modal = $("#scene-transitions");
 			this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+
 			this.modal.find(".scene-transitions-bg").css({
 				backgroundImage: "url(" + this.options.bgImg + ")",
 				opacity: this.options.bgOpacity,
@@ -282,8 +284,9 @@ export class SceneTransition {
 
 		this.modal
 			.find(".scene-transitions-content")
-			.css({ color: this.options.fontColor, fontSize: this.options.fontSize })
+			.css({ color: this.options.fontColor, fontSize: this.options.fontSize, zIndex: 5000 })
 			.html(this.options.content);
+			
 		if (this.options.audio) {
 			if (game.audio.locked) {
 				info("Audio playback locked, cannot play " + this.options.audio);
