@@ -71,9 +71,9 @@ export class SceneTransition {
 			gmEndAll: true,
 			showUI: false,
 			content: "",
-            audio: "",
-            fromSocket: false,
-            users: []
+			audio: "",
+			fromSocket: false,
+			users: [],
 		});
 	}
 	// static get hasNewAudioAPI() {
@@ -104,12 +104,12 @@ export class SceneTransition {
 				let options = transition.options;
 				options.sceneID = sceneID;
 				// let activeTransition = new SceneTransition(false, options, undefined);
-                // activeTransition.render();
+				// activeTransition.render();
 				// game.socket.emit("module.scene-transitions", options);
-                options = {
-                    ...options,
-                    fromSocket: true,
-                };
+				options = {
+					...options,
+					fromSocket: true,
+				};
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
@@ -203,10 +203,10 @@ export class SceneTransition {
 				});
 				// new SceneTransition(false, options, undefined).render();
 				// game.socket.emit("module.scene-transitions", options);
-                options = {
-                    ...options,
-                    fromSocket: true,
-                };
+				options = {
+					...options,
+					fromSocket: true,
+				};
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
@@ -316,10 +316,10 @@ export class SceneTransition {
 				if (this.options.gmEndAll && game.user?.isGM) {
 					// game.socket.emit("module.scene-transitions", { action: "end" });
 					let options = new SceneTransitionOptions({ action: "end" });
-                    options = {
-                        ...options,
-                        fromSocket: true,
-                    };
+					options = {
+						...options,
+						fromSocket: true,
+					};
 					sceneTransitionsSocket.executeForEveryone("executeAction", options);
 				}
 				this.destroy();

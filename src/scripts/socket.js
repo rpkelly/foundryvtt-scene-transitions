@@ -11,7 +11,7 @@ export function registerSocket() {
 	//@ts-ignore
 	sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_NAME);
 	sceneTransitionsSocket.register("executeAction", (...args) => API.executeActionArr(...args));
-    sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
+	sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
 	setSocket(sceneTransitionsSocket);
 	return sceneTransitionsSocket;
 }

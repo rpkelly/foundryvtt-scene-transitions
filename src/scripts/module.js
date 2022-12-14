@@ -38,12 +38,12 @@ export const readyHooks = async () => {
 			bgImg: img,
 		});
 		// let activeTransition = new SceneTransition(false, options, undefined);
-        // activeTransition.render();
+		// activeTransition.render();
 		// game.socket.emit("module.scene-transitions", options);
-        options = {
-            ...options,
-            fromSocket: true,
-        };
+		options = {
+			...options,
+			fromSocket: true,
+		};
 		sceneTransitionsSocket.executeForEveryone("executeAction", options);
 	});
 };
