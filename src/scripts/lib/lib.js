@@ -244,7 +244,7 @@ export class SceneTransitionOptions {
 		// this.showUI = false;
 		// this.content = "";
 		// this.fromSocket = false;
-		this.users = [];
+		// this.users = [];
 		this.action = options.action || "";
 		this.sceneID = options.sceneID || "";
 		this.gmHide = isBoolean(options.gmHide) ? options.gmHide : true;

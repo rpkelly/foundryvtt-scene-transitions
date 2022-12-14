@@ -1,41 +1,88 @@
 import { error } from "./lib/lib.js";
 import { SceneTransition } from "./scene-transitions.js";
 const API = {
-	executeActionArr(...inAttributes) {
+	async executeActionArr(...inAttributes) {
 		if (!Array.isArray(inAttributes)) {
 			throw error("executeActionArr | inAttributes must be of type array");
 		}
-		const [options] = inAttributes;
+		let [options] = inAttributes;
+        options = {
+            ...options,
+            fromSocket: true,
+        };
 		this.executeAction(options);
 	},
-	executeAction(data) {
-		if (data.action) {
-			switch (data.action) {
-				case "end":
+	executeAction(options) {
+		if (options.action) {
+			switch (options.action) {
+				case "end": {
 					SceneTransition.activeTransition.destroy();
 					break;
-				default:
+                }
+				default: {
 					break;
+                }
 			}
 		} else {
 			// Run a transition
-			let options = data;
-			// TODO did i need this ??
-			// if (!options.users || options.users.includes(<string>game.user?.id)) {
-			options = {
-				...options,
-				fromSocket: true,
-			};
-			new SceneTransition(false, options, undefined).render();
-			// }
+			let activeTransition = new SceneTransition(false, options, undefined);
+            activeTransition.render();
 		}
 	},
-	macro(...inAttributes) {
+	async macroArr(...inAttributes) {
 		if (!Array.isArray(inAttributes)) {
-			throw error("executeActionArr | inAttributes must be of type array");
+			throw error("macroArr | inAttributes must be of type array");
 		}
-		const [options, showMe] = inAttributes;
-		SceneTransition.macro(options, showMe);
+		let [options, showMe] = inAttributes;
+        options = {
+            ...options,
+            fromSocket: true,
+        };
+		// await SceneTransition.macro(false, options, showMe);
+        macro(options, showMe);
 	},
+    macro(options, showMe) {
+		// game.socket.emit("module.scene-transitions", options);
+        // if (showMe || options.gmEndAll) {
+        //     //force show on triggering window if gmEndAll is active
+        //     let activeTransition = new SceneTransition(false, options, undefined);
+        //     activeTransition.render();
+        // }
+        if(option.fromSocket) {
+            API.executeAction(options);
+        } else {
+            if(options.users?.length >  0){
+                if(showMe) {
+                    if(!options.users.includes(game.user.id)){
+                        options.users.push(game.user.id);
+                    }
+                } else {
+                    if(options.users.includes(game.user.id)){
+                        const excludeNames = [game.user.id];
+                        options.users = options.users.filter((name) => !excludeNames.includes(name));
+                    }
+                }
+                options = {
+                    ...options,
+                    fromSocket: true,
+                };
+                sceneTransitionsSocket.executeForUsers("executeAction", options.users, options);
+            } else {
+                if(showMe) {
+                    options = {
+                        ...options,
+                        fromSocket: true,
+                    };
+                    sceneTransitionsSocket.executeForEveryone("executeAction", options);
+                } else {
+                    options = {
+                        ...options,
+                        fromSocket: true,
+                    };
+                    sceneTransitionsSocket.executeForOthers("executeAction", options);
+                }
+            }
+        }
+	}
 };
 export default API;

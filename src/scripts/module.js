@@ -37,8 +37,13 @@ export const readyHooks = async () => {
 			content: content,
 			bgImg: img,
 		});
-		new SceneTransition(false, options, undefined).render();
+		// let activeTransition = new SceneTransition(false, options, undefined);
+        // activeTransition.render();
 		// game.socket.emit("module.scene-transitions", options);
+        options = {
+            ...options,
+            fromSocket: true,
+        };
 		sceneTransitionsSocket.executeForEveryone("executeAction", options);
 	});
 };

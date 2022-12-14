@@ -1,8 +1,8 @@
 # Scene Transitions
 
-![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-scene-transitions/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge) 
+![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-scene-transitions/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge)
 
-[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fscene-transitions&colorB=006400&style=for-the-badge)](https://forge-vtt.com/bazaar#package=scene-transitions) 
+[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fscene-transitions&colorB=006400&style=for-the-badge)](https://forge-vtt.com/bazaar#package=scene-transitions)
 
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fp4535992%2Ffoundryvtt-scene-transitions%2Fmaster%2Fsrc%2Fmodule.json&label=Foundry%20Version&query=$.compatibility.verified&colorB=orange&style=for-the-badge)
 
@@ -63,32 +63,36 @@ Use the textbox sourcecode editor to add custom html and override default css.
 
 ## Api
 
+**MOTE:** From fvtt 9 to fvtt 10 the old macro `Transition.macro(options, showMe)` is been replaced with `game.modules.get('scene-transitions').api.macro(options, showMe)`
+
 ```javascript
-/**
- * Transition.macro(options, showMe)
- */
 game.modules.get('scene-transitions').api.macro({
-	sceneID: false,
+	sceneID: false, // To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
 	fontSize:'28px',
 	bgImg:'', // pass any relative or absolute image or video url here.
 	bgPos:'center center',
+    bgLoop: true, // Only for VIDEO, if true will loop the video
+	bgMuted: true, // Only for VIDEO, if true will play the video muted
 	bgSize:'cover',
 	bgColor:'#333333',
 	bgOpacity:0.7,
 	fadeIn: 400, //how long to fade in
 	delay:5000, //how long for transition to stay up
 	fadeOut: 400, //how long to fade out
-	audio: "", //path to audio file
+	audio: "", //path to audio file, NOTE: is not advisable to use this with a video and the property 'bgMuted = false'
 	skippable:true, //Allows players to skip transition with a click before delay runs out.
-	gmHide: true, // hide the transistion on other windows logged in as a GM
+    audioLoop: true, //Loop the audio file ?
+	gmHide: true, // hide the transition on other windows logged in as a GM
 	gmEndAll: true, // when the GM clicks to end the transition - end for everyone
 	showUI: false, // Show the User Interface elements to all players allowing them to interact with character sheets etc
-
-}, true ) //show to the triggering user
+	fromSocket: false, // This is usually a application variable for manage socket calls YOU DIDN'T NEED TO TOUCH THIS, MUST BE ALWAYS FALSE.
+	users: string[], // show the transaction to this list of users ids, NOTE: if 'showMe' is true the current user id is add to the list
+}, true ) // show to the triggering user (the one who click to the macro usually the GM)
 ```
-To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
+
+**NOTE:** To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
 
 
 ## [Changelog](./CHANGELOG.md)

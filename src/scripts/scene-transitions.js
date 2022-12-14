@@ -3,6 +3,8 @@
  * Author @DM_miX since 0.0.8
  * Origianl author credit and big shout out to @WillS
  *************************/
+import { option } from "yargs";
+import API from "./api.js";
 import CONSTANTS from "./constants.js";
 import {
 	getVideoType,
@@ -69,6 +71,9 @@ export class SceneTransition {
 			gmEndAll: true,
 			showUI: false,
 			content: "",
+            audio: "",
+            fromSocket: false,
+            users: []
 		});
 	}
 	// static get hasNewAudioAPI() {
@@ -98,9 +103,13 @@ export class SceneTransition {
 				let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
 				let options = transition.options;
 				options.sceneID = sceneID;
-				let activeTransition = new SceneTransition(false, options, undefined);
-				activeTransition.render();
+				// let activeTransition = new SceneTransition(false, options, undefined);
+                // activeTransition.render();
 				// game.socket.emit("module.scene-transitions", options);
+                options = {
+                    ...options,
+                    fromSocket: true,
+                };
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
@@ -192,21 +201,15 @@ export class SceneTransition {
 					content: content,
 					bgImg: img,
 				});
-				let activeTransition = new SceneTransition(false, options, undefined);
-				activeTransition.render();
+				// new SceneTransition(false, options, undefined).render();
 				// game.socket.emit("module.scene-transitions", options);
+                options = {
+                    ...options,
+                    fromSocket: true,
+                };
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
-	}
-	static macro(options, showMe) {
-		// game.socket.emit("module.scene-transitions", options);
-		sceneTransitionsSocket.executeForEveryone("executeAction", options);
-		if (showMe || options.gmEndAll) {
-			//force show on triggering window if gmEndAll is active
-			let activeTransition = new SceneTransition(false, options, undefined);
-			activeTransition.render();
-		}
 	}
 	/**
 	 * The Mahic happens here
@@ -224,9 +227,9 @@ export class SceneTransition {
 			$("body").append(
 				`<div id="scene-transitions" class="scene-transitions">
                     <div class="color-overlay"></div>
-                    <video class="scene-transitions-bg" 
-						autoplay 
-						${this.options.bgLoop ? "loop" : ""} 
+                    <video class="scene-transitions-bg"
+						autoplay
+						${this.options.bgLoop ? "loop" : ""}
 						${this.options.bgMuted ? "muted" : ""}>
                         <source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
                     </video>
@@ -313,6 +316,10 @@ export class SceneTransition {
 				if (this.options.gmEndAll && game.user?.isGM) {
 					// game.socket.emit("module.scene-transitions", { action: "end" });
 					let options = new SceneTransitionOptions({ action: "end" });
+                    options = {
+                        ...options,
+                        fromSocket: true,
+                    };
 					sceneTransitionsSocket.executeForEveryone("executeAction", options);
 				}
 				this.destroy();
