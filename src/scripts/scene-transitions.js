@@ -216,7 +216,8 @@ export class SceneTransition {
 	 */
 	render() {
 		SceneTransition.activeTransition = this;
-		if (this.options.gmHide && this.options.fromSocket && game.user?.isGM) {
+		if (this.options.gmHide && game.user?.isGM) { // && this.options.fromSocket 
+			warn(`Cannot play the transaction check out the options : ` + this.options);
 			return;
 		}
 
