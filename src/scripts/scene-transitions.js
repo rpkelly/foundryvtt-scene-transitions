@@ -133,7 +133,7 @@ export class SceneTransition {
 				};
 				let activeTransition = new SceneTransition(true, options, undefined);
 				activeTransition.render();
-				new TransitionForm(activeTransition, undefined).render(true);
+				new TransitionForm(activeTransition, undefined).render();
 			},
 		};
 	}
@@ -154,7 +154,7 @@ export class SceneTransition {
 				let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
 				let activeTransition = new SceneTransition(true, transition.options, undefined);
 				activeTransition.render();
-				new TransitionForm(activeTransition, undefined).render(true);
+				new TransitionForm(activeTransition, undefined).render();
 			},
 		};
 	}
