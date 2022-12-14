@@ -3,7 +3,6 @@
  * Author @DM_miX since 0.0.8
  * Origianl author credit and big shout out to @WillS
  *************************/
-import { option } from "yargs";
 import API from "./api.js";
 import CONSTANTS from "./constants.js";
 import {
@@ -133,7 +132,7 @@ export class SceneTransition {
 				};
 				let activeTransition = new SceneTransition(true, options, undefined);
 				activeTransition.render();
-				new TransitionForm(activeTransition, undefined).render();
+				new TransitionForm(activeTransition, undefined).render(true);
 			},
 		};
 	}
@@ -154,7 +153,7 @@ export class SceneTransition {
 				let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
 				let activeTransition = new SceneTransition(true, transition.options, undefined);
 				activeTransition.render();
-				new TransitionForm(activeTransition, undefined).render();
+				new TransitionForm(activeTransition, undefined).render(true);
 			},
 		};
 	}

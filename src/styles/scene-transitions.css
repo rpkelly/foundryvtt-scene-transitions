@@ -63,7 +63,9 @@
 	padding: 0;
 }
 #scene-transitions-form .editor-box {
-	height: calc(100% - 131px);
+	min-height: 220px;
+	height: 300px;
+	/* max-width: calc(100% - 180px); */
 	margin-top: 10px;
 }
 #scene-transitions-form .editor {

@@ -27,9 +27,13 @@ export class TransitionForm extends FormApplication {
 	/**
 	 * Get data for the triggler form
 	 */
-	getData(options) {
-		let transition = this.transition.options;
-		return transition;
+	async getData(options) {
+		let context = this.transition.options;
+		context.contentHTML = await TextEditor.enrichHTML(this.transition.options.content, {
+			secrets: true,
+			async: true,
+		});
+		return context;
 	}
 	updatePreview() {
 		const w = window.innerWidth;
@@ -42,21 +46,34 @@ export class TransitionForm extends FormApplication {
 		});
 		preview.find(".scene-transitions-content").css({ color: this.transition.options.fontColor });
 	}
-	// async activateEditor(name, options = <any>{}, initialContent = "") {
+
+	// async activateEditor(name, options = {}, initialContent = "") {
 	// 	const editor = this.editors[name];
 	// 	if (!editor) throw new Error(`${name} is not a registered editor name!`);
 	// 	options = mergeObject(editor.options, options);
+	// 	// options.relativeLinks = true;
+	// 	options.plugins = {
+	// 		menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+	// 			compact: true,
+	// 			destroyOnSave: false,
+	// 			onSave: () => {
+	// 				// this.saveEditor(name, { remove: false });
+	// 				this._saveEditor(name, { remove: false });
+	// 			},
+	// 		}),
+	// 	};
 	// 	options.height = options.target.offsetHeight;
 	// 	options.async = false;
-	// 	await TextEditor.create(options, initialContent || editor.initial).then((mce) => {
-	// 		editor.mce = mce;
-	// 		editor.changed = false;
-	// 		editor.active = true;
-	// 		//mce.focus();
-	// 		mce.on("change", (ev) => (editor.changed = true));
-	// 	});
+	// 	// await TextEditor.create(options, initialContent || editor.initial).then((mce) => {
+	// 	// 	editor.mce = mce;
+	// 	// 	editor.changed = false;
+	// 	// 	editor.active = true;
+	// 	// 	//mce.focus();
+	// 	// 	mce.on("change", (ev) => (editor.changed = true));
+	// 	// });
 	// 	return true;
 	// }
+
 	// /**
 	//  * Activate an editor instance present within the form
 	//  * @param {HTMLElement} div  The element which contains the editor
@@ -94,15 +111,115 @@ export class TransitionForm extends FormApplication {
 	// 		initial: initialContent,
 	// 	};
 	// 	// If we are using a toggle button, delay activation until it is clicked
-	// 	// if (hasButton) button.onclick = event => {
-	// 	//   button.style.display = "none";
-	// 	//   await this.activateEditor(name, editorOptions, initialContent);
-	// 	// };
+	// 	if (hasButton) {
+	// 		button.onclick = async (event) => {
+	// 			button.style.display = "none";
+	// 			await this.activateEditor(name, editorOptions, initialContent);
+	// 		};
+	// 	}
 	// 	// Otherwise activate immediately
-	// 	// else await this.activateEditor(name, editorOptions, initialContent);
-	// 	return true;
+	// 	else {
+	// 		await this.activateEditor(name, editorOptions, initialContent);
+	// 	}
+	// 	// return true;
 	// }
-	activateListeners(html) {
+
+	/** @inheritdoc */
+	async activateEditor(name, options = {}, initialContent = "") {
+		// options.relativeLinks = true;
+		options.plugins = {
+			menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+				compact: true,
+				destroyOnSave: false,
+				onSave: () => {
+					// this.saveEditor(name, { remove: false });
+					this._saveEditor(name, { remove: false });
+				},
+			}),
+		};
+		return super.activateEditor(name, options, initialContent);
+	}
+
+	/**
+	 * Handle saving the content of a specific editor by name
+	 * @param {string} name           The named editor to save
+	 * @param {boolean} [remove]      Remove the editor after saving its content
+	 * @returns {Promise<void>}
+	 */
+	async _saveEditor(name, { remove = true } = {}) {
+		const editor = this.editors[name];
+		if (!editor || !editor.instance) throw new Error(`${name} is not an active editor name!`);
+		editor.active = false;
+		const instance = editor.instance;
+		await this._onSubmit(new Event("submit"), {
+			preventClose: true,
+		});
+
+		// Remove the editor
+		if (remove) {
+			instance.destroy();
+			editor.instance = editor.mce = null;
+			if (editor.hasButton) editor.button.style.display = "block";
+			this.render();
+		}
+		editor.changed = false;
+	}
+
+	/* -------------------------------------------- */
+
+	// /**
+	//  * Handle standard form submission steps
+	//  * @param {Event} event               The submit event which triggered this handler
+	//  * @param {object | null} [updateData]  Additional specific data keys/values which override or extend the contents of
+	//  *                                    the parsed form. This can be used to update other flags or data fields at the
+	//  *                                    same time as processing a form submission to avoid multiple database operations.
+	//  * @param {boolean} [preventClose]    Override the standard behavior of whether to close the form on submit
+	//  * @param {boolean} [preventRender]   Prevent the application from re-rendering as a result of form submission
+	//  * @returns {Promise}                 A promise which resolves to the validated update data
+	//  * @protected
+	//  */
+	// async _onSubmitContent(event, { updateData = null, preventClose = false, preventRender = false } = {}) {
+	// 	event.preventDefault();
+
+	// 	// Prevent double submission
+	// 	const states = this.constructor.RENDER_STATES;
+	// 	if (this._state === states.NONE || !this.isEditable || this._submitting) return false;
+	// 	this._submitting = true;
+
+	// 	// Process the form data
+	// 	const formData = this._getSubmitData(updateData);
+
+	// 	// Handle the form state prior to submission
+	// 	let closeForm = this.options.closeOnSubmit && !preventClose;
+	// 	const priorState = this._state;
+	// 	if (preventRender) this._state = states.RENDERING;
+	// 	if (closeForm) this._state = states.CLOSING;
+
+	// 	// Trigger the object update
+	// 	try {
+	// 		await this._updateObject(event, formData);
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 		closeForm = false;
+	// 		this._state = priorState;
+	// 	}
+
+	// 	// Restore flags and optionally close the form
+	// 	this._submitting = false;
+	// 	if (preventRender) this._state = priorState;
+	// 	// if (closeForm) await this.close({ submit: false, force: true });
+	// 	return formData;
+	// }
+
+	// /** @inheritDoc */
+	// _getSubmitData(updateData = {}) {
+	// 	const formData = foundry.utils.expandObject(super._getSubmitData(updateData));
+
+	// 	// Return the flattened submission data
+	// 	return foundry.utils.flattenObject(formData);
+	// }
+
+	async activateListeners(html) {
 		super.activateListeners(html);
 		//this.updatePreview();
 		html.on("change", "input,select,textarea", this._onChangeInput.bind(this));
@@ -149,6 +266,13 @@ export class TransitionForm extends FormApplication {
 				this.playingAudio.gain.value = e.target.value;
 			}
 		});
+
+		const contentHTML = await TextEditor.enrichHTML(this.transition.options.content, {
+			secrets: true,
+			async: true,
+		});
+		// html.find(".editor-content")[0].innerHTML = contentHTML;
+		$('[data-edit="content"]').html(contentHTML);
 		// this._activateEditor(html.find(".editor-content")[0]).then(async () => {
 		// 	//@ts-ignore
 		// 	await this.activateEditor("content", this.editors.content.options, this.editors.content.initial);
@@ -176,7 +300,9 @@ export class TransitionForm extends FormApplication {
 	async _onSubmit(event, { updateData = null, preventClose = false, preventRender = false } = {}) {
 		//@ts-ignore
 		const states = this.constructor.RENDER_STATES;
-		if (this._state === states.NONE || !this.options.editable || this._submitting) return false;
+		if (this._state === states.NONE || !this.options.editable || this._submitting) {
+			return false;
+		}
 		this._submitting = true;
 		// if (SceneTransition.hasNewAudioAPI) {
 		this.transition.playingAudio.stop();
@@ -185,14 +311,18 @@ export class TransitionForm extends FormApplication {
 		const form = this.element.find("form").first()[0];
 		// Flag if the application is staged to close to prevent callback renders
 		const priorState = this._state;
-		if (this.options.closeOnSubmit) this._state = states.CLOSING;
-		if (preventRender && this._state !== states.CLOSING) this._state = states.RENDERING;
+		if (this.options.closeOnSubmit) {
+			this._state = states.CLOSING;
+		}
+		if (preventRender && this._state !== states.CLOSING) {
+			this._state = states.RENDERING;
+		}
 		// Trigger the object update
 		const formData = this._getSubmitData(updateData);
 		this.transition.updateData(formData);
 		const scene = game.scenes?.get(this.transition.sceneID);
 		if (this.transition.sceneID != false) {
-			scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
+			await scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
 		}
 		this._submitting = false;
 		this._state = priorState;
