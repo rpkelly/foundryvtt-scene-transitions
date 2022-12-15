@@ -12,6 +12,11 @@
                 </audio>
             </div>
         </div> -->
+		<div class="form-group">
+			<label>Preview</label>
+			<input type="checkbox" name="preview" data-dtype="Boolean" {{checked preview}} />
+			<p class="notes">Not activate the scene</p>
+		</div>
 		<!--- Background Image Upload -->
 		<div class="form-group">
 			<!--<label>{{localize "SCENES.BackgroundImage"}}</label>-->
@@ -152,6 +157,11 @@
 			<label>Show User Interface</label>
 			<input type="checkbox" name="showUI" data-dtype="Boolean" {{checked showUI}} />
 			<p class="notes">Allow players to interact with character sheets etc</p>
+		</div>
+		<div class="form-group">
+			<label>Activate Scene for everyone</label>
+			<input type="checkbox" name="activateScene" data-dtype="Boolean" {{checked activateScene}} />
+			<p class="notes">Activate the scene during the play of the transaction for everyone</p>
 		</div>
 	</div>
 

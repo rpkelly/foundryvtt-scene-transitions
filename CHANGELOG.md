@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.4.6
+
+- Add pack with a macro example
+- Add a setting for activate the scene on the play transiction
+
 ### 0.4.5
 
 - Many bug fixes

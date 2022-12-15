@@ -67,7 +67,7 @@ Use the textbox sourcecode editor to add custom html and override default css.
 
 ```javascript
 game.modules.get('scene-transitions').api.macro({
-	sceneID: false, // To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
+	sceneID: false, // To play a transition without a scene activation, simple pass `false` as the sceneID in the data object or use the string id of the scene.
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
 	fontSize:'28px',
@@ -87,6 +87,7 @@ game.modules.get('scene-transitions').api.macro({
 	gmHide: true, // hide the transition on other windows logged in as a GM
 	gmEndAll: true, // when the GM clicks to end the transition - end for everyone
 	showUI: false, // Show the User Interface elements to all players allowing them to interact with character sheets etc
+	activateScene: false, // Activate the scene when play the transation ?
 	fromSocket: false, // This is usually a application variable for manage socket calls YOU DIDN'T NEED TO TOUCH THIS, MUST BE ALWAYS FALSE.
 	users: [], // show the transaction to this list of users ids, NOTE: if 'showMe' is true the current user id is add to the list
 }, true ); // show to the triggering user (the one who click to the macro usually the GM)

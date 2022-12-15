@@ -38,7 +38,7 @@ export class SceneTransition {
 			...this.constructor.defaultOptions,
 			...options,
 		};
-		this.sceneID = this.options.sceneID;
+		// this.sceneID = this.options.sceneID;
 		this.journal = null;
 		this.modal = null;
 		this.destroying = false;
@@ -69,6 +69,7 @@ export class SceneTransition {
 			skippable: true,
 			gmEndAll: true,
 			showUI: false,
+			activateScene: false,
 			content: "",
 			audio: "",
 			fromSocket: false,
@@ -218,7 +219,7 @@ export class SceneTransition {
 		SceneTransition.activeTransition = this;
 		if (this.options.gmHide && game.user?.isGM) {
 			// && this.options.fromSocket
-			warn(`Cannot play the transaction check out the options : ` + this.options);
+			warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
 			return;
 		}
 
@@ -272,7 +273,10 @@ export class SceneTransition {
 
 			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
 			this.modal = $("#scene-transitions");
-			this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
+			this.modal.css({
+				backgroundColor: this.options.bgColor,
+				zIndex: zIndex,
+			});
 
 			this.modal.find(".scene-transitions-bg").css({
 				backgroundImage: "url(" + this.options.bgImg + ")",
@@ -286,7 +290,7 @@ export class SceneTransition {
 			.find(".scene-transitions-content")
 			.css({ color: this.options.fontColor, fontSize: this.options.fontSize, zIndex: 5000 })
 			.html(this.options.content);
-			
+
 		if (this.options.audio) {
 			if (game.audio.locked) {
 				info("Audio playback locked, cannot play " + this.options.audio);
@@ -308,11 +312,17 @@ export class SceneTransition {
 			}
 		}
 		this.modal.fadeIn(this.options.fadeIn, () => {
-			if (game.user?.isGM && !this.preview && this.sceneID) {
-				game.scenes?.get(this.sceneID)?.activate();
+			if (this.options.activateScene && this.options.sceneID) {
+				game.scenes?.get(this.options.sceneID)?.activate();
+			} else {
+				if (game.user?.isGM && !this.preview && this.options.sceneID) {
+					game.scenes?.get(this.options.sceneID)?.activate();
+				}
 			}
 			this.modal?.find(".scene-transitions-content").fadeIn();
-			if (!this.preview) this.setDelay();
+			if (!this.preview) {
+				this.setDelay();
+			}
 		});
 		if ((this.options.skippable && !this.preview) || (this.options.gmEndAll && game.user?.isGM && !this.preview)) {
 			this.modal.on("click", () => {

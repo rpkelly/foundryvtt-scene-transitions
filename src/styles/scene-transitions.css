@@ -34,7 +34,7 @@
 	left: 10%;
 	line-height: 2em;
 	text-align: center;
-    z-index: 2;
+	z-index: 2;
 }
 .scene-transitions.preview {
 	position: absolute;

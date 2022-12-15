@@ -222,29 +222,6 @@ export function retrieveFirstTextFromJournalId(id) {
 }
 export class SceneTransitionOptions {
 	constructor(options) {
-		// this.action = "";
-		// this.sceneID = "";
-		// this.gmHide = true;
-		// this.fontColor = "#777777";
-		// this.fontSize = "28px";
-		// this.bgImg = "";
-		// this.bgPos = "center center";
-		// this.bgLoop = true;
-		// this.bgMuted = true;
-		// this.bgSize = "cover";
-		// this.bgColor = "#000000";
-		// this.bgOpacity = 0.7;
-		// this.fadeIn = 400;
-		// this.delay = 4000;
-		// this.fadeOut = 1000;
-		// this.volume = 1.0;
-		// this.audioLoop = true;
-		// this.skippable = true;
-		// this.gmEndAll = true;
-		// this.showUI = false;
-		// this.content = "";
-		// this.fromSocket = false;
-		// this.users = [];
 		this.action = options.action || "";
 		this.sceneID = options.sceneID || "";
 		this.gmHide = isBoolean(options.gmHide) ? options.gmHide : true;
@@ -265,6 +242,7 @@ export class SceneTransitionOptions {
 		this.skippable = isBoolean(options.skippable) ? options.skippable : true;
 		this.gmEndAll = isBoolean(options.gmEndAll) ? options.gmEndAll : true;
 		this.showUI = isBoolean(options.showUI) ? options.showUI : false;
+		this.activateScene = isBoolean(options.activateScene) ? options.activateScene : false;
 		this.content = options.content || "";
 		this.audio = options.audio || "";
 		this.fromSocket = isBoolean(options.fromSocket) ? options.fromSocket : false;
