@@ -172,8 +172,8 @@ export function stripQueryStringAndHashFromPath(url) {
 	}
 	return myUrl;
 }
-export function retrieveFirstImageFromJournalId(id) {
-	const journalEntry = game.journal?.get(id);
+export function retrieveFirstImageFromJournalId(id, pageId, noDefault) {
+	const journalEntry = game.journal.get(id);
 	let firstImage = undefined;
 	if (!journalEntry) {
 		return firstImage;
@@ -183,21 +183,43 @@ export function retrieveFirstImageFromJournalId(id) {
 	// 	return stripQueryStringAndHashFromPath(journalEntry?.data?.img);
 	// }
 	// Support new image type journal
-	//@ts-ignore
 	if (journalEntry?.pages.size > 0) {
-		//@ts-ignore
 		const sortedArray = journalEntry.pages.contents.sort((a, b) => a.sort - b.sort);
-		for (const journalEntry of sortedArray) {
-			if (journalEntry.type === "image" && journalEntry.src) {
-				firstImage = stripQueryStringAndHashFromPath(journalEntry.src);
-				break;
+		if (pageId) {
+			const pageSelected = sortedArray.find((page) => page.id === pageId);
+			if (pageSelected) {
+				if (pageSelected.type === "image" && pageSelected.src) {
+					firstImage = stripQueryStringAndHashFromPath(pageSelected.src);
+				}
+				// this should manage all MJE type
+				else if (pageSelected.src) {
+					firstImage = stripQueryStringAndHashFromPath(pageSelected.src);
+				}
+			}
+		}
+		// const shouldCheckForDefault = !noDefault && pageId?.length > 0;
+		if (!noDefault && !firstImage) {
+			for (const pageEntry of sortedArray) {
+				if (pageEntry.type === "image" && pageEntry.src) {
+					firstImage = stripQueryStringAndHashFromPath(pageEntry.src);
+					break;
+				} else if (pageEntry.src && pageEntry.type === "pdf") {
+					firstImage = stripQueryStringAndHashFromPath(pageEntry.src);
+					break;
+				}
+				// this should manage all MJE type
+				else if (pageEntry.src) {
+					firstImage = stripQueryStringAndHashFromPath(pageEntry.src);
+					break;
+				}
 			}
 		}
 	}
 	return firstImage;
 }
-export function retrieveFirstTextFromJournalId(id) {
-	const journalEntry = game.journal?.get(id);
+
+export function retrieveFirstTextFromJournalId(id, pageId, noDefault) {
+	const journalEntry = game.journal.get(id);
 	let firstText = undefined;
 	if (!journalEntry) {
 		return firstText;
@@ -207,19 +229,38 @@ export function retrieveFirstTextFromJournalId(id) {
 	// 	return stripQueryStringAndHashFromPath(journalEntry?.data?.img);
 	// }
 	// Support new image type journal
-	//@ts-ignore
 	if (journalEntry?.pages.size > 0) {
-		//@ts-ignore
 		const sortedArray = journalEntry.pages.contents.sort((a, b) => a.sort - b.sort);
-		for (const journalEntry of sortedArray) {
-			if (journalEntry.type === "text" && journalEntry.text?.content) {
-				firstText = journalEntry.text?.content;
-				break;
+		if (pageId) {
+			const pageSelected = sortedArray.find((page) => page.id === pageId);
+			if (pageSelected) {
+				if (pageSelected.type === "text" && pageSelected.text?.content) {
+					firstText = pageSelected.text?.content;
+				}
+				// this should manage all MJE type
+				else if (pageSelected.text?.content) {
+					firstText = pageSelected.text?.content;
+				}
+			}
+		}
+		// const shouldCheckForDefault = !noDefault && pageId?.length > 0;
+		if (!noDefault && !firstText) {
+			for (const journalEntry of sortedArray) {
+				if (journalEntry.type === "text" && journalEntry.text?.content) {
+					firstText = journalEntry.text?.content;
+					break;
+				}
+				// this should manage all MJE type
+				else if (journalEntry.text?.content) {
+					firstText = journalEntry.text?.content;
+					break;
+				}
 			}
 		}
 	}
 	return firstText;
 }
+
 export class SceneTransitionOptions {
 	constructor(options) {
 		this.action = options.action || "";

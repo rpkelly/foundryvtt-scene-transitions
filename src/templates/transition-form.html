@@ -2,20 +2,16 @@
 	<div class="scroll">
 		<h2>Scene Transition</h2>
 		<!-- Preview? -->
-		<!-- <label>Preview</label> -->
-		<!-- <div id="scene-transitions-preview">
-            <div class="scene-transitions preview">
-                <div class="scene-transitions-bg"></div>
-                <div class="scene-transitions-content"></div>
-                <audio class="scene-transitions-audio">
-                    <source src="">
-                </audio>
-            </div>
-        </div> -->
+		<div id="scene-transitions-preview">
+			{{{sceneTransitionBgHTML}}}
+			<audio class="scene-transitions-audio">
+				<source src="{{audio}}" />
+			</audio>
+		</div>
 		<div class="form-group">
 			<label>Preview</label>
 			<input type="checkbox" name="preview" data-dtype="Boolean" {{checked preview}} />
-			<p class="notes">Not activate the scene</p>
+			<p class="notes">If checked this option wil not activate the scene</p>
 		</div>
 		<!--- Background Image Upload -->
 		<div class="form-group">

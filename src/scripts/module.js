@@ -31,15 +31,12 @@ export const readyHooks = async () => {
 			warn(`No journal is found`);
 			return;
 		}
-		const content = retrieveFirstTextFromJournalId(id);
-		const img = retrieveFirstImageFromJournalId(id);
+		const content = retrieveFirstTextFromJournalId(id, undefined, false);
+		const img = retrieveFirstImageFromJournalId(id, undefined, false);
 		let options = new SceneTransitionOptions({
 			content: content,
 			bgImg: img,
 		});
-		// let activeTransition = new SceneTransition(false, options, undefined);
-		// activeTransition.render();
-		// game.socket.emit("module.scene-transitions", options);
 		options = {
 			...options,
 			fromSocket: true,
@@ -78,8 +75,8 @@ Hooks.on("renderJournalSheet", (journal) => {
 		$("#" + journal.id + " > header").find(".play-transition").length == 0 &&
 		game.settings.get(CONSTANTS.MODULE_NAME, "show-journal-header-transition") == true
 	) {
-		$('<a class="play-transition"><i class="fas fa-play-circle"></i> Play as Transition</a>').insertAfter(
-			"#" + journal.id + " > header > h4"
-		);
+		$(`<a class="play-transition
+			<i class="fas fa-play-circle"></i> Play as Transition
+			</a>`).insertAfter("#" + journal.id + " > header > h4");
 	}
 });

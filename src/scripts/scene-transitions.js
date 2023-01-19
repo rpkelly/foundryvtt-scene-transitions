@@ -103,9 +103,6 @@ export class SceneTransition {
 				let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
 				let options = transition.options;
 				options.sceneID = sceneID;
-				// let activeTransition = new SceneTransition(false, options, undefined);
-				// activeTransition.render();
-				// game.socket.emit("module.scene-transitions", options);
 				options = {
 					...options,
 					fromSocket: true,
@@ -194,15 +191,13 @@ export class SceneTransition {
 					warn(`No journal is found`);
 					return;
 				}
-				const content = retrieveFirstTextFromJournalId(id);
-				const img = retrieveFirstImageFromJournalId(id);
+				const content = retrieveFirstTextFromJournalId(id, undefined, false);
+				const img = retrieveFirstImageFromJournalId(id, undefined, false);
 				let options = new SceneTransitionOptions({
 					sceneID: undefined,
 					content: content,
 					bgImg: img,
 				});
-				// new SceneTransition(false, options, undefined).render();
-				// game.socket.emit("module.scene-transitions", options);
 				options = {
 					...options,
 					fromSocket: true,
@@ -212,10 +207,11 @@ export class SceneTransition {
 		};
 	}
 	/**
-	 * The Mahic happens here
+	 * The Magic happens here
 	 * @returns
 	 */
 	render() {
+		const showTransition = !this.preview;
 		SceneTransition.activeTransition = this;
 		if (this.options.gmHide && game.user?.isGM) {
 			// && this.options.fromSocket
@@ -227,19 +223,35 @@ export class SceneTransition {
 		// https://www.youtube.com/watch?v=05ZHUuQVvJM
 		// https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
 		if (isVideo(this.options.bgImg)) {
-			$("body").append(
-				`<div id="scene-transitions" class="scene-transitions">
-                    <div class="color-overlay"></div>
-                    <video class="scene-transitions-bg"
-						autoplay
-						${this.options.bgLoop ? "loop" : ""}
-						${this.options.bgMuted ? "muted" : ""}>
-                        <source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
-                    </video>
-                    <div class="scene-transitions-content">
-                    </div>
-                </div>`
-			);
+			if (showTransition) {
+				$("body").append(
+					`<div id="scene-transitions" class="scene-transitions">
+						<div class="color-overlay"></div>
+						<video class="scene-transitions-bg"
+							autoplay
+							${this.options.bgLoop ? "loop" : ""}
+							${this.options.bgMuted ? "muted" : ""}>
+							<source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
+						</video>
+						<div class="scene-transitions-content">
+						</div>
+					</div>`
+				);
+			} else {
+				$("#scene-transitions").append(
+					`
+						<div class="color-overlay"></div>
+						<video class="scene-transitions-bg"
+							autoplay
+							${this.options.bgLoop ? "loop" : ""}
+							${this.options.bgMuted ? "muted" : ""}>
+							<source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
+						</video>
+						<div class="scene-transitions-content">
+						</div>
+					`
+				);
+			}
 
 			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
 			this.modal = $("#scene-transitions");
@@ -263,14 +275,25 @@ export class SceneTransition {
 				height: "100vh",
 			});
 		} else {
-			$("body").append(
-				`<div id="scene-transitions" class="scene-transitions">
-                    <div class="scene-transitions-bg">
-                    </div>
-                    <div class="scene-transitions-content">
-                    </div>
-                </div>`
-			);
+			if (showTransition) {
+				$("body").append(
+					`<div id="scene-transitions" class="scene-transitions">
+						<div class="scene-transitions-bg">
+						</div>
+						<div class="scene-transitions-content">
+						</div>
+					</div>`
+				);
+			} else {
+				$("#scene-transitions").append(
+					`<div id="scene-transitions" class="scene-transitions">
+						<div class="scene-transitions-bg">
+						</div>
+						<div class="scene-transitions-content">
+						</div>
+					</div>`
+				);
+			}
 
 			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
 			this.modal = $("#scene-transitions");
@@ -318,6 +341,10 @@ export class SceneTransition {
 			} else {
 				if (game.user?.isGM && !this.preview && this.options.sceneID) {
 					game.scenes?.get(this.options.sceneID)?.activate();
+				} else {
+					info(
+						`The scene is not been activated because isGm=${game.user?.isGM},isPreview=${this.preview},isSceneId=${this.options.sceneID}`
+					);
 				}
 			}
 			this.modal?.find(".scene-transitions-content").fadeIn();
@@ -328,7 +355,6 @@ export class SceneTransition {
 		if ((this.options.skippable && !this.preview) || (this.options.gmEndAll && game.user?.isGM && !this.preview)) {
 			this.modal.on("click", () => {
 				if (this.options.gmEndAll && game.user?.isGM) {
-					// game.socket.emit("module.scene-transitions", { action: "end" });
 					let options = new SceneTransitionOptions({ action: "end" });
 					options = {
 						...options,
@@ -368,14 +394,12 @@ export class SceneTransition {
 		return this;
 	}
 	getJournalText() {
-		// return this.journal.content;
 		//@ts-ignore
-		return retrieveFirstTextFromJournalId(this.journal?.id);
+		return retrieveFirstTextFromJournalId(this.journal?.id, undefined, false);
 	}
 	getJournalImg() {
-		// return this.journal.img;
 		//@ts-ignore
-		return retrieveFirstImageFromJournalId(this.journal?.id);
+		return retrieveFirstImageFromJournalId(this.journal?.id, undefined, false);
 	}
 	fadeAudio(audio, time) {
 		if (!audio.playing) {

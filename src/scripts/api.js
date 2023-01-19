@@ -43,12 +43,6 @@ const API = {
 		macro(options, showMe);
 	},
 	macro(options, showMe) {
-		// game.socket.emit("module.scene-transitions", options);
-		// if (showMe || options.gmEndAll) {
-		//     //force show on triggering window if gmEndAll is active
-		//     let activeTransition = new SceneTransition(false, options, undefined);
-		//     activeTransition.render();
-		// }
 		if (options.fromSocket) {
 			API.executeAction(options);
 		} else {

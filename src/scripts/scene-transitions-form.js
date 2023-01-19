@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants.js";
-import { warn } from "./lib/lib.js";
+import { warn, isVideo, getVideoType } from "./lib/lib.js";
 
 /**
  * Form controller for editing transitions
@@ -30,10 +30,41 @@ export class TransitionForm extends FormApplication {
 	 */
 	async getData(options) {
 		let context = this.transition.options;
-		context.contentHTML = await TextEditor.enrichHTML(this.transition.options.content, {
+		let sceneTransitionContent = await TextEditor.enrichHTML(this.transition.options.content, {
 			secrets: true,
 			async: true,
 		});
+
+		let sceneTransitionBg = ``;
+
+		if (isVideo(this.transition.options.bgImg)) {
+			sceneTransitionBg = `<div id="scene-transitions" class="scene-transitions preview">
+                    <div class="color-overlay"></div>
+                    <video class="scene-transitions-bg"
+						autoplay
+						${this.transition.options.bgLoop ? "loop" : ""}
+						${this.transition.options.bgMuted ? "muted" : ""}>
+                        <source src="${this.transition.options.bgImg}" type="${getVideoType(
+				this.transition.options.bgImg
+			)}">
+                    </video>
+					<div class="scene-transitions-content">
+						${sceneTransitionContent}
+					</div>
+                </div>`;
+		} else {
+			sceneTransitionBg = `<div id="scene-transitions" class="scene-transitions preview">
+                    <div class="scene-transitions-bg">
+						${this.transition.options.bgImg}
+                    </div>
+                    <div class="scene-transitions-content">
+						${sceneTransitionContent}
+                    </div>
+                </div>`;
+		}
+
+		context.sceneTransitionBgHTML = sceneTransitionBg;
+		context.contentHTML = sceneTransitionContent;
 		return context;
 	}
 	updatePreview() {
@@ -133,7 +164,6 @@ export class TransitionForm extends FormApplication {
 				compact: true,
 				destroyOnSave: false,
 				onSave: () => {
-					// this.saveEditor(name, { remove: false });
 					this._saveEditor(name, { remove: false });
 				},
 			}),
