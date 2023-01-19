@@ -220,6 +220,9 @@ export class SceneTransition {
 			return;
 		}
 
+		let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+		this.modal = $("#scene-transitions");
+
 		// https://www.youtube.com/watch?v=05ZHUuQVvJM
 		// https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
 		if (isVideo(this.options.bgImg)) {
@@ -253,8 +256,8 @@ export class SceneTransition {
 				);
 			}
 
-			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-			this.modal = $("#scene-transitions");
+			// let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+			// this.modal = $("#scene-transitions");
 			this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
 
 			this.modal.find(".scene-transitions-bg").css({
@@ -295,8 +298,8 @@ export class SceneTransition {
 				);
 			}
 
-			let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-			this.modal = $("#scene-transitions");
+			// let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+			// this.modal = $("#scene-transitions");
 			this.modal.css({
 				backgroundColor: this.options.bgColor,
 				zIndex: zIndex,

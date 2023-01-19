@@ -55,7 +55,7 @@ export class TransitionForm extends FormApplication {
 		} else {
 			sceneTransitionBg = `<div id="scene-transitions" class="scene-transitions preview">
                     <div class="scene-transitions-bg">
-						${this.transition.options.bgImg}
+					<img src="${this.transition.options.bgImg}" style="max-height: 100%;" >
                     </div>
                     <div class="scene-transitions-content">
 						${sceneTransitionContent}
