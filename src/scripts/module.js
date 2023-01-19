@@ -80,3 +80,5 @@ Hooks.on("renderJournalSheet", (journal) => {
 			</a>`).insertAfter("#" + journal.id + " > header > h4");
 	}
 });
+// TODO maybe one day...
+// Hooks.on("renderSceneConfig", (...args) => SceneTransition.renderSceneConfig(...args));

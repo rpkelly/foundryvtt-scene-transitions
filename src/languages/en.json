@@ -11,5 +11,6 @@
 	"scene-transitions.label.editTransition": "Edit Transition",
 	"scene-transitions.label.deleteTransition": "Delete Transition",
 	"scene-transitions.label.playTransition": "Play Transition",
-	"scene-transitions.label.playTransitionFromJournal": "Play Transition From Journal"
+	"scene-transitions.label.playTransitionFromJournal": "Play Transition From Journal",
+	"scene-transitions.scene.config.title": "Scene Transitions"
 }

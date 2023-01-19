@@ -83,6 +83,82 @@ export class SceneTransition {
 	/********************
 	 * Button functions for Foundry menus and window headers
 	 *******************/
+	/**
+	 * Handles the renderSceneConfig Hook
+	 *
+	 * Injects HTML into the scene config.
+	 *
+	 * @static
+	 * @param {SceneConfig} sceneConfig - The Scene config sheet
+	 * @param {jQuery} html - The HTML of the sheet
+	 * @param {object} data - Data associated with the sheet rendering
+	 * @memberof PinFixer
+	 */
+	static async renderSceneConfig(sceneConfig, html, data) {
+		const ambItem = html.find(".item[data-tab=ambience]");
+		const ambTab = html.find(".tab[data-tab=ambience]");
+
+		ambItem.after(`<a class="item" data-tab="scene-transitions">
+		<i class="fas fa-bookmark"></i> ${game.i18n.localize(`${CONSTANTS.MODULE_NAME}.scene.config.title`)}</a>`);
+		ambTab.after(await this.getSceneHtml(this.getSceneTemplateData(data)));
+		this.attachEventListeners(html);
+	}
+	/**
+	 * The HTML to be added to the scene configuration
+	 * in order to configure Pin Fixer for the scene.
+	 *
+	 * @param {PinFixSettings} settings - The Pin Fixer settings of the scene being configured.
+	 * @static
+	 * @return {string} The HTML to be injected
+	 * @memberof PinFixer
+	 */
+	static async getSceneHtml(settings) {
+		return await renderTemplate(`modules/${CONSTANTS.MODULE_NAME}/templates/transition-form.html`, settings);
+	}
+	/**
+	 * Retrieves the current data for the scene being configured.
+	 *
+	 * @static
+	 * @param {object} data - The data being passed to the scene config template
+	 * @return {PinFixSettings}
+	 * @memberof PinFixer
+	 */
+	static getSceneTemplateData(hookData) {
+		// scene.getFlag(CONSTANTS.MODULE_NAME, "transition")
+		let data = getProperty(hookData.data?.flags[CONSTANTS.MODULE_NAME], "transition.options");
+		if (!data) {
+			data = {
+				sceneID: "",
+				gmHide: true,
+				fontColor: "#777777",
+				fontSize: "28px",
+				bgImg: "",
+				bgPos: "center center",
+				bgLoop: true,
+				bgMuted: true,
+				bgSize: "cover",
+				bgColor: "#000000",
+				bgOpacity: 0.7,
+				fadeIn: 400,
+				delay: 4000,
+				fadeOut: 1000,
+				volume: 1.0,
+				audioLoop: true,
+				skippable: true,
+				gmEndAll: true,
+				showUI: false,
+				activateScene: false,
+				content: "",
+				audio: "",
+				fromSocket: false,
+				users: [],
+			};
+		}
+		// data.sliders = ["zoomFloor", "zoomCeil", "minScale", "maxScale", "hudScale"]
+		// 	.map(name => this.mapSliderData(data, name));
+
+		return data;
+	}
 	static addPlayTransitionBtn(idField) {
 		return {
 			name: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.playTransition`),
