@@ -320,8 +320,8 @@ export class TransitionForm extends FormApplication {
 		// Trigger the object update
 		const formData = this._getSubmitData(updateData);
 		this.transition.updateData(formData);
-		const scene = game.scenes?.get(this.transition.sceneID);
-		if (this.transition.sceneID != false) {
+		const scene = game.scenes?.get(this.transition.options.sceneID);
+		if (this.transition.options.sceneID != false) {
 			await scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
 		}
 		this._submitting = false;
