@@ -219,7 +219,8 @@ export class SceneTransition {
 		SceneTransition.activeTransition = this;
 		if (this.options.gmHide && game.user?.isGM) {
 			// && this.options.fromSocket
-			warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
+			// warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
+			info(`Option 'gmHide' is true and you are a GM so you don't see the transition`);
 			return;
 		}
 

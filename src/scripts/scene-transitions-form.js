@@ -1,4 +1,5 @@
 import CONSTANTS from "./constants.js";
+import { warn } from "./lib/lib.js";
 
 /**
  * Form controller for editing transitions
@@ -321,8 +322,11 @@ export class TransitionForm extends FormApplication {
 		const formData = this._getSubmitData(updateData);
 		this.transition.updateData(formData);
 		const scene = game.scenes?.get(this.transition.options.sceneID);
-		if (this.transition.options.sceneID != false) {
+		if (this.transition.options.sceneID && scene) {
 			await scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
+		} else {
+			warn(`No scene is been found with sceneId ${this.transition.options.sceneID}`);
+			return;
 		}
 		this._submitting = false;
 		this._state = priorState;
