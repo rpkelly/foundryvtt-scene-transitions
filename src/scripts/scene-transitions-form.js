@@ -166,7 +166,7 @@ export class TransitionForm extends FormApplication {
 		});
 		volumeSlider.on("change", (e) => {
 			//preview.find('audio')[0].volume = e.target.value
-			if (this.playingAudio.playing) {
+			if (this.playingAudio?.playing) {
 				this.playingAudio.gain.value = e.target.value;
 			}
 		});

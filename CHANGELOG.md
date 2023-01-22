@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.11
+
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/13
+
 ### 0.4.8-9-10
 
 - Fixed preview

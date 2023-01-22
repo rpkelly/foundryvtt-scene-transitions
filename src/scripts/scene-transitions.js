@@ -481,7 +481,7 @@ export class SceneTransition {
 		return retrieveFirstImageFromJournalId(this.journal?.id, undefined, false);
 	}
 	fadeAudio(audio, time) {
-		if (!audio.playing) {
+		if (!audio?.playing) {
 			return;
 		}
 		if (time == 0) {
