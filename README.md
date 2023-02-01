@@ -26,6 +26,7 @@ Allows GM to make simple transitions to show players before navigating to new sc
 
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
+## NOTE: This module is **under maintenance**, I have no plans to update or add features. However, I will try to fix any bugs as possible. Any contribution is welcome.
 
 ## Installation
 
@@ -63,7 +64,7 @@ Use the textbox sourcecode editor to add custom html and override default css.
 
 ## Api
 
-**MOTE:** From fvtt 9 to fvtt 10 the old macro `Transition.macro(options, showMe)` is been replaced with `game.modules.get('scene-transitions').api.macro(options, showMe)`
+**NOTE:** From fvtt 9 to fvtt 10 the old macro `Transition.macro(options, showMe)` is been replaced with `game.modules.get('scene-transitions').api.macro(options, showMe)`
 
 ```javascript
 game.modules.get('scene-transitions').api.macro({
