@@ -15,6 +15,7 @@ import {
 	warn,
 } from "./lib/lib.js";
 import { TransitionForm } from "./scene-transitions-form.js";
+import { registerSocket } from "./socket.js";
 import { sceneTransitionsSocket } from "./socket.js";
 export class SceneTransition {
 	/**
@@ -183,6 +184,9 @@ export class SceneTransition {
 					...options,
 					fromSocket: true,
 				};
+				if (!sceneTransitionsSocket) {
+					registerSocket();
+				}
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
@@ -278,6 +282,9 @@ export class SceneTransition {
 					...options,
 					fromSocket: true,
 				};
+				if (!sceneTransitionsSocket) {
+					registerSocket();
+				}
 				sceneTransitionsSocket.executeForEveryone("executeAction", options);
 			},
 		};
@@ -439,6 +446,9 @@ export class SceneTransition {
 						...options,
 						fromSocket: true,
 					};
+					if (!sceneTransitionsSocket) {
+						registerSocket();
+					}
 					sceneTransitionsSocket.executeForEveryone("executeAction", options);
 				}
 				this.destroy();
