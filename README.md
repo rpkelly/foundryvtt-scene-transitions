@@ -28,6 +28,8 @@ Allows GM to make simple transitions to show players before navigating to new sc
 
 ## NOTE: This module is **under maintenance**, I have no plans to update or add features. However, I will try to fix any bugs as possible. Any contribution is welcome.
 
+## NOTE: IF YOU NEED THE FOUNDRYVTT 9 PROJECT you can install the last verified release for 9 here: https://raw.githubusercontent.com/DM-miX/scene-transitions/master/module.json
+
 ## Installation
 
 It's always easiest to install modules from the in game add-on browser.
