@@ -24,7 +24,6 @@ Allows GM to make simple transitions to show players before navigating to new sc
 
 ![img3](/wiki/img/preview2.png)
 
-## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 ## NOTE: This module is **under maintenance**, I have no plans to update or add features. However, I will try to fix any bugs as possible. Any contribution is welcome.
 
