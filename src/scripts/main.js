@@ -1,4 +1,3 @@
-import { setApi } from "../module.js";
 import API from "./api.js";
 import CONSTANTS from "./constants.js";
 import {
@@ -19,7 +18,8 @@ export const initHooks = () => {
 };
 export const setupHooks = () => {
   // warn("Setup Hooks processing");
-  setApi(API);
+  // Set up API
+  game.modules.get(CONSTANTS.MODULE_NAME).api = API;
 };
 export const readyHooks = async () => {
   // warn("Ready Hooks processing");

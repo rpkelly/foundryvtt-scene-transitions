@@ -1,7 +1,7 @@
 import CONSTANTS from "./constants.js";
 import API from "./api.js";
 import { debug } from "./lib/lib.js";
-import { setSocket } from "../module.js";
+
 export let sceneTransitionsSocket;
 export function registerSocket() {
   debug("Registered sceneTransitionsSocket");
@@ -12,6 +12,6 @@ export function registerSocket() {
   sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_NAME);
   sceneTransitionsSocket.register("executeAction", (...args) => API.executeActionArr(...args));
   sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
-  setSocket(sceneTransitionsSocket);
+  game.modules.get(CONSTANTS.MODULE_NAME).socket = sceneTransitionsSocket;
   return sceneTransitionsSocket;
 }
