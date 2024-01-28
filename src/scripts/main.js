@@ -19,7 +19,7 @@ export const initHooks = () => {
 export const setupHooks = () => {
   // warn("Setup Hooks processing");
   // Set up API
-  game.modules.get(CONSTANTS.MODULE_NAME).api = API;
+  game.modules.get(CONSTANTS.MODULE_ID).api = API;
 };
 export const readyHooks = async () => {
   // warn("Ready Hooks processing");
@@ -73,7 +73,7 @@ Hooks.on("renderJournalSheet", (journal) => {
   if (
     game.user?.isGM &&
     $("#" + journal.id + " > header").find(".play-transition").length == 0 &&
-    game.settings.get(CONSTANTS.MODULE_NAME, "show-journal-header-transition") == true
+    game.settings.get(CONSTANTS.MODULE_ID, "show-journal-header-transition") == true
   ) {
     $(`<a class="play-transition
 			<i class="fas fa-play-circle"></i> Play as Transition

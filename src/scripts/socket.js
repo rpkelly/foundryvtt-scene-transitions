@@ -9,9 +9,9 @@ export function registerSocket() {
     return sceneTransitionsSocket;
   }
   //@ts-ignore
-  sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_NAME);
+  sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_ID);
   sceneTransitionsSocket.register("executeAction", (...args) => API.executeActionArr(...args));
   sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
-  game.modules.get(CONSTANTS.MODULE_NAME).socket = sceneTransitionsSocket;
+  game.modules.get(CONSTANTS.MODULE_ID).socket = sceneTransitionsSocket;
   return sceneTransitionsSocket;
 }

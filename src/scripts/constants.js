@@ -1,6 +1,6 @@
 const CONSTANTS = {
-  MODULE_NAME: "scene-transitions",
+  MODULE_ID: "scene-transitions",
   PATH: `modules/scene-transitions/`,
 };
-CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_NAME}/`;
+CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_ID}/`;
 export default CONSTANTS;

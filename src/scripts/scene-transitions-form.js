@@ -18,8 +18,8 @@ export class TransitionForm extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "scene-transitions-form",
-      title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.editTransition`),
-      template: `modules/${CONSTANTS.MODULE_NAME}/templates/transition-form.html`,
+      title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.label.editTransition`),
+      template: `modules/${CONSTANTS.MODULE_ID}/templates/transition-form.html`,
       classes: ["sheet", "scene-transitions-form"],
       height: 500,
       width: 436,
@@ -274,7 +274,7 @@ export class TransitionForm extends FormApplication {
     this.transition.updateData(formData);
     const scene = game.scenes?.get(this.transition.options.sceneID);
     if (this.transition.options.sceneID && scene) {
-      await scene.setFlag(CONSTANTS.MODULE_NAME, "transition", this.transition);
+      await scene.setFlag(CONSTANTS.MODULE_ID, "transition", this.transition);
     } else {
       warn(`No scene is been found with sceneId ${this.transition.options.sceneID}`);
       return;

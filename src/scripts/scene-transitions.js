@@ -100,7 +100,7 @@ export class SceneTransition {
     const ambTab = html.find(".tab[data-tab=ambience]");
 
     ambItem.after(`<a class="item" data-tab="scene-transitions">
-		<i class="fas fa-bookmark"></i> ${game.i18n.localize(`${CONSTANTS.MODULE_NAME}.scene.config.title`)}</a>`);
+		<i class="fas fa-bookmark"></i> ${game.i18n.localize(`${CONSTANTS.MODULE_ID}.scene.config.title`)}</a>`);
     ambTab.after(await this.getSceneHtml(this.getSceneTemplateData(data)));
     this.attachEventListeners(html);
   }
@@ -114,7 +114,7 @@ export class SceneTransition {
    * @memberof PinFixer
    */
   static async getSceneHtml(settings) {
-    return await renderTemplate(`modules/${CONSTANTS.MODULE_NAME}/templates/transition-form.html`, settings);
+    return await renderTemplate(`modules/${CONSTANTS.MODULE_ID}/templates/transition-form.html`, settings);
   }
   /**
    * Retrieves the current data for the scene being configured.
@@ -125,8 +125,8 @@ export class SceneTransition {
    * @memberof PinFixer
    */
   static getSceneTemplateData(hookData) {
-    // scene.getFlag(CONSTANTS.MODULE_NAME, "transition")
-    let data = getProperty(hookData.data?.flags[CONSTANTS.MODULE_NAME], "transition.options");
+    // scene.getFlag(CONSTANTS.MODULE_ID, "transition")
+    let data = getProperty(hookData.data?.flags[CONSTANTS.MODULE_ID], "transition.options");
     if (!data) {
       data = {
         sceneID: "",
@@ -162,11 +162,11 @@ export class SceneTransition {
   }
   static addPlayTransitionBtn(idField) {
     return {
-      name: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.playTransition`),
+      name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.label.playTransition`),
       icon: '<i class="fas fa-play-circle"></i>',
       condition: (li) => {
         const scene = game.scenes?.get(li.data(idField));
-        if (game.user?.isGM && typeof scene.getFlag(CONSTANTS.MODULE_NAME, "transition") == "object") {
+        if (game.user?.isGM && typeof scene.getFlag(CONSTANTS.MODULE_ID, "transition") == "object") {
           return true;
         } else {
           return false;
@@ -177,7 +177,7 @@ export class SceneTransition {
         game.scenes?.preload(sceneID, true);
         const scene = game.scenes?.get(li.data(idField));
         //@ts-ignore
-        let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
+        let transition = scene.getFlag(CONSTANTS.MODULE_ID, "transition");
         let options = transition.options;
         options.sceneID = sceneID;
         options = {
@@ -197,7 +197,7 @@ export class SceneTransition {
       icon: '<i class="fas fa-plus-square"></i>',
       condition: (li) => {
         const scene = game.scenes?.get(li.data(idField));
-        if (game.user?.isGM && !scene.getFlag(CONSTANTS.MODULE_NAME, "transition")) {
+        if (game.user?.isGM && !scene.getFlag(CONSTANTS.MODULE_ID, "transition")) {
           return true;
         } else {
           return false;
@@ -220,7 +220,7 @@ export class SceneTransition {
       icon: '<i class="fas fa-edit"></i>',
       condition: (li) => {
         const scene = game.scenes?.get(li.data(idField));
-        if (game.user?.isGM && scene.getFlag(CONSTANTS.MODULE_NAME, "transition")) {
+        if (game.user?.isGM && scene.getFlag(CONSTANTS.MODULE_ID, "transition")) {
           return true;
         } else {
           return false;
@@ -228,7 +228,7 @@ export class SceneTransition {
       },
       callback: (li) => {
         let scene = game.scenes?.get(li.data(idField));
-        let transition = scene.getFlag(CONSTANTS.MODULE_NAME, "transition");
+        let transition = scene.getFlag(CONSTANTS.MODULE_ID, "transition");
         let activeTransition = new SceneTransition(true, transition.options, undefined);
         activeTransition.render();
         new TransitionForm(activeTransition, undefined).render(true);
@@ -237,11 +237,11 @@ export class SceneTransition {
   }
   static addDeleteTransitionBtn(idField) {
     return {
-      name: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.deleteTransition`),
+      name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.label.deleteTransition`),
       icon: '<i class="fas fa-trash-alt"></i>',
       condition: (li) => {
         const scene = game.scenes?.get(li.data(idField));
-        if (game.user?.isGM && scene.getFlag(CONSTANTS.MODULE_NAME, "transition")) {
+        if (game.user?.isGM && scene.getFlag(CONSTANTS.MODULE_ID, "transition")) {
           return true;
         } else {
           return false;
@@ -249,13 +249,13 @@ export class SceneTransition {
       },
       callback: (li) => {
         let scene = game.scenes?.get(li.data(idField));
-        scene.unsetFlag(CONSTANTS.MODULE_NAME, "transition");
+        scene.unsetFlag(CONSTANTS.MODULE_ID, "transition");
       },
     };
   }
   static addPlayTransitionBtnJE(idField) {
     return {
-      name: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.label.playTransitionFromJournal`),
+      name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.label.playTransitionFromJournal`),
       icon: '<i class="fas fa-play-circle"></i>',
       condition: (li) => {
         if (game.user?.isGM) {

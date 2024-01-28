@@ -19,7 +19,7 @@ import CONSTANTS from "./scripts/constants.js";
 /* Initialize module					*/
 /* ------------------------------------ */
 Hooks.once("init", async () => {
-  // console.log(`${CONSTANTS.MODULE_NAME} | Initializing ${CONSTANTS.MODULE_NAME}`);
+  // console.log(`${CONSTANTS.MODULE_ID} | Initializing ${CONSTANTS.MODULE_ID}`);
   // Register custom module settings
   registerSettings();
   initHooks();
@@ -55,5 +55,5 @@ Hooks.once("ready", async () => {
 /* ------------------------------------ */
 
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
-  registerPackageDebugFlag(CONSTANTS.MODULE_NAME);
+  registerPackageDebugFlag(CONSTANTS.MODULE_ID);
 });
