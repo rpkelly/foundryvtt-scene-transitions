@@ -1,18 +1,12 @@
-/************************
- * Scene Transitions
- * Author @DM_miX since 0.0.8
- * Origianl author credit and big shout out to @WillS
- *************************/
 import API from "./api.js";
 import CONSTANTS from "./constants.js";
+import Logger from "./lib/Logger.js";
 import {
   getVideoType,
-  info,
   isVideo,
   retrieveFirstImageFromJournalId,
   retrieveFirstTextFromJournalId,
   SceneTransitionOptions,
-  warn,
 } from "./lib/lib.js";
 import { TransitionForm } from "./scene-transitions-form.js";
 import { registerSocket } from "./socket.js";
@@ -29,7 +23,7 @@ export class SceneTransition {
     if (optionsBackCompat) {
       optionsBackCompat.sceneID = options;
       options = optionsBackCompat;
-      warn(
+      Logger.warn(
         "sceneID and options have been combined into paramater 2 'new Transition(preview, options)' - update your macro asap"
       );
     }
@@ -268,7 +262,7 @@ export class SceneTransition {
         let id = li.data(idField);
         let journal = game.journal?.get(id)?.data;
         if (!journal) {
-          warn(`No journal is found`);
+          Logger.warn(`No journal is found`);
           return;
         }
         const content = retrieveFirstTextFromJournalId(id, undefined, false);
@@ -298,8 +292,8 @@ export class SceneTransition {
     SceneTransition.activeTransition = this;
     if (this.options.gmHide && game.user?.isGM) {
       // && this.options.fromSocket
-      // warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
-      info(`Option 'gmHide' is true and you are a GM so you don't see the transition`);
+      // Logger.warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
+      Logger.info(`Option 'gmHide' is true and you are a GM so you don't see the transition`);
       return;
     }
 
@@ -403,7 +397,7 @@ export class SceneTransition {
 
     if (this.options.audio) {
       if (game.audio.locked) {
-        info("Audio playback locked, cannot play " + this.options.audio);
+        Logger.info("Audio playback locked, cannot play " + this.options.audio);
       } else {
         let thisTransition = this;
         AudioHelper.play(
@@ -428,7 +422,7 @@ export class SceneTransition {
         if (game.user?.isGM && !this.preview && this.options.sceneID) {
           game.scenes?.get(this.options.sceneID)?.activate();
         } else {
-          info(
+          Logger.info(
             `The scene is not been activated because isGm=${game.user?.isGM},isPreview=${this.preview},isSceneId=${this.options.sceneID}`
           );
         }

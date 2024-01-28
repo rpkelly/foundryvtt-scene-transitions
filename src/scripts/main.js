@@ -1,15 +1,11 @@
 import API from "./api.js";
 import CONSTANTS from "./constants.js";
-import {
-  retrieveFirstImageFromJournalId,
-  retrieveFirstTextFromJournalId,
-  SceneTransitionOptions,
-  warn,
-} from "./lib/lib.js";
+import Logger from "./lib/Logger.js";
+import { retrieveFirstImageFromJournalId, retrieveFirstTextFromJournalId, SceneTransitionOptions } from "./lib/lib.js";
 import { SceneTransition } from "./scene-transitions.js";
 import { registerSocket, sceneTransitionsSocket } from "./socket.js";
 export const initHooks = () => {
-  // warn("Init Hooks processing");
+  // Logger.warn("Init Hooks processing");
   // setup all the hooks
   Hooks.once("socketlib.ready", registerSocket);
   registerSocket();
@@ -17,18 +13,18 @@ export const initHooks = () => {
   // SceneTransition.registerSockets();
 };
 export const setupHooks = () => {
-  // warn("Setup Hooks processing");
+  // Logger.warn("Setup Hooks processing");
   // Set up API
   game.modules.get(CONSTANTS.MODULE_ID).api = API;
 };
 export const readyHooks = async () => {
-  // warn("Ready Hooks processing");
+  // Logger.warn("Ready Hooks processing");
   $("body").on("click", ".play-transition", (e) => {
     let elements = $(e.target).parents(".journal-sheet").attr("id")?.split("-");
     let id = elements[1];
     let journal = game.journal?.get(id)?.data;
     if (!journal) {
-      warn(`No journal is found`);
+      Logger.warn(`No journal is found`);
       return;
     }
     const content = retrieveFirstTextFromJournalId(id, undefined, false);

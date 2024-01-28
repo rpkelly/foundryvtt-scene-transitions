@@ -1,5 +1,6 @@
 import CONSTANTS from "./constants.js";
-import { warn, isVideo, getVideoType } from "./lib/lib.js";
+import Logger from "./lib/Logger.js";
+import { isVideo, getVideoType } from "./lib/lib.js";
 
 /**
  * Form controller for editing transitions
@@ -276,7 +277,7 @@ export class TransitionForm extends FormApplication {
     if (this.transition.options.sceneID && scene) {
       await scene.setFlag(CONSTANTS.MODULE_ID, "transition", this.transition);
     } else {
-      warn(`No scene is been found with sceneId ${this.transition.options.sceneID}`);
+      Logger.warn(`No scene is been found with sceneId ${this.transition.options.sceneID}`);
       return;
     }
     this._submitting = false;

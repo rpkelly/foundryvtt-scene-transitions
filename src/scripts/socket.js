@@ -1,10 +1,10 @@
 import CONSTANTS from "./constants.js";
 import API from "./api.js";
-import { debug } from "./lib/lib.js";
+import Logger from "./lib/Logger.js";
 
 export let sceneTransitionsSocket;
 export function registerSocket() {
-  debug("Registered sceneTransitionsSocket");
+  Logger.debug("Registered sceneTransitionsSocket");
   if (sceneTransitionsSocket) {
     return sceneTransitionsSocket;
   }

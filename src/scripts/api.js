@@ -1,10 +1,10 @@
-import { error } from "./lib/lib.js";
+import Logger from "./lib/Logger.js";
 import { SceneTransition } from "./scene-transitions.js";
 import { sceneTransitionsSocket } from "./socket.js";
 const API = {
   async executeActionArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error("executeActionArr | inAttributes must be of type array");
+      throw Logger.error("executeActionArr | inAttributes must be of type array");
     }
     let [options] = inAttributes;
     options = {
@@ -32,7 +32,7 @@ const API = {
   },
   async macroArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error("macroArr | inAttributes must be of type array");
+      throw Logger.error("macroArr | inAttributes must be of type array");
     }
     let [options, showMe] = inAttributes;
     options = {
