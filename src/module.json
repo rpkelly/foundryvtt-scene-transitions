@@ -2,7 +2,7 @@
   "id": "scene-transitions",
   "title": "Scene Transitions",
   "description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "authors": [
     {
       "name": "DM_miX",
@@ -66,14 +66,14 @@
     {
       "name": "scene-transitions-macros",
       "label": "Scene Transitions Macros",
+      "type": "Macro",
       "path": "packs/scene-transitions-macros.db",
+      "module": "scene-transitions",
       "private": true,
       "ownership": {
         "PLAYER": "LIMITED",
         "ASSISTANT": "OWNER"
-      },
-      "type": "Macro",
-      "module": "scene-transitions"
+      }
     }
   ],
   "systems": [],
@@ -87,8 +87,8 @@
   },
   "manifestPlusVersion": "1.2.1",
   "url": "https://github.com/p4535992/foundryvtt-scene-transitions",
-  "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.0/module.json",
-  "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.0/module.zip",
+  "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.1/module.json",
+  "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.1/module.zip",
   "readme": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/README.md",
   "changelog": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/CHANGELOG.md",
   "bugs": "https://github.com/p4535992/foundryvtt-scene-transitions/issues",
