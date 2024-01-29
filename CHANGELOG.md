@@ -1,3 +1,10 @@
+### 0.5.2
+
+- Try to Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/25 ty to @Larkinabout
+- Try to Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/26 ty to @Larkinabout
+- Apply the PR https://github.com/p4535992/foundryvtt-scene-transitions/pull/29 ty to @Larkinabout
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/24
+
 ### 0.5.1 
 
 - Cleanup up the code nothing more
