@@ -14,21 +14,18 @@ const API = {
     this.executeAction(options);
   },
   executeAction(options) {
-    if (options.action) {
-      switch (options.action) {
-        case "end": {
-          SceneTransition.activeTransition.destroy();
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-    } else {
-      // Run a transition
-      let activeTransition = new SceneTransition(false, options, undefined);
-      activeTransition.render();
+    let activeTransition = SceneTransition.activeTransition;
+
+    if (activeTransition) {
+      SceneTransition.activeTransition.destroy(true);
     }
+
+    if (options?.action == "end") {
+      return;
+    }
+
+    activeTransition = new SceneTransition(false, options, undefined);
+    activeTransition.render();
   },
   async macroArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {

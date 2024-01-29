@@ -35,7 +35,7 @@ export class SceneTransition {
     };
     // this.sceneID = this.options.sceneID;
     this.journal = null;
-    this.modal = null;
+    this.sceneTransitionsElement = null;
     this.destroying = false;
     // if (SceneTransition.hasNewAudioAPI) {
     this.playingAudio = new Sound("");
@@ -283,13 +283,14 @@ export class SceneTransition {
       },
     };
   }
+
   /**
    * The Magic happens here
    * @returns
    */
   render() {
-    const showTransition = !this.preview;
     SceneTransition.activeTransition = this;
+
     if (this.options.gmHide && game.user?.isGM) {
       // && this.options.fromSocket
       // Logger.warn(`Cannot play the transaction check out the options : ` + JSON.stringify(this.options));
@@ -297,158 +298,216 @@ export class SceneTransition {
       return;
     }
 
-    let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-    this.modal = $("#scene-transitions");
+    this.options.zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
 
     // https://www.youtube.com/watch?v=05ZHUuQVvJM
     // https://gist.github.com/brickbones/16818b460aede0639e0120f6b013b69e
-    if (isVideo(this.options.bgImg)) {
-      if (showTransition) {
-        $("body").append(
-          `<div id="scene-transitions" class="scene-transitions">
-						<div class="color-overlay"></div>
-						<video class="scene-transitions-bg"
-							autoplay
-							${this.options.bgLoop ? "loop" : ""}
-							${this.options.bgMuted ? "muted" : ""}>
-							<source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
-						</video>
-						<div class="scene-transitions-content">
-						</div>
-					</div>`
-        );
-      } else {
-        $("#scene-transitions").append(
-          `
-						<div class="color-overlay"></div>
-						<video class="scene-transitions-bg"
-							autoplay
-							${this.options.bgLoop ? "loop" : ""}
-							${this.options.bgMuted ? "muted" : ""}>
-							<source src="${this.options.bgImg}" type="${getVideoType(this.options.bgImg)}">
-						</video>
-						<div class="scene-transitions-content">
-						</div>
-					`
-        );
-      }
 
-      // let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-      // this.modal = $("#scene-transitions");
-      this.modal.css({ backgroundColor: this.options.bgColor, zIndex: zIndex });
-
-      this.modal.find(".scene-transitions-bg").css({
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-      });
-
-      this.modal.find(".color-overlay").css({
-        opacity: this.options.bgOpacity,
-        backgroundColor: this.options.bgColor,
-        zIndex: zIndex,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100vh",
-      });
-    } else {
-      if (showTransition) {
-        $("body").append(
-          `<div id="scene-transitions" class="scene-transitions">
-						<div class="scene-transitions-bg">
-						</div>
-						<div class="scene-transitions-content">
-						</div>
-					</div>`
-        );
-      } else {
-        $("#scene-transitions").append(
-          `<div id="scene-transitions" class="scene-transitions">
-						<div class="scene-transitions-bg">
-						</div>
-						<div class="scene-transitions-content">
-						</div>
-					</div>`
-        );
-      }
-
-      // let zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
-      // this.modal = $("#scene-transitions");
-      this.modal.css({
-        backgroundColor: this.options.bgColor,
-        zIndex: zIndex,
-      });
-
-      this.modal.find(".scene-transitions-bg").css({
-        backgroundImage: "url(" + this.options.bgImg + ")",
-        opacity: this.options.bgOpacity,
-        backgroundSize: this.options.bgSize,
-        backgroundPosition: this.options.bgPos,
-      });
+    // Destroy existing scene transition
+    if (this.sceneTransitionsElement) {
+      this.destroy(true);
     }
 
-    this.modal
-      .find(".scene-transitions-content")
-      .css({ color: this.options.fontColor, fontSize: this.options.fontSize, zIndex: 5000 })
-      .html(this.options.content);
+    // Build new scene transition
+    this.sceneTransitionsElement = this.#appendSceneTransitionsElement();
+    this.#appendBackgroundElement();
+    const contentElement = this.#appendContentElement();
+    this.#addOnClick();
 
     if (this.options.audio) {
-      if (game.audio.locked) {
-        Logger.info("Audio playback locked, cannot play " + this.options.audio);
-      } else {
-        let thisTransition = this;
-        AudioHelper.play(
-          {
-            src: this.options.audio,
-            volume: this.options.volume,
-            loop: String(this.options.audioLoop) === "true" ? true : false,
-          },
-          false
-        ).then(function (audio) {
-          audio.on("start", (a) => {});
-          audio.on("stop", (a) => {});
-          audio.on("end", (a) => {});
-          thisTransition.playingAudio = audio; // a ref for fading later
-        });
-      }
+      this.#playAudio();
     }
-    this.modal.fadeIn(this.options.fadeIn, () => {
-      if (this.options.activateScene && this.options.sceneID) {
-        game.scenes?.get(this.options.sceneID)?.activate();
-      } else {
-        if (game.user?.isGM && !this.preview && this.options.sceneID) {
-          game.scenes?.get(this.options.sceneID)?.activate();
-        } else {
-          Logger.info(
-            `The scene is not been activated because isGm=${game.user?.isGM},isPreview=${this.preview},isSceneId=${this.options.sceneID}`
-          );
-        }
-      }
-      this.modal?.find(".scene-transitions-content").fadeIn();
-      if (!this.preview) {
-        this.setDelay();
-      }
+
+    this.#executeFadeIn(contentElement);
+  }
+
+  /**
+   * Append the scene transitions element to the body
+   * @returns {object} The scene transitions element
+   */
+  #appendSceneTransitionsElement() {
+    const element = document.createElement("div");
+    element.setAttribute("id", "scene-transitions");
+    element.setAttribute("class", "scene-transitions");
+    document.body.appendChild(element);
+    return element;
+  }
+
+  /**
+   * Append the background element to the main element
+   * @private
+   */
+  #appendBackgroundElement() {
+    if (isVideo(this.options.bgImg)) {
+      this.#appendVideoBackgroundElement();
+    } else {
+      this.#appendStaticBackgroundElement();
+    }
+
+    // Assign CSS to the main element
+    Object.assign(this.sceneTransitionsElement.style, {
+      backgroundColor: this.options.bgColor,
+      zIndex: this.options.zIndex,
     });
-    if ((this.options.skippable && !this.preview) || (this.options.gmEndAll && game.user?.isGM && !this.preview)) {
-      this.modal.on("click", () => {
-        if (this.options.gmEndAll && game.user?.isGM) {
-          let options = new SceneTransitionOptions({ action: "end" });
-          options = {
-            ...options,
-            fromSocket: true,
-          };
-          if (!sceneTransitionsSocket) {
-            registerSocket();
-          }
-          sceneTransitionsSocket.executeForEveryone("executeAction", options);
+  }
+
+  /**
+   * Append the video background element to the main element
+   * @private
+   */
+  #appendVideoBackgroundElement() {
+    // Color Overlay Element
+    const colorOverlayElement = document.createElement("div");
+    colorOverlayElement.setAttribute("class", "color-overlay");
+    colorOverlayElement.style.cssText = `opacity: ${this.options.bgOpacity},
+      backgroundColor: ${this.options.bgColor},
+      zIndex: ${this.options.zIndex},
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100vh"
+      `;
+    this.sceneTransitionsElement.appendChild(colorOverlayElement);
+
+    // Video Element
+    const videoElement = document.createElement("video");
+    videoElement.setAttribute("class", "scene-transitions-bg");
+    videoElement.setAttribute("autoplay", "");
+    if (this.options.bgLoop) {
+      videoElement.setAttribute("loop", "");
+    }
+    if (this.options.bgMuted) {
+      videoElement.setAttribute("muted", "");
+    }
+    Object.assign(videoElement.style, {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+    });
+    const sourceElement = document.createElement("source");
+    sourceElement.setAttribute("src", this.options.bgImg);
+    sourceElement.setAttribute("type", getVideoType(this.options.bgImg));
+    videoElement.appendChild(sourceElement);
+    this.sceneTransitionsElement.appendChild(videoElement);
+  }
+
+  /**
+   * Append the static background element to the main element
+   * @private
+   */
+  #appendStaticBackgroundElement() {
+    const backgroundElement = document.createElement("div");
+    backgroundElement.setAttribute("class", "scene-transitions-bg");
+    Object.assign(backgroundElement.style, {
+      backgroundImage: `url(${this.options.bgImg})`,
+      opacity: this.options.bgOpacity,
+      backgroundSize: this.options.bgSize,
+      backgroundPosition: this.options.bgPos,
+    });
+    this.sceneTransitionsElement.appendChild(backgroundElement);
+  }
+
+  /**
+   * Append the content element to the main element
+   * @private
+   */
+  #appendContentElement() {
+    const contentElement = document.createElement("div");
+    contentElement.setAttribute("class", "scene-transitions-content");
+    Object.assign(contentElement.style, {
+      color: this.options.fontColor,
+      fontSize: this.options.fontSize,
+      zIndex: 5000,
+    });
+    contentElement.innerHTML = this.options.content;
+    this.sceneTransitionsElement.appendChild(contentElement);
+
+    return contentElement;
+  }
+
+  /**
+   * Add on click listener to the main element
+   */
+  #addOnClick() {
+    const onClick = () => {
+      if (game.user?.isGM && this.options.gmEndAll) {
+        let options = new SceneTransitionOptions({ action: "end" });
+        options = {
+          ...options,
+          fromSocket: true,
+        };
+        if (!sceneTransitionsSocket) {
+          registerSocket();
         }
-        this.destroy();
+        sceneTransitionsSocket.executeForEveryone("executeAction", options);
+      }
+      this.destroy();
+    };
+
+    if (game.user?.isGM || this.options.skippable) {
+      $(this.sceneTransitionsElement).on("click", onClick);
+    }
+  }
+
+  /**
+   * Play the audio
+   * @private
+   */
+  #playAudio() {
+    if (game.audio.locked) {
+      Logger.info("Audio playback locked, cannot play " + this.options.audio);
+    } else {
+      let thisTransition = this;
+      AudioHelper.play(
+        {
+          src: this.options.audio,
+          volume: this.options.volume,
+          loop: String(this.options.audioLoop) === "true" ? true : false,
+        },
+        false
+      ).then(function (audio) {
+        audio.on("start", (a) => {});
+        audio.on("stop", (a) => {});
+        audio.on("end", (a) => {});
+        thisTransition.playingAudio = audio; // a ref for fading later
       });
     }
   }
+
+  /**
+   * Execute the fade in of the main element
+   * @private
+   * @param {object} contentElement The content element
+   */
+  #executeFadeIn(contentElement) {
+    const activateScene = () => {
+      if (!this.options.preview) {
+        const scene = game.scenes?.get(this.options.sceneID);
+
+        if (game.user?.isGM && !scene) {
+          Logger.info(`The scene has not been activated as scene [${this.options.sceneID}] was not found`);
+          return;
+        }
+
+        if (this.options.activateScene) {
+          scene.activate();
+        } else if (game.user?.isGM) {
+          scene.view();
+        }
+      }
+
+      $(contentElement).fadeIn();
+
+      if (!this.options.preview) {
+        this.setDelay();
+      }
+    };
+
+    $(this.sceneTransitionsElement).fadeIn(this.options.fadeIn, activateScene);
+  }
+
   setDelay() {
     this.timeout = setTimeout(
       function () {
@@ -457,6 +516,7 @@ export class SceneTransition {
       this.options.delay
     );
   }
+
   destroy(instant = false) {
     if (this.destroying == true) return;
     this.destroying = true;
@@ -467,15 +527,17 @@ export class SceneTransition {
       this.fadeAudio(this.playingAudio, time);
     }
 
-    this.modal?.fadeOut(time, () => {
-      this.modal?.remove();
-      this.modal = null;
+    $(this.sceneTransitionsElement)?.fadeOut(time, () => {
+      this.sceneTransitionsElement.remove();
+      this.sceneTransitionsElement = null;
     });
   }
+
   updateData(newData) {
     this.options = mergeObject(this.options, newData);
     return this;
   }
+
   getJournalText() {
     //@ts-ignore
     return retrieveFirstTextFromJournalId(this.journal?.id, undefined, false);
