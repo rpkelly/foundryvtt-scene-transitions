@@ -97,6 +97,37 @@ game.modules.get('scene-transitions').api.macro({
 
 **NOTE:** To play a transition without a scene activation, simple pass `false` as the sceneID in the data object.
 
+# Build
+
+## Install all packages
+
+```bash
+npm install
+```
+
+### dev
+
+`dev` will let you develop you own code with hot reloading on the browser
+
+```bash
+npm run dev
+```
+
+### build
+
+`build` will build and set up a symlink between `dist` and your `dataPath`.
+
+```bash
+npm run build
+```
+
+### prettier-format
+
+`prettier-format` launch the prettier plugin based on the configuration [here](./.prettierrc)
+
+```bash
+npm run-script prettier-format
+```
 
 ## [Changelog](./CHANGELOG.md)
 
@@ -107,10 +138,6 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 ## License
 
 This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
-
-## Acknowledgements
-
-Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
 ## Credit
 
