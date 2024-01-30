@@ -30,7 +30,6 @@ export class SceneTransition {
     }
     this.preview = preview;
     this.options = {
-      //@ts-ignore
       ...this.constructor.defaultOptions,
       ...options,
     };
@@ -73,7 +72,7 @@ export class SceneTransition {
     });
   }
   // static get hasNewAudioAPI() {
-  // 	//@ts-ignore
+  //
   // 	return typeof Howl != "undefined" ? false : true;
   // }
   /********************
@@ -171,7 +170,7 @@ export class SceneTransition {
         let sceneID = li.data(idField);
         game.scenes?.preload(sceneID, true);
         const scene = game.scenes?.get(li.data(idField));
-        //@ts-ignore
+
         let transition = scene.getFlag(CONSTANTS.MODULE_ID, "transition");
         let options = transition.options;
         options.sceneID = sceneID;
@@ -542,11 +541,9 @@ export class SceneTransition {
   }
 
   getJournalText() {
-    //@ts-ignore
     return retrieveFirstTextFromJournalId(this.journal?.id, undefined, false);
   }
   getJournalImg() {
-    //@ts-ignore
     return retrieveFirstImageFromJournalId(this.journal?.id, undefined, false);
   }
   fadeAudio(audio, time) {

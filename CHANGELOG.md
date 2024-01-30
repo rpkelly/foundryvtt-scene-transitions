@@ -1,3 +1,7 @@
+### 0.5.3 
+
+- Apply the pr: https://github.com/p4535992/foundryvtt-scene-transitions/pull/30 ty to @Larkinabout
+
 ### 0.5.2
 
 - Try to Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/25 ty to @Larkinabout

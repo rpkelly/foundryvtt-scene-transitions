@@ -39,9 +39,8 @@ export const registerSettings = function () {
 
 class ResetSettingsDialog extends FormApplication {
   constructor(...args) {
-    //@ts-ignore
     super(...args);
-    //@ts-ignore
+
     return new Dialog({
       title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.resetsettings.title`),
       content:
@@ -77,7 +76,6 @@ async function applyDefaultSettings() {
   // }
   const settings2 = otherSettings(true);
   for (const [settingName, settingValue] of Object.entries(settings2)) {
-    //@ts-ignore
     await game.settings.set(CONSTANTS.MODULE_ID, settingName, settingValue.default);
   }
 }

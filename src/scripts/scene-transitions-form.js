@@ -162,7 +162,6 @@ export class TransitionForm extends FormApplication {
       this.close();
     });
     html.find('button[name="save"]').on("click", () => {
-      //@ts-ignore
       this._onSubmit();
     });
     volumeSlider.on("change", (e) => {
@@ -243,16 +242,15 @@ export class TransitionForm extends FormApplication {
 		}
 		*/
   }
-  //@ts-ignore
+
   close() {
     // if (SceneTransition.hasNewAudioAPI) {
     this.transition.playingAudio.stop();
     // }
     super.close();
   }
-  //@ts-ignore
+
   async _onSubmit(event, { updateData = null, preventClose = false, preventRender = false } = {}) {
-    //@ts-ignore
     const states = this.constructor.RENDER_STATES;
     if (this._state === states.NONE || !this.options.editable || this._submitting) {
       return false;
@@ -283,7 +281,6 @@ export class TransitionForm extends FormApplication {
     this._submitting = false;
     this._state = priorState;
     if (this.options.closeOnSubmit && !preventClose) {
-      //@ts-ignore
       this.close({ submit: false });
     }
     return formData;

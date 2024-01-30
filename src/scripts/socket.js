@@ -8,7 +8,7 @@ export function registerSocket() {
   if (sceneTransitionsSocket) {
     return sceneTransitionsSocket;
   }
-  //@ts-ignore
+
   sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_ID);
   sceneTransitionsSocket.register("executeAction", (...args) => API.executeActionArr(...args));
   sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
