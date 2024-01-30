@@ -1,5 +1,5 @@
 import API from "./api.js";
-import CONSTANTS from "./constants.js";
+import { CONSTANTS } from "./constants.js";
 import Logger from "./lib/Logger.js";
 import {
   getVideoType,
@@ -11,6 +11,7 @@ import {
 import { TransitionForm } from "./scene-transitions-form.js";
 import { registerSocket } from "./socket.js";
 import { sceneTransitionsSocket } from "./socket.js";
+import { Utils } from "./utils.js";
 export class SceneTransition {
   /**
    *
@@ -288,7 +289,7 @@ export class SceneTransition {
    * The Magic happens here
    * @returns
    */
-  render() {
+  async render() {
     SceneTransition.activeTransition = this;
 
     if (this.options.gmHide && game.user?.isGM) {
@@ -310,7 +311,7 @@ export class SceneTransition {
 
     // Build new scene transition
     this.sceneTransitionsElement = this.#appendSceneTransitionsElement();
-    this.#appendBackgroundElement();
+    await this.#appendBackgroundElement();
     const contentElement = this.#appendContentElement();
     this.#addOnClick();
 
@@ -337,9 +338,9 @@ export class SceneTransition {
    * Append the background element to the main element
    * @private
    */
-  #appendBackgroundElement() {
+  async #appendBackgroundElement() {
     if (isVideo(this.options.bgImg)) {
-      this.#appendVideoBackgroundElement();
+      await this.#appendVideoBackgroundElement();
     } else {
       this.#appendStaticBackgroundElement();
     }
@@ -355,19 +356,23 @@ export class SceneTransition {
    * Append the video background element to the main element
    * @private
    */
-  #appendVideoBackgroundElement() {
+  async #appendVideoBackgroundElement() {
+    const video = await Utils.preloadVideoMetadata(this.options.bgImg);
+    this.options.delay = Utils.convertSecondsToMilliseconds(video.duration);
+
     // Color Overlay Element
     const colorOverlayElement = document.createElement("div");
     colorOverlayElement.setAttribute("class", "color-overlay");
-    colorOverlayElement.style.cssText = `opacity: ${this.options.bgOpacity},
-      backgroundColor: ${this.options.bgColor},
-      zIndex: ${this.options.zIndex},
+    Object.assign(colorOverlayElement.style, {
+      opacity: this.options.bgOpacity,
+      backgroundColor: this.options.bgColor,
+      zIndex: this.options.zIndex,
       position: "absolute",
       top: 0,
       left: 0,
       width: "100%",
-      height: "100vh"
-      `;
+      height: "100vh",
+    });
     this.sceneTransitionsElement.appendChild(colorOverlayElement);
 
     // Video Element
@@ -497,13 +502,11 @@ export class SceneTransition {
           scene.view();
         }
       }
-
-      $(contentElement).fadeIn();
-
-      if (!this.options.preview) {
-        this.setDelay();
-      }
     };
+
+    $(contentElement).fadeIn();
+
+    this.setDelay();
 
     $(this.sceneTransitionsElement).fadeIn(this.options.fadeIn, activateScene);
   }

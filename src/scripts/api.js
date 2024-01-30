@@ -17,7 +17,7 @@ const API = {
     let activeTransition = SceneTransition.activeTransition;
 
     if (activeTransition) {
-      SceneTransition.activeTransition.destroy(true);
+      activeTransition.destroy(true);
     }
 
     if (options?.action == "end") {
