@@ -114,6 +114,7 @@ export function stripQueryStringAndHashFromPath(url) {
   }
   return myUrl;
 }
+
 export function retrieveFirstImageFromJournalId(id, pageId, noDefault) {
   const journalEntry = game.journal.get(id);
   let firstImage = undefined;
@@ -207,12 +208,12 @@ export class SceneTransitionOptions {
   constructor(options) {
     this.action = options.action || "";
     this.sceneID = options.sceneID || "";
-    this.gmHide = isBoolean(options.gmHide) ? options.gmHide : true;
+    this.gmHide = isBoolean(options.gmHide) ? options.gmHide : false;
     this.fontColor = options.fontColor || "#777777";
     this.fontSize = options.fontSize || "28px";
     this.bgImg = options.bgImg || "";
     this.bgPos = options.bgPos || "center center";
-    this.bgLoop = isBoolean(options.bgLoop) ? options.bgLoop : true;
+    this.bgLoop = isBoolean(options.bgLoop) ? options.bgLoop : false;
     this.bgMuted = isBoolean(options.bgMuted) ? options.bgMuted : true;
     this.bgSize = options.bgSize || "cover";
     this.bgColor = options.bgColor || "#000000";

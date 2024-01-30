@@ -1,4 +1,4 @@
-import CONSTANTS from "./constants.js";
+import { CONSTANTS } from "./constants.js";
 import Logger from "./lib/Logger.js";
 import { isVideo, getVideoType } from "./lib/lib.js";
 

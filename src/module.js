@@ -12,9 +12,9 @@
 // Import JavaScript modules
 // Import TypeScript modules
 import { registerSettings } from "./scripts/settings.js";
-import { initHooks, readyHooks, setupHooks } from "./scripts/main.js";
+import { initHooks, setupHooks } from "./scripts/main.js";
 import "./scripts/lib/lib.js";
-import CONSTANTS from "./scripts/constants.js";
+import { CONSTANTS } from "./scripts/constants.js";
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
@@ -48,7 +48,6 @@ Hooks.once("ready", async () => {
   // 	if (game.modules.get("socketLib")) word = "activate";
   // 	throw error(`Requires the 'socketLib' module. Please ${word} it.`);
   // }
-  readyHooks();
 });
 /* ------------------------------------ */
 /* Other Hooks							*/
