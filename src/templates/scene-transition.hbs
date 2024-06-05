@@ -1,0 +1,18 @@
+<div id="scene-transitions" class="scene-transitions" style="background-color:{{bgColor}}; z-index:{{zIndex}};">
+    {{#if showCloseButton}}
+    <button type="button" id="scene-transitions-close-button" data-tooltip="{{localize "scene-transitions.endSceneTransition"}}" data-action="close">
+        <i class="fas fa-xmark"></i>
+    </button>
+    {{/if}}
+    {{#if isVideo}}
+    <div class="color-overlay" style="opacity:{{bgOpacity}}; background-color:{{bgColor}}; z-index:{{zIndex}};"></div>
+    <video class="scene-transitions-video scene-transitions-bg" autoplay{{#if bgLoop}} loop{{/if}}{{#if bgMuted}}muted{{/if}}>
+        <source src="{{bgImg}}" type="{{sourceType}}">
+    </video>
+    {{else}}
+    <div class="scene-transitions-bg" style="background-image:url({{bgImg}}); opacity:{{bgOpacity}}; background-size:{{bgSize}}; background-position:{{bgPos}};"></div>
+    {{/if}}
+    <div class="scene-transitions-content" style="color:{{fontColor}}; font-size:{{fontSize}}px">
+        {{{content}}}
+    </div>
+</div>

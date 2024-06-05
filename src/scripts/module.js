@@ -1,37 +1,25 @@
 import API from "./api.js";
-import { CONSTANTS } from "./constants.js";
-import Logger from "./lib/Logger.js";
-import { SceneTransitionOptions } from "./lib/lib.js";
-import { SceneTransition } from "./scene-transitions.js";
+import CONSTANTS from "./constants.js";
+import { registerSettings } from "./settings.js";
 import { registerSocket, sceneTransitionsSocket } from "./socket.js";
-import { Utils } from "./utils.js";
+import { SceneTransitionOptions } from "./scene-transition-options.js";
+import { SceneTransition } from "./scene-transition.js";
 
-export const initHooks = () => {
-  // Logger.warn("Init Hooks processing");
-  // setup all the hooks
-  Hooks.once("socketlib.ready", registerSocket);
+Hooks.once("init", async () => {
+  registerSettings();
   registerSocket();
-  // SceneTransition.registerSettings();
-  // SceneTransition.registerSockets();
-};
+});
 
-export const setupHooks = () => {
-  // Logger.warn("Setup Hooks processing");
-  // Set up API
-  game.modules.get(CONSTANTS.MODULE_ID).api = API;
-};
-
-Hooks.on("closeTransitionForm", (form) => {
-  let activeSceneTransition = form.object;
-  activeSceneTransition.destroy(true);
-  clearInterval(form.interval);
+Hooks.once("setup", () => {
+  game.modules.get(CONSTANTS.MODULE.ID).api = API;
+});
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
+  registerPackageDebugFlag(CONSTANTS.MODULE.ID);
 });
 
 /********************
  * Adds menu option to Scene Nav and Directory
  *******************/
-//Credit to Winks' Everybody Look Here for the code to add menu option to Scene Nav
-
 Hooks.on("getSceneNavigationContext", (html, contextOptions) =>
   addContextButtons("getSceneNavigationContext", contextOptions)
 );
@@ -44,7 +32,7 @@ Hooks.on("getJournalDirectoryEntryContext", (html, contextOptions) =>
 Hooks.on("renderJournalSheet", (journal) => addJournalButton(journal));
 
 /**
- *
+ * Add Create, Edit, Delete, Play context buttons
  * @param {string} hookName      The hook name
  * @param {array} contextOptions The context options
  */
@@ -75,7 +63,7 @@ function addJournalButton(journal) {
 
   if (!game.user?.isGM) return;
 
-  const showJournalHeaderSetting = game.settings.get(CONSTANTS.MODULE_ID, CONSTANTS.SETTINGS.SHOW_JOURNAL_HEADER);
+  const showJournalHeaderSetting = game.settings.get(CONSTANTS.MODULE.ID, CONSTANTS.SETTING.SHOW_JOURNAL_HEADER);
   if (!showJournalHeaderSetting) return;
 
   const header = journal.element[0].querySelector("header");
@@ -137,6 +125,3 @@ function addJournalButton(journal) {
     onClickJournalButton(page);
   });
 }
-
-// TODO maybe one day...
-// Hooks.on("renderSceneConfig", (...args) => SceneTransition.renderSceneConfig(...args));

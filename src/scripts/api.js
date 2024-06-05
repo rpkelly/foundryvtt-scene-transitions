@@ -1,80 +1,78 @@
-import Logger from "./lib/Logger.js";
-import { SceneTransition } from "./scene-transitions.js";
+import Logger from "./logger.js";
+import { SceneTransition } from "./scene-transition.js";
 import { sceneTransitionsSocket } from "./socket.js";
-const API = {
-  async executeActionArr(...inAttributes) {
-    if (!Array.isArray(inAttributes)) {
-      throw Logger.error("executeActionArr | inAttributes must be of type array");
-    }
-    let [options] = inAttributes;
-    options = {
-      ...options,
-      fromSocket: true,
-    };
-    this.executeAction(options);
-  },
-  executeAction(options) {
-    let activeTransition = SceneTransition.activeTransition;
 
-    if (activeTransition) {
-      activeTransition.destroy(true);
-    }
+async function executeActionArr(...inAttributes) {
+  if (!Array.isArray(inAttributes)) {
+    throw Logger.error("executeActionArr | inAttributes must be of type array");
+  }
+  let [options] = inAttributes;
+  options = {
+    ...options,
+    fromSocket: true,
+  };
+  this.executeAction(options);
+}
 
-    if (options?.action == "end") {
-      return;
-    }
+/**
+ * Execute action
+ * @param {object} options
+ * @returns
+ */
+async function executeAction(options) {
+  SceneTransition?.activeTransition?.destroy(false);
 
-    activeTransition = new SceneTransition(false, options, undefined);
-    activeTransition.render();
-  },
-  async macroArr(...inAttributes) {
-    if (!Array.isArray(inAttributes)) {
-      throw Logger.error("macroArr | inAttributes must be of type array");
+  if (options?.action == "end") return;
+
+  const sceneTransition = new SceneTransition(false, options, undefined);
+  sceneTransition.render();
+}
+
+async function macroArr(...inAttributes) {
+  if (!Array.isArray(inAttributes)) {
+    throw Logger.error("macroArr | inAttributes must be of type array");
+  }
+  let [options, showMe] = inAttributes;
+  options = {
+    ...options,
+    fromSocket: true,
+  };
+
+  macro(options, showMe);
+}
+
+async function macro(options, showMe) {
+  if (options.fromSocket) {
+    executeAction(options);
+    return;
+  }
+
+  options.fromSocket = true;
+
+  const userId = game.user.id;
+  const users = options?.users;
+
+  if (users?.length) {
+    if (showMe && !users.includes(userId)) {
+      users.push(userId);
+    } else if (!showMe) {
+      options.users = users.filter((name) => name !== userId);
     }
-    let [options, showMe] = inAttributes;
-    options = {
-      ...options,
-      fromSocket: true,
-    };
-    // await SceneTransition.macro(false, options, showMe);
-    macro(options, showMe);
-  },
-  macro(options, showMe) {
-    if (options.fromSocket) {
-      API.executeAction(options);
+    sceneTransitionsSocket.executeForUsers("executeAction", options.users, options);
+  } else {
+    if (showMe) {
+      sceneTransitionsSocket.executeForEveryone("executeAction", options);
     } else {
-      if (options.users?.length > 0) {
-        if (showMe) {
-          if (!options.users.includes(game.user.id)) {
-            options.users.push(game.user.id);
-          }
-        } else {
-          if (options.users.includes(game.user.id)) {
-            const excludeNames = [game.user.id];
-            options.users = options.users.filter((name) => !excludeNames.includes(name));
-          }
-        }
-        options = {
-          ...options,
-          fromSocket: true,
-        };
-        sceneTransitionsSocket.executeForUsers("executeAction", options.users, options);
-      } else {
-        if (showMe) {
-          options = {
-            ...options,
-            fromSocket: true,
-          };
-          sceneTransitionsSocket.executeForEveryone("executeAction", options);
-        } else {
-          options = {
-            ...options,
-            fromSocket: true,
-          };
-          sceneTransitionsSocket.executeForOthers("executeAction", options);
-        }
-      }
+      sceneTransitionsSocket.executeForOthers("executeAction", options);
     }
-  },
+  }
+}
+
+const API = {
+  executeActionArr,
+  executeAction,
+  macroArr,
+  macro,
 };
+
 export default API;
