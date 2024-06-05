@@ -6,7 +6,7 @@
     {{/if}}
     {{#if isVideo}}
     <div class="color-overlay" style="opacity:{{bgOpacity}}; background-color:{{bgColor}}; z-index:{{zIndex}};"></div>
-    <video class="scene-transitions-video scene-transitions-bg" autoplay{{#if bgLoop}} loop{{/if}}{{#if bgMuted}}muted{{/if}}>
+    <video class="scene-transitions-video scene-transitions-bg" autoplay{{#if bgLoop}} loop{{/if}}{{#if bgMuted}} muted{{/if}}>
         <source src="{{bgImg}}" type="{{sourceType}}">
     </video>
     {{else}}

@@ -67,61 +67,48 @@ function addJournalButton(journal) {
   if (!showJournalHeaderSetting) return;
 
   const header = journal.element[0].querySelector("header");
-
   if (!header) return;
 
-  const windowTitle = header.querySelector(`h4[class="window-title"]`);
-
+  const windowTitle = header.querySelector("h4.window-title");
   if (!windowTitle) return;
 
   const existingLink = header.querySelector("a.play-transition");
-
-  if (existingLink) {
-    existingLink.remove();
-  }
+  if (existingLink) existingLink.remove();
 
   const page = journal.getData().pages[0];
-
   if (!pageTypes.includes(page.type)) return;
 
   const linkElement = document.createElement("a");
   linkElement.classList.add("play-transition");
-  const iconElement = document.createElement("i");
-  iconElement.classList.add("fas", "fa-play-circle");
-  linkElement.appendChild(iconElement);
-  const textNode = document.createTextNode("Play as Transition");
-  linkElement.appendChild(textNode);
+  linkElement.innerHTML = `<i class="fas fa-play-circle"></i>Play as Transition`;
   windowTitle.after(linkElement);
 
-  const onClickJournalButton = (page) => {
-    let content = null;
-    let bgImg = null;
-    let bgLoop = null;
-    let volume = null;
+  linkElement.addEventListener("click", () => onClickJournalButton(page));
+}
 
-    switch (page.type) {
-      case "image":
-        bgImg = page.src;
-        break;
-      case "text":
-        content = Utils.getTextFromPage(page);
-        bgImg = Utils.getFirstImageFromPage(page);
-        break;
-      case "video":
-        bgImg = page.src;
-        bgLoop = page.video.loop;
-        volume = page.video.volume;
-        break;
-      default:
-        return;
-    }
+function onClickJournalButton(page) {
+  let content = null;
+  let bgImg = null;
+  let bgLoop = null;
+  let volume = null;
 
-    let options = new SceneTransitionOptions({ content, bgImg, bgLoop });
+  switch (page.type) {
+    case "image":
+      bgImg = page.src;
+      break;
+    case "text":
+      content = Utils.getTextFromPage(page);
+      bgImg = Utils.getFirstImageFromPage(page);
+      break;
+    case "video":
+      bgImg = page.src;
+      bgLoop = page.video.loop;
+      volume = page.video.volume;
+      break;
+    default:
+      return;
+  }
 
-    sceneTransitionsSocket.executeForEveryone("executeAction", options);
-  };
-
-  linkElement.addEventListener("click", () => {
-    onClickJournalButton(page);
-  });
+  const options = new SceneTransitionOptions({ content, bgImg, bgLoop });
+  sceneTransitionsSocket.executeForEveryone("executeAction", options);
 }

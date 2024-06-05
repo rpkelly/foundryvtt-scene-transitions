@@ -20,7 +20,7 @@ async function executeActionArr(...inAttributes) {
  * @returns
  */
 async function executeAction(options) {
-  SceneTransition?.activeTransition?.destroy(false);
+  await SceneTransition?.activeTransition?.destroy(true);
 
   if (options?.action == "end") return;
 

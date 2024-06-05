@@ -375,7 +375,7 @@ export class SceneTransition {
   /**
    * Destroy the transition
    */
-  destroy(instant = false) {
+  async destroy(instant = false) {
     if (this.destroying == true) return;
     this.destroying = true;
     let time = instant ? 0 : this.options.fadeOut;
@@ -385,10 +385,10 @@ export class SceneTransition {
       this.fadeAudio(this.audio, time);
     }
 
-    $(this.element)?.fadeOut(time, () => {
+    return $(this.element)?.fadeOut(time, () => {
       this.element.remove();
       this.element = null;
-    });
+    }).promise();
   }
 
   updateData(newData) {
