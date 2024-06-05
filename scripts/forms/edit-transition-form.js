@@ -93,7 +93,8 @@ export default class EditTransitionForm extends DefaultOptionsForm {
     const contentHTML = await TextEditor.enrichHTML(this.transition.options.content, { secrets: true, async: true });
     $('[data-edit="content"]').html(contentHTML);
 
-    const fontColorElement = html[0].querySelector('color-picker[name="fontColor"]');
+    const fontColorSelector = `${foundry.utils.isNewerVersion(game.version, 11.315) ? 'color-picker' : 'input'}[name="fontColor"]`;
+    const fontColorElement = html[0].querySelector(fontColorSelector);
     fontColorElement.addEventListener("change", this.#updateFontColor.bind(this));
 
     const fontSizeElement = html[0].querySelector('input[name="fontSize"]');
@@ -114,7 +115,8 @@ export default class EditTransitionForm extends DefaultOptionsForm {
     const bgSizeElement = html[0].querySelector('input[name="bgSize"]');
     bgSizeElement.addEventListener("change", this.#updateBgSize.bind(this));
 
-    const bgColorElement = html[0].querySelector('color-picker[name="bgColor"]');
+    const bgColorSelector = `${foundry.utils.isNewerVersion(game.version, 11.315) ? 'color-picker' : 'input'}[name="bgColor"]`;
+    const bgColorElement = html[0].querySelector(bgColorSelector);
     bgColorElement.addEventListener("change", this.#updateBgColor.bind(this));
 
     const bgOpacityElement = html[0].querySelector('input[name="bgOpacity"]');
