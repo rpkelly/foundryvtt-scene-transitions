@@ -16,7 +16,7 @@
                     <input id="fontSize" name="fontSize" type="number" placeholder="{{default.fontSize}}" value="{{fontSize}}"> 
                 </div>
             </div>
-            {{#if preview}}
+            {{#if isEdit}}
 			<div class="editor-box" style="padding-bottom:0.25rem;">
                 {{editor transitionContent target="content" button=false editable=true engine="prosemirror" collaborate=false}}
             </div>
@@ -146,9 +146,11 @@
             </div>
         </div>
         <footer>
+            {{#unless isEdit}}
             <button type="button" data-tooltip="{{localize "scene-transitions.form.button.reset.tooltip"}}" data-action="reset" class="reset-button">
                 <i class="fas fa-arrow-rotate-left"></i>{{localize "scene-transitions.form.button.reset.label"}}
             </button>
+            {{/unless}}
             <button type="submit" data-tooltip="{{localize "scene-transitions.form.button.save.tooltip"}}" class="save-button">
                 <i class="fas fa-solid fa-floppy-disk"></i>{{localize "scene-transitions.form.button.save.label"}}
             </button>

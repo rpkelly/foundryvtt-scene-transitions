@@ -38,7 +38,7 @@ export default class EditTransitionForm extends DefaultOptionsForm {
   async getData(options) {
     const context = this.transition.options;
     context.default = CONSTANTS.DEFAULT_SETTING;
-    // context.preview = await renderTemplate(CONSTANTS.TEMPLATE.SCENE_TRANSITION_PREVIEW, this.transition.options);
+    context.isEdit = true;
     context.transitionContent = await TextEditor.enrichHTML(this.transition.options.content, {
       secrets: true,
       async: true,
@@ -89,8 +89,6 @@ export default class EditTransitionForm extends DefaultOptionsForm {
 
   async activateListeners(html) {
     super.activateListeners(html);
-
-    html.on("click", "[data-action]", this.handleButtonClick.bind(this));
 
     const contentHTML = await TextEditor.enrichHTML(this.transition.options.content, { secrets: true, async: true });
     $('[data-edit="content"]').html(contentHTML);
