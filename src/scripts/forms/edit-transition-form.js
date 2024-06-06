@@ -133,36 +133,60 @@ export default class EditTransitionForm extends DefaultOptionsForm {
     }
 
     #updateFontColor(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-content").style.color = event.target.value;
     }
 
     #updateFontSize(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-content").style.fontSize = `${event.target.value}px`;
     }
 
     #updateContent(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-content").innerHTML =
             this.editors.content.options.target.innerHTML;
     }
 
     #updateBgImage(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-bg").style.backgroundImage =
             `url('${event.target.value}')`;
     }
 
     #updateBgPos(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-bg").style.backgroundPosition = event.target.value;
     }
 
     #updateBgSize(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-bg").style.backgroundSize = event.target.value;
     }
 
     #updateBgColor(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-bg").style.backgroundColor = event.target.value;
     }
 
     #updateBgOpacity(event) {
+        if (!this.transition.element) {
+            return;
+        }
         this.transition.element.querySelector(".scene-transitions-bg").style.opacity = event.target.value;
     }
 

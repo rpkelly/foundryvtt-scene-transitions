@@ -1,3 +1,10 @@
+### 0.5.4-0.5.5
+
+- Ty to @Larkinabout for many bug fixing and v12 compatibility
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/35
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/33
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/32
+
 ### 0.5.3 
 
 - Apply the pr: https://github.com/p4535992/foundryvtt-scene-transitions/pull/30 ty to @Larkinabout
