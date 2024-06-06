@@ -1,9 +1,10 @@
-import API from "./api.js";
-import CONSTANTS from "./constants.js";
-import { registerSettings } from "./settings.js";
-import { registerSocket, sceneTransitionsSocket } from "./socket.js";
-import { SceneTransitionOptions } from "./scene-transition-options.js";
-import { SceneTransition } from "./scene-transition.js";
+import API from "./scripts/api.js";
+import CONSTANTS from "./scripts/constants.js";
+import { registerSettings } from "./scripts/settings.js";
+import { registerSocket, sceneTransitionsSocket } from "./scripts/socket.js";
+import { SceneTransitionOptions } from "./scripts/scene-transition-options.js";
+import { SceneTransition } from "./scripts/scene-transition.js";
+import { Utils } from "./scripts/utils.js";
 
 Hooks.once("init", async () => {
     registerSettings();
@@ -17,7 +18,7 @@ Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
     registerPackageDebugFlag(CONSTANTS.MODULE.ID);
 });
 
-/********************
+/** ******************
  * Adds menu option to Scene Nav and Directory
  *******************/
 Hooks.on("getSceneNavigationContext", (html, contextOptions) =>
