@@ -20,8 +20,6 @@ Allows GM to make simple transitions to show players before navigating to new sc
 
 ![img1](/wiki/img/scene_transations_video.gif)
 
-![img4](/wiki/img/scene_transiction_journal_page_feature.gif)
-
 ![img2](/wiki/img/preview.png)
 
 ![img3](/wiki/img/preview2.png)
@@ -42,10 +40,6 @@ To install this module manually:
 `https://raw.githubusercontent.com/p4535992/foundryvtt-scene-transitions/master/src/module.json`
 4.  Click 'Install' and wait for installation to complete
 5.  Don't forget to enable the module in game using the "Manage Module" button
-
-### libwrapper
-
-This module uses the [libwrapper](https://github.com/ruipin/fvtt-lib-wrapper) library like a dependency. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
 ### socketLib
 
@@ -74,7 +68,7 @@ game.modules.get('scene-transitions').api.macro({
 	sceneID: false, // To play a transition without a scene activation, simple pass `false` as the sceneID in the data object or use the string id of the scene.
 	content:"TEST MACRO",
 	fontColor:'#ffffff',
-	fontSize:'28px',
+	fontSize: 28,
 	bgImg:'', // pass any relative or absolute image or video url here.
 	bgPos:'center center',
     bgLoop: true, // Only for VIDEO, if true will loop the video
@@ -86,7 +80,7 @@ game.modules.get('scene-transitions').api.macro({
 	delay:5000, //how long for transition to stay up
 	fadeOut: 400, //how long to fade out
 	audio: "", //path to audio file, NOTE: is not advisable to use this with a video and the property 'bgMuted = false'
-	skippable:true, //Allows players to skip transition with a click before delay runs out.
+	allowPlayersToEnd:true, //Allows players to skip transition with a click before delay runs out.
     audioLoop: true, //Loop the audio file ?
 	gmHide: true, // hide the transition on other windows logged in as a GM
 	gmEndAll: true, // when the GM clicks to end the transition - end for everyone
@@ -123,36 +117,12 @@ npm run dev
 npm run build
 ```
 
-### build:watch
-
-`build:watch` will build and watch for changes, rebuilding automatically.
-
-```bash
-npm run build:watch
-```
-
 ### prettier-format
 
 `prettier-format` launch the prettier plugin based on the configuration [here](./.prettierrc)
 
 ```bash
 npm run-script prettier-format
-```
-
-### lint
-
-`lint` launch the eslint process based on the configuration [here](./.eslintrc.json)
-
-```bash
-npm run-script lint
-```
-
-### lint:fix
-
-`lint:fix` launch the eslint process with the fix argument
-
-```bash
-npm run-script lint:fix
 ```
 
 ## [Changelog](./CHANGELOG.md)

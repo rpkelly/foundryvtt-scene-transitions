@@ -1,17 +1,18 @@
-import { CONSTANTS } from "./constants.js";
 import API from "./api.js";
-import Logger from "./lib/Logger.js";
+import CONSTANTS from "./constants.js";
+import Logger from "./logger.js";
 
 export let sceneTransitionsSocket;
+
 export function registerSocket() {
-  Logger.debug("Registered sceneTransitionsSocket");
+  Logger.debug("Registered socket");
   if (sceneTransitionsSocket) {
     return sceneTransitionsSocket;
   }
-
-  sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE_ID);
+  //@ts-ignore
+  sceneTransitionsSocket = socketlib.registerModule(CONSTANTS.MODULE.ID);
   sceneTransitionsSocket.register("executeAction", (...args) => API.executeActionArr(...args));
   sceneTransitionsSocket.register("macro", (...args) => API.macroArr(...args));
-  game.modules.get(CONSTANTS.MODULE_ID).socket = sceneTransitionsSocket;
+  game.modules.get(CONSTANTS.MODULE.ID).socket = sceneTransitionsSocket;
   return sceneTransitionsSocket;
 }

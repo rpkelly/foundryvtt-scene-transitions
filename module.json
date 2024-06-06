@@ -2,7 +2,7 @@
   "id": "scene-transitions",
   "title": "Scene Transitions",
   "description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
-  "version": "0.5.3",
+  "version": "0.5.2",
   "authors": [
     {
       "name": "DM_miX",
@@ -77,17 +77,17 @@
   ],
   "systems": [],
   "scripts": [],
-  "esmodules": ["module.js"],
+  "esmodules": ["scripts/module.js"],
   "styles": ["styles/scene-transitions.css"],
   "compatibility": {
     "minimum": 11,
-    "verified": 11,
-    "maximum": 11
+    "verified": 12.325,
+    "maximum": 12
   },
   "manifestPlusVersion": "1.2.1",
-  "url": "https://github.com/p4535992/foundryvtt-scene-transitions",
-  "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.3/module.json",
-  "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.3/module.zip",
+  "url": "This is replaced",
+  "manifest": "This is replaced",
+  "download": "This is replaced",
   "readme": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/README.md",
   "changelog": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/CHANGELOG.md",
   "bugs": "https://github.com/p4535992/foundryvtt-scene-transitions/issues",
@@ -95,12 +95,6 @@
   "relationships": {
     "systems": [],
     "requires": [
-      {
-        "id": "lib-wrapper",
-        "type": "module",
-        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
-        "compatibility": {}
-      },
       {
         "id": "socketlib",
         "type": "module",

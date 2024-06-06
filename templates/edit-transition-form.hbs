@@ -1,0 +1,159 @@
+<div class="scene-transitions-form-wrapper flexrow">
+    <form class="scene-transitions-form flexcol">
+        <div class="scrollable">
+            <h2>{{localize "scene-transitions.form.content.header"}}</h2>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.fontColor.label"}}</label>
+                <div class="form-fields">
+                    {{ colorPicker id="fontColor" name="fontColor" value=fontColor }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.fontSize.label"}}
+                    <span class="units">{{localize "scene-transitions.form.fontSize.unit"}}</span>
+                </label>
+                <div class="form-fields">
+                    <input id="fontSize" name="fontSize" type="number" placeholder="{{default.fontSize}}" value="{{fontSize}}"> 
+                </div>
+            </div>
+            {{#if isEdit}}
+			<div class="editor-box" style="padding-bottom:0.25rem;">
+                {{editor transitionContent target="content" button=false editable=true engine="prosemirror" collaborate=false}}
+            </div>
+            {{/if}}
+            <h2>{{localize "scene-transitions.form.background.header"}}</h2>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgImg.label"}}</label>
+                <div class="form-fields">
+                    {{filePicker target="bgImg" type="imagevideo"}}
+                    <input class="imagevideo" type="text" id="bgImg" name="bgImg" value="{{bgImg}}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgPos.label"}}</label>
+                <div class="form-fields">
+                    <input id="bgPos" name="bgPos" type="text" placeholder="{{default.bgPos}}" value="{{bgPos}}"> 
+                </div>
+                <p class="notes scene-transitions-advice">{{localize "scene-transitions.form.bgPos.note"}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgSize.label"}}</label>
+                <div class="form-fields">
+                    <input id="bgSize" name="bgSize" type="text" placeholder="{{default.bgSize}}" value="{{bgSize}}"> 
+                </div>
+                <p class="notes scene-transitions-advice">{{localize "scene-transitions.form.bgSize.note"}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgColor.label"}}</label>
+                <div class="form-fields">
+                    {{ colorPicker id="bgColor" name="bgColor" value=bgColor }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgOpacity.label"}}</label>
+                <div class="form-fields">
+                    <input id="bgOpacity" name="bgOpacity" type="number" step=0.1 min=0 max=1 placeholder="{{bgOpacity}}" value={{bgOpacity}}>
+                </div>
+                <p class="notes scene-transitions-advice">{{localize "scene-transitions.form.bgOpacity.note"}}</label>
+            </div>
+            <h2>{{localize "scene-transitions.form.video.header"}}</h2>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgLoop.label"}}</label>
+                <div class="form-fields">
+                    <input id="bgLoop" name="bgLoop" type="checkbox" {{#if bgLoop}} checked{{/if}}> 
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.bgMuted.label"}}</label>
+                <div class="form-fields">
+                    <input id="bgMuted" name="bgMuted" type="checkbox" {{#if bgMuted}} checked{{/if}}> 
+                </div>
+            </div>
+            <h2>{{localize "scene-transitions.form.audio.header"}}</h2>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.audio.label"}}</label>
+                <div class="form-fields">
+                    {{filePicker target="audio" type="audio"}}
+                    <input class="audio" type="text" name="audio" placeholder="path/audio.mp3" value="{{audio}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.volume.label"}}</label>
+                <div class="form-fields">
+                    <input type="range" name="volume" value="{{volume}}" min="0" max="1" step="0.1" data-dtype="Number" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.audioLoop.label"}}</label>
+                <div class="form-fields">
+                    <input type="checkbox" name="audioLoop" data-dtype="Boolean" {{checked audioLoop}} />
+                </div>
+            </div>
+            <h2>{{localize "scene-transitions.form.transition.header"}}</h2>
+            <div class="form-group">
+                <label>
+                    {{localize "scene-transitions.form.fadeIn.label"}}
+                    <span class="units">{{localize "scene-transitions.form.fadeIn.unit"}}</span>
+                </label>
+                <div class="form-fields">
+                    <input id="fadeIn" name="fadeIn" type="number" step=1 min=0 placeholder="{{default.fadeIn}}" value={{fadeIn}}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    {{localize "scene-transitions.form.delay.label"}}
+                    <span class="units">{{localize "scene-transitions.form.delay.unit"}}</span>
+                </label>
+                <div class="form-fields">
+                    <input id="delay" name="delay" type="number" step=1 min=0 value={{delay}}>
+                </div>
+                <p class="notes">{{localize "scene-transitions.form.delay.note"}}</label>
+            </div>
+            <div class="form-group">
+                <label>
+                    {{localize "scene-transitions.form.fadeOut.label"}}
+                    <span class="units">{{localize "scene-transitions.form.fadeOut.unit"}}</span>
+                    </label>
+                <div class="form-fields">
+                    <input id="fadeOut" name="fadeOut" type="number" step=1 min=0 placeholder="{{default.fadeOut}}" value={{fadeOut}}>
+                </div>
+            </div>
+            <h2>{{localize "scene-transitions.form.other.header"}}</h2>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.activateScene.label"}}</label>
+                <input type="checkbox" name="activateScene" data-dtype="Boolean" {{checked activateScene}} />
+                <p class="notes">{{localize "scene-transitions.form.activateScene.note"}}</p>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.allowPlayersToEnd.label"}}</label>
+                <input type="checkbox" name="allowPlayersToEnd" data-dtype="Boolean" {{checked allowPlayersToEnd}} />
+                <p class="notes">{{localize "scene-transitions.form.allowPlayersToEnd.note"}}</p>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.gmEndAll.label"}}</label>
+                <input type="checkbox" name="gmEndAll" data-dtype="Boolean" {{checked gmEndAll}} />
+                <p class="notes">{{localize "scene-transitions.form.gmEndAll.note"}}</p>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.gmHide.label"}}</label>
+                <input type="checkbox" name="gmHide" data-dtype="Boolean" {{checked gmHide}} />
+                <p class="notes">{{localize "scene-transitions.form.gmHide.note"}}</p>
+            </div>
+            <div class="form-group">
+                <label>{{localize "scene-transitions.form.showUI.label"}}</label>
+                <input type="checkbox" name="showUI" data-dtype="Boolean" {{checked showUI}} />
+                <p class="notes">{{localize "scene-transitions.form.showUI.note"}}</p>
+            </div>
+        </div>
+        <footer>
+            {{#unless isEdit}}
+            <button type="button" data-tooltip="{{localize "scene-transitions.form.button.reset.tooltip"}}" data-action="reset" class="reset-button">
+                <i class="fas fa-arrow-rotate-left"></i>{{localize "scene-transitions.form.button.reset.label"}}
+            </button>
+            {{/unless}}
+            <button type="submit" data-tooltip="{{localize "scene-transitions.form.button.save.tooltip"}}" class="save-button">
+                <i class="fas fa-solid fa-floppy-disk"></i>{{localize "scene-transitions.form.button.save.label"}}
+            </button>
+        </footer>
+    </form>
+</div>
