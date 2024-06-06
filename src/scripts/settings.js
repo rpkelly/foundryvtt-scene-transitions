@@ -37,3 +37,33 @@ export function registerSettings() {
         type: Boolean,
     });
 }
+
+/**
+ * Get module setting
+ * @param {string} key          The key
+ * @param {string} defaultValue The default value
+ * @returns {*}                 The setting
+ */
+export function getSetting(key, defaultValue = null) {
+    let value = defaultValue ?? null;
+    try {
+        value = game.settings.get(CONSTANTS.MODULE.ID, key);
+    } catch {
+        Logger.debug(`Setting '${key}' not found`);
+    }
+    return value;
+}
+
+/**
+ * Set module setting
+ * @param {string} key The key
+ * @param {*} value    The value
+ */
+export async function setSetting(key, value) {
+    if (game.settings.settings.get(`${CONSTANTS.MODULE.ID}.${key}`)) {
+        await game.settings.set(CONSTANTS.MODULE.ID, key, value);
+        Logger.debug(`Setting '${key}' set to '${value}'`);
+    } else {
+        Logger.debug(`Setting '${key}' not found`);
+    }
+}

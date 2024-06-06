@@ -67,7 +67,7 @@
             "name": "scene-transitions-macros",
             "label": "Scene Transitions Macros",
             "type": "Macro",
-            "path": "packs/scene-transitions-macros.db",
+            "path": "packs/scene-transitions-macros",
             "module": "scene-transitions",
             "ownership": {
                 "PLAYER": "LIMITED",
