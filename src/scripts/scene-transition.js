@@ -438,5 +438,3 @@ export class SceneTransition {
         fade();
     }
 }
-
-SceneTransition.activeTransition = new SceneTransition(undefined, undefined, undefined);
