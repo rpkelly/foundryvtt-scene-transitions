@@ -2,16 +2,16 @@
     "id": "scene-transitions",
     "title": "Scene Transitions",
     "description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
-    "version": "0.5.5",
+    "version": "0.5.6",
     "authors": [
         {
-            "name": "DM_miX",
-            "url": "https://github.com/DM-miX",
+            "name": "Larkinabout",
+            "url": "https://github.com/Larkinabout",
             "discord": "",
             "twitter": "",
             "patreon": "",
-            "github": "DM-miX",
-            "ko-fi": "",
+            "github": "Larkinabout",
+            "ko-fi": "https://ko-fi.com/larkinabout",
             "reddit": "",
             "email": ""
         },
@@ -27,20 +27,7 @@
             "email": ""
         }
     ],
-    "type": "module",
     "socket": true,
-    "includes": [
-        "./assets/**",
-        "./lang/**",
-        "./languages/**",
-        "./scripts/**",
-        "./styles/**",
-        "./templates/**",
-        "./module.json",
-        "./README.md",
-        "./icons/**",
-        "./packs/**"
-    ],
     "media": [
         {
             "type": "icon",
@@ -75,7 +62,6 @@
             }
         }
     ],
-    "systems": [],
     "scripts": [],
     "esmodules": ["module.js"],
     "styles": ["styles/scene-transitions.css"],
@@ -85,8 +71,8 @@
         "maximum": 12
     },
     "url": "https://github.com/p4535992/foundryvtt-scene-transitions",
-    "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.5/module.json",
-    "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.5/module.zip",
+    "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.6/module.json",
+    "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/0.5.6/module.zip",
     "readme": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/README.md",
     "changelog": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/CHANGELOG.md",
     "bugs": "https://github.com/p4535992/foundryvtt-scene-transitions/issues",

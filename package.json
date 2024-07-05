@@ -2,7 +2,7 @@
 	"name": "scene-transitions",
 	"title": "Scene Transitions",
 	"description": "Create transition between scenes. Or show a Slide from a Journal or Macro for Narration",
-	"version": "0.5.3",
+	"version": "0.5.6",
 	"main": "module.js",
 	"license": "SEE LICENSE IN LICENSE",
 	"private": true,
@@ -27,7 +27,7 @@
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.23.10",
-		"@foundryvtt/foundryvtt-cli": "^1.0.2",
+		"@foundryvtt/foundryvtt-cli": "^1.0.3",
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"@typescript-eslint/eslint-plugin": "^7.1.1",
 		"@typhonjs-config/eslint-config": "^0.6.3",
