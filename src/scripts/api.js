@@ -20,9 +20,12 @@ async function executeActionArr(...inAttributes) {
  * @returns
  */
 async function executeAction(options) {
-    await SceneTransition?.activeTransition?.destroy();
-
-    if (options?.action == "end") return;
+    if (options?.action == "end") {
+        await SceneTransition?.activeTransition?.destroy();
+        return;
+    } else {
+        await SceneTransition?.activeTransition?.destroy(true);
+    }
 
     const sceneTransition = new SceneTransition(false, options, undefined);
     sceneTransition.render();
