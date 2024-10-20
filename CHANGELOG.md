@@ -1,3 +1,7 @@
+### 12.0.1
+
+- Bug fix: https://github.com/p4535992/foundryvtt-scene-transitions/issues/39#issuecomment-2425044453 ty to @Conradhowlf
+
 ### 12.0.0
 
 - Little fix Respect fade-out settings for GM-prompted transition closure for ty the pr  https://github.com/p4535992/foundryvtt-scene-transitions/pull/41 from @cavesnail 

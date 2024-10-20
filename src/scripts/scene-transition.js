@@ -343,7 +343,8 @@ export class SceneTransition {
                     return;
                 }
 
-                if (this.options.activateScene) {
+                // Fix for https://github.com/p4535992/foundryvtt-scene-transitions/issues/39#issuecomment-2425044453 if (this.options.activateScene) {
+                if (game.user?.isGM) {
                     scene.activate();
                 } else if (game.user?.isGM) {
                     scene.view();
