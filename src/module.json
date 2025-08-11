@@ -70,12 +70,12 @@
         "verified": 12,
         "maximum": 12
     },
-    "url": "https://github.com/p4535992/foundryvtt-scene-transitions",
-    "manifest": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/12.0.1/module.json",
-    "download": "https://github.com/p4535992/foundryvtt-scene-transitions/releases/download/12.0.1/module.zip",
-    "readme": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/README.md",
-    "changelog": "https://github.com/p4535992/foundryvtt-scene-transitions/blob/master/CHANGELOG.md",
-    "bugs": "https://github.com/p4535992/foundryvtt-scene-transitions/issues",
+    "url": "https://github.com/rpkelly/foundryvtt-scene-transitions",
+    "manifest": "https://github.com/rpkelly/foundryvtt-scene-transitions/releases/download/13.0.0/module.json",
+    "download": "https://github.com/rpkelly/foundryvtt-scene-transitions/releases/download/13.0.0/module.zip",
+    "readme": "https://github.com/rpkelly/foundryvtt-scene-transitions/blob/master/README.md",
+    "changelog": "https://github.com/rpkelly/foundryvtt-scene-transitions/blob/master/CHANGELOG.md",
+    "bugs": "https://github.com/rpkelly/foundryvtt-scene-transitions/issues",
     "relationships": {
         "systems": [],
         "requires": [
