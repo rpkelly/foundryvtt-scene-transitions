@@ -44,6 +44,9 @@ export default class EditTransitionForm extends DefaultOptionsForm {
             async: true,
         });
 
+        // Add RollTable options for the dropdown
+        context.rollTableOptions = Utils.getRollTableOptions();
+
         return context;
     }
 
@@ -98,6 +101,33 @@ export default class EditTransitionForm extends DefaultOptionsForm {
 
         const fontColorSelector = `${foundry.utils.isNewerVersion(game.version, 11.315) ? "color-picker" : "input"}[name="fontColor"]`;
         const fontColorElement = html[0].querySelector(fontColorSelector);
+
+        // Handle content type switching
+        const contentTypeSelect = html.find("#contentType");
+        const textGroups = html.find(".content-text-group");
+        const rollTableGroups = html.find(".content-rolltable-group");
+
+        contentTypeSelect.on("change", (event) => {
+            const selectedType = event.target.value;
+
+            if (selectedType === "text") {
+                textGroups.show();
+                rollTableGroups.hide();
+            } else if (selectedType === "rolltable") {
+                textGroups.hide();
+                rollTableGroups.show();
+            }
+        });
+
+        // Initialize visibility based on current content type
+        const currentContentType = this.transition.options.contentType || "text";
+        if (currentContentType === "rolltable") {
+            textGroups.hide();
+            rollTableGroups.show();
+        } else {
+            textGroups.show();
+            rollTableGroups.hide();
+        }
         fontColorElement.addEventListener("change", this.#updateFontColor.bind(this));
 
         const fontSizeElement = html[0].querySelector('input[name="fontSize"]');

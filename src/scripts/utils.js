@@ -255,4 +255,87 @@ export class Utils {
         }
         return firstText;
     }
+
+    /**
+     * Roll on a RollTable and return the text content
+     * @param {string} rollTableId - The ID of the RollTable to roll on
+     * @returns {Promise<string>} The text content from the rolled result
+     */
+    static async rollTableForContent(rollTableId) {
+        if (!rollTableId) {
+            Logger.warn("rollTableForContent | No rollTableId provided");
+            return "";
+        }
+
+        const rollTable = game.tables.get(rollTableId);
+        if (!rollTable) {
+            Logger.warn(`rollTableForContent | RollTable with ID ${rollTableId} not found`);
+            return "";
+        }
+
+        try {
+            // Roll on the table
+            const draw = await rollTable.draw({ displayChat: false });
+
+            if (!draw || !draw.results || draw.results.length === 0) {
+                Logger.warn(`rollTableForContent | No results from RollTable ${rollTableId}`);
+                return "";
+            }
+
+            // Get the first result (in case of multiple results)
+            const result = draw.results[0];
+
+            // Extract text content from the result
+            let content = "";
+
+            // Check if the result has text content
+            if (result.text) {
+                content = result.text;
+            }
+            // If no direct text, try to get it from the document reference
+            else if (result.documentCollection && result.documentId) {
+                const document = game.collections.get(result.documentCollection)?.get(result.documentId);
+                if (document) {
+                    // For Journal Entries, get the content from pages
+                    if (document.documentName === "JournalEntry") {
+                        const firstPage = document.pages?.contents?.[0];
+                        if (firstPage?.text?.content) {
+                            content = firstPage.text.content;
+                        } else if (firstPage?.name) {
+                            content = firstPage.name;
+                        }
+                    }
+                    // For other documents, use the name
+                    else if (document.name) {
+                        content = document.name;
+                    }
+                }
+            }
+
+            // If still no content, use the result's range description as fallback
+            if (!content && result.range) {
+                content = `${result.range[0]}-${result.range[1]}`;
+            }
+
+            Logger.debug(`rollTableForContent | Rolled result: ${content}`);
+            return content;
+        } catch (error) {
+            Logger.error(`rollTableForContent | Error rolling on table ${rollTableId}:`, error);
+            return "";
+        }
+    }
+
+    /**
+     * Get all available RollTables for selection
+     * @returns {Array<{id: string, name: string}>} Array of RollTable options
+     */
+    static getRollTableOptions() {
+        const rollTables = game.tables.contents || [];
+        return rollTables
+            .map((table) => ({
+                id: table.id,
+                name: table.name,
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+    }
 }

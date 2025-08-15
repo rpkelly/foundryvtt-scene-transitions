@@ -9,6 +9,11 @@ import { Utils } from "./scripts/utils.js";
 Hooks.once("init", async () => {
     registerSettings();
     registerSocket();
+
+    // Register Handlebars helpers
+    Handlebars.registerHelper("eq", function (a, b) {
+        return a === b;
+    });
 });
 
 Hooks.once("setup", () => {

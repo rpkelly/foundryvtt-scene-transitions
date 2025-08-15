@@ -3,12 +3,21 @@
         <div class="scrollable">
             <h2>{{localize "scene-transitions.form.content.header"}}</h2>
             <div class="form-group">
+                <label>{{localize "scene-transitions.form.contentType.label"}}</label>
+                <div class="form-fields">
+                    <select id="contentType" name="contentType">
+                        <option value="text" {{#if (eq contentType "text")}}selected{{/if}}>{{localize "scene-transitions.form.contentType.text"}}</option>
+                        <option value="rolltable" {{#if (eq contentType "rolltable")}}selected{{/if}}>{{localize "scene-transitions.form.contentType.rolltable"}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group content-text-group" {{#unless (eq contentType "text")}}style="display: none;"{{/unless}}>
                 <label>{{localize "scene-transitions.form.fontColor.label"}}</label>
                 <div class="form-fields">
                     {{ colorPicker id="fontColor" name="fontColor" value=fontColor }}
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group content-text-group" {{#unless (eq contentType "text")}}style="display: none;"{{/unless}}>
                 <label>{{localize "scene-transitions.form.fontSize.label"}}
                     <span class="units">{{localize "scene-transitions.form.fontSize.unit"}}</span>
                 </label>
@@ -17,10 +26,36 @@
                 </div>
             </div>
             {{#if isEdit}}
-			<div class="editor-box" style="padding-bottom:0.25rem;">
+            <div class="editor-box content-text-group" style="padding-bottom:0.25rem;{{#unless (eq contentType "text")}}display: none;{{/unless}}">
                 {{editor transitionContent target="content" button=false editable=true engine="prosemirror" collaborate=false}}
             </div>
             {{/if}}
+            <div class="form-group content-rolltable-group" {{#unless (eq contentType "rolltable")}}style="display: none;"{{/unless}}>
+                <label>{{localize "scene-transitions.form.rollTable.label"}}</label>
+                <div class="form-fields">
+                    <select id="rollTableId" name="rollTableId">
+                        <option value="">{{localize "scene-transitions.form.rollTable.none"}}</option>
+                        {{#each rollTableOptions}}
+                        <option value="{{id}}" {{#if (eq ../rollTableId id)}}selected{{/if}}>{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <p class="notes scene-transitions-advice">{{localize "scene-transitions.form.rollTable.note"}}</p>
+            </div>
+            <div class="form-group content-rolltable-group" {{#unless (eq contentType "rolltable")}}style="display: none;"{{/unless}}>
+                <label>{{localize "scene-transitions.form.fontColor.label"}}</label>
+                <div class="form-fields">
+                    {{ colorPicker id="fontColor" name="fontColor" value=fontColor }}
+                </div>
+            </div>
+            <div class="form-group content-rolltable-group" {{#unless (eq contentType "rolltable")}}style="display: none;"{{/unless}}>
+                <label>{{localize "scene-transitions.form.fontSize.label"}}
+                    <span class="units">{{localize "scene-transitions.form.fontSize.unit"}}</span>
+                </label>
+                <div class="form-fields">
+                    <input id="fontSize" name="fontSize" type="number" placeholder="{{default.fontSize}}" value="{{fontSize}}"> 
+                </div>
+            </div>
             <h2>{{localize "scene-transitions.form.background.header"}}</h2>
             <div class="form-group">
                 <label>{{localize "scene-transitions.form.bgImg.label"}}</label>

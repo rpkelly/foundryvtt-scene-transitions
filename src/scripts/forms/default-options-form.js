@@ -21,6 +21,9 @@ export default class DefaultOptionsForm extends FormApplication {
     async getData() {
         const data = Utils.getSetting(CONSTANTS.SETTING.DEFAULT_OPTIONS) ?? CONSTANTS.DEFAULT_SETTING;
 
+        // Add RollTable options for the dropdown
+        data.rollTableOptions = Utils.getRollTableOptions();
+
         return { ...data, default: CONSTANTS.DEFAULT_SETTING };
     }
 
@@ -28,6 +31,34 @@ export default class DefaultOptionsForm extends FormApplication {
         super.activateListeners(html);
 
         html.on("click", "[data-action]", this.handleButtonClick.bind(this));
+
+        // Handle content type switching
+        const contentTypeSelect = html.find("#contentType");
+        const textGroups = html.find(".content-text-group");
+        const rollTableGroups = html.find(".content-rolltable-group");
+
+        contentTypeSelect.on("change", (event) => {
+            const selectedType = event.target.value;
+
+            if (selectedType === "text") {
+                textGroups.show();
+                rollTableGroups.hide();
+            } else if (selectedType === "rolltable") {
+                textGroups.hide();
+                rollTableGroups.show();
+            }
+        });
+
+        // Initialize visibility based on current content type
+        const currentData = this.getData();
+        const currentContentType = currentData.contentType || "text";
+        if (currentContentType === "rolltable") {
+            textGroups.hide();
+            rollTableGroups.show();
+        } else {
+            textGroups.show();
+            rollTableGroups.hide();
+        }
     }
 
     async handleButtonClick(event) {

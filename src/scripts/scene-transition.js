@@ -242,13 +242,13 @@ export class SceneTransition {
                 // For individual journal pages, we need to get the page directly
                 let pageID = $(li).data("entryId") || $(li).data("documentId") || $(li).data("pageId");
                 let page = null;
-                
+
                 // Try to find the page in all journals
                 for (let journal of game.journal) {
                     page = journal.pages.get(pageID);
                     if (page) break;
                 }
-                
+
                 if (!page) {
                     Logger.warn(`No journal page found with ID: ${pageID}`);
                     return;
@@ -265,17 +265,20 @@ export class SceneTransition {
      * @param {JournalEntryPage[]} pages The available pages
      */
     static async showPageSelectionDialog(journal, pages) {
-        const pageOptions = pages.map(page => {
-            const typeIcon = {
-                text: "fas fa-file-text",
-                image: "fas fa-image", 
-                video: "fas fa-video"
-            }[page.type] || "fas fa-file";
-            
-            return `<option value="${page.id}">
+        const pageOptions = pages
+            .map((page) => {
+                const typeIcon =
+                    {
+                        text: "fas fa-file-text",
+                        image: "fas fa-image",
+                        video: "fas fa-video",
+                    }[page.type] || "fas fa-file";
+
+                return `<option value="${page.id}">
                 <i class="${typeIcon}"></i> ${page.name} (${page.type})
             </option>`;
-        }).join("");
+            })
+            .join("");
 
         const content = `
             <form>
@@ -294,11 +297,11 @@ export class SceneTransition {
             callback: (html) => {
                 return html.find('[name="pageId"]').val();
             },
-            rejectClose: false
+            rejectClose: false,
         });
 
         if (selectedPageId) {
-            const selectedPage = pages.find(p => p.id === selectedPageId);
+            const selectedPage = pages.find((p) => p.id === selectedPageId);
             if (selectedPage) {
                 SceneTransition.playTransitionFromPage(selectedPage);
             }
@@ -359,6 +362,23 @@ export class SceneTransition {
         this.options.showCloseButton = game.user?.isGM || this.options.allowPlayersToEnd;
         this.options.isVideo = Utils.isVideo(this.options.bgImg);
         this.options.zIndex = game.user?.isGM || this.options.showUI ? 1 : 5000;
+
+        // Handle RollTable content resolution
+        if (this.options.contentType === "rolltable" && this.options.rollTableId) {
+            try {
+                const rolledContent = await Utils.rollTableForContent(this.options.rollTableId);
+                if (rolledContent) {
+                    this.options.content = rolledContent;
+                    Logger.debug(`Resolved RollTable content: ${rolledContent}`);
+                } else {
+                    Logger.warn(`No content resolved from RollTable ${this.options.rollTableId}, using fallback`);
+                    this.options.content = this.options.content || "";
+                }
+            } catch (error) {
+                Logger.error(`Error resolving RollTable content:`, error);
+                this.options.content = this.options.content || "";
+            }
+        }
 
         if (this.options.isVideo) {
             this.options.sourceType = Utils.getVideoType(this.options.bgImg);

@@ -67,6 +67,8 @@ Use the textbox sourcecode editor to add custom html and override default css.
 game.modules.get('scene-transitions').api.macro({
 	sceneID: false, // To play a transition without a scene activation, simple pass `false` as the sceneID in the data object or use the string id of the scene.
 	content:"TEST MACRO",
+	contentType: "text", // "text" or "rolltable" - determines how content is handled
+	rollTableId: "", // ID of the RollTable to roll on (only used when contentType is "rolltable")
 	fontColor:'#ffffff',
 	fontSize: 28,
 	bgImg:'', // pass any relative or absolute image or video url here.

@@ -33,6 +33,8 @@ export class SceneTransitionOptions {
             ? options.activateScene
             : defaultOption.activateScene;
         this.content = options.content || defaultOption.content;
+        this.contentType = options.contentType || defaultOption.contentType;
+        this.rollTableId = options.rollTableId || defaultOption.rollTableId;
         this.audio = options.audio || defaultOption.audio;
         this.fromSocket = Utils.isBoolean(options.fromSocket) ? options.fromSocket : defaultOption.fromSocket;
         this.users = options.users || defaultOption.users;

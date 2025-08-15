@@ -26,6 +26,8 @@ const CONSTANTS = {
         showUI: false,
         activateScene: false,
         content: "",
+        contentType: "text", // "text" or "rolltable"
+        rollTableId: "",
         audio: "",
         fromSocket: false,
         users: [],
